@@ -1,4 +1,4 @@
-import JetpayLogo from "../../../utils/JetpayLogo";
+import JetSupportLogo from "../../../utils/JetSupportLogo";
 import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
 import DownloadButton from "../../reusables/DownloadButton";
 import GetInTouch from "./getInTouch";
@@ -28,13 +28,13 @@ function Footer() {
     },
   ];
   return (
-    <div className="relative h-full">
+    <div className="relative h-full w-full">
       <GetInTouch />
-      <footer className=" lg:h-[280px] items-center py-3 flex flex-col md:flex-row justify-center md:justify-between font-inter ">
+      <footer className=" w-full lg:h-[280px] items-center py-3 flex flex-col md:flex-row justify-center md:justify-between font-inter ">
         <div className="w-full  flex flex-col  justify-center items-center md:items-start">
-          <JetpayLogo />
+          <JetSupportLogo />
           {/* links */}
-          <ul className="flex w-full  lg:gap-4 leading-3 lg:leading-5 gap-x-5  gap-y-2 flex-wrap justify-center md:justify-start">
+          <ul className="flex w-full  lg:gap-4 leading-3 lg:leading-5 gap-x-5 mt-2 gap-y-2 flex-wrap justify-center md:justify-start">
             {links.map((link, index) => (
               <li key={index} className="cursor-pointer ">
                 <a
