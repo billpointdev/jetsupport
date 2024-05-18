@@ -51,13 +51,13 @@ function Footer() {
         <div className="flex flex-col  mt-3 py-12 md:py-0  md:mt-0 w-full lg:w-fit  md:items-start items-center ">
           <p className="font-medium">Get the App</p>
           <div className="flex flex-col md:flex-row mt-3 md:mt-5 w-full gap-[9px] items-center">
-            <DownloadButton os="Android">
+            <DownloadButton os="Android" downloadOn={'Download on'}>
               <div className="flex flex-col gap-[1px]">
                 <AndroidTop />
                 <AndroidBottom />
               </div>
             </DownloadButton>
-            <DownloadButton os="Apple iOS">
+            <DownloadButton os="Apple iOS"  downloadOn={'Download on'}>
               <div className="flex flex-col gap-[1px]">
                 <AppleIcon />
               </div>
