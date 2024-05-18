@@ -2,10 +2,11 @@ import { IoCallOutline } from "react-icons/io5";
 import InboxIcon from "../../../utils/InboxIcon";
 import { socialLinks } from "../../../utils";
 import Input from "../../reusables/customInput";
+import { Circle } from "../../../utils/constants";
 
 const GetInTouchForm = () => {
   return (
-    <form action="#" className="space-y-4 bg-[#fafafc]">
+    <form action="#" className="space-y-7 bg-[#fafafc]">
       <Input
         label="Full Name"
         id="name"
@@ -45,8 +46,8 @@ const GetInTouchForm = () => {
 
 const GetInTouch = () => {
   return (
-    <div className="h-fit flex flex-col  justify-between w-full md:py-12 lg:py-0 ">
-      <section className="">
+    <div className="h-full flex relative flex-col  getInTouch justify-between w-full md:py-12 lg:py-0 ">
+      <section className="overflow-hidden w-full">
         <div className="mx-auto max-w-[501px] lg:max-w-none ">
           <div className="grid grid-cols-1 gap-x-24 gap-y-8 lg:grid-cols-8">
             <div className="lg:col-span-4 lg:py-12">
@@ -66,7 +67,7 @@ const GetInTouch = () => {
                   </p>
                   <p className="flex items-center  mt-2">
                     <InboxIcon />{" "}
-                    <span className="text-sm  ml-2">hello@jetpay.com</span>
+                    <span className="text-sm  ml-2">hello@jetsupport.com</span>
                   </p>
                 </div>
                 <div className="h-[100px]  flex flex-col justify-between">
@@ -84,13 +85,21 @@ const GetInTouch = () => {
                     ))}
                   </ul>
                 </div>
+                <Circle
+                  size="20"
+                  top=""
+                  left=""
+                  zIndex="-10"
+                  className="left-[-10%] -z-10 lg:left-[-12%] -bottom-8 md:-bottom-0 lg:bottom-8  w-24 h-24"
+                />
               </div>
             </div>
-            <div className="rounded-lg bg-[#fafafc] z-10 p-8 shadow-sm border border-[#DDE5E9] lg:col-span-4 lg:p-12">
+            <div className="rounded-lg  bg-[#fafafc] p-8 shadow-sm border border-[#DDE5E9] lg:col-span-4 lg:p-12">
               <GetInTouchForm />
             </div>
           </div>
         </div>
+       
       </section>
     </div>
   );

@@ -5,7 +5,7 @@ const RightReserved = () => {
   return (
     <div className="md:h-[72px] border-t flex  flex-col md:flex-row justify-between pt-1 md:pt-0 items-center">
       <p className="text-[#9E9E9E] text-xs md:text-md lg:text-lg">
-        © {currentYear} Jetpay. All rights reserved
+        © {currentYear} Jetsupport. All rights reserved
       </p>
 
       <ul className="flex gap-3 my-1  lg:mt-0">
