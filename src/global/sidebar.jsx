@@ -69,7 +69,7 @@ const Sidebar = ({
           ></motion.div>
           <motion.div
             {...framerSidebarPanel}
-            className="flex lg:hidden flex-col fixed z-10 w-full justify-between h-screen p-2 max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white"
+            className="flex lg:hidden flex-col fixed z-10 w-full justify-between overflow-y-auto h-screen p-2 max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white"
             ref={ref}
             aria-label="Sidebar"
           >
@@ -191,7 +191,7 @@ export const SidebarLg = ({
             ></motion.div>
             <motion.div
               {...framerSidebarPanel}
-              className="hidden lg:flex flex-col  w-full justify-between h-screen p-2 max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white"
+              className="hidden lg:flex flex-col  w-full justify-between overflow-y-auto h-screen p-2 max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white"
               ref={ref}
               aria-label="Sidebar"
             >
@@ -207,7 +207,9 @@ export const SidebarLg = ({
                         {title === "Dark Mode" ? (
                           <div
                             className={`flex items-center mt-4 justify-between gap-5 py-5 pl-5 w-[300px] pr-1 transition-all  rounded-full h-[50px]  ${
-                              idx === activeIndex ? "bg-[#F5F5F5] border " : "dark:text-white"
+                              idx === activeIndex
+                                ? "bg-[#F5F5F5] border "
+                                : "dark:text-white"
                             }`}
                           >
                             <div className="flex items-center  cursor-pointer gap-5">
@@ -229,7 +231,9 @@ export const SidebarLg = ({
                             onClick={() => handleClick(idx, title)}
                             to={href}
                             className={`flex items-center mt-4 justify-between gap-5 py-5 pl-5 w-[300px] pr-1 transition-all  rounded-full h-[50px]  ${
-                              idx === activeIndex ? "bg-[#F5F5F5] border " : "dark:text-white"
+                              idx === activeIndex
+                                ? "bg-[#F5F5F5] border "
+                                : "dark:text-white"
                             }`}
                           >
                             <div className="flex items-center cursor-pointer gap-5">
