@@ -7,7 +7,7 @@ const Modal = ({ children, handleClick }) => {
       style={{ zIndex: 2147483647 }}
       className="fixed top-0  w-screen h-screen flex items-center justify-center left-0 backdrop-blur-sm bg-[#00000033]"
     >
-      <div className="w-80 md:w-96 lg:w-[428px] h-[474px] relative ">
+      <div className="w-80 md:w-96 lg:w-[428px] h-fit relative ">
         <div
           onClick={() => handleClick()}
           className="absolute h-10 w-10 cursor-pointer rounded-full  right-0 top-0 flex items-center justify-center bg-[#F5F5F5]"

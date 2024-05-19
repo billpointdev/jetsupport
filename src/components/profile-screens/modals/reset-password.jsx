@@ -12,7 +12,6 @@ const INITIAL_DATA = {
 
 const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [passwordValue, setPasswordValue] = useState(value);
 
   const inputType =
     type === "password" ? (isPasswordVisible ? "text" : "password") : type;
@@ -20,10 +19,7 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
-     const handleChange = (e) => {
-       setPasswordValue(e.target.value);
-       onChange(e);
-     };
+     
 
   return (
     <>
@@ -36,10 +32,8 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
             type={inputType}
             id={id}
             placeholder={placeholder}
-            value={
-              passwordValue && "*".repeat(passwordValue.length)
-            }
-            onChange={handleChange}
+            value={value}
+            onChange={onChange}
             className="w-[90%] bg-transparent px-4 py-2 h-full outline-none border-none"
           />
           {isPasswordVisible ? (
