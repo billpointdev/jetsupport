@@ -12,6 +12,7 @@ const INITIAL_DATA = {
 
 const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [passwordValue, setPasswordValue] = useState(value);
 
   const inputType =
     type === "password" ? (isPasswordVisible ? "text" : "password") : type;
@@ -19,13 +20,15 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
+     const handleChange = (e) => {
+       setPasswordValue(e.target.value);
+       onChange(e);
+     };
+
   return (
     <>
       <div>
-        <label
-          className="text-start text-[#616161]/75 text-xs"
-          htmlFor={id}
-        >
+        <label className="text-start text-[#616161]/75 text-xs" htmlFor={id}>
           {label}
         </label>
         <div className="text-[#757575] bg-[#FAFAFA] h-12 flex  items-center justify-between pr-4 mt-0.5 rounded-xl  ">
@@ -33,12 +36,17 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
             type={inputType}
             id={id}
             placeholder={placeholder}
-            value={value}
-            onChange={onChange}
+            value={
+              passwordValue && "*".repeat(passwordValue.length)
+            }
+            onChange={handleChange}
             className="w-[90%] bg-transparent px-4 py-2 h-full outline-none border-none"
           />
           {isPasswordVisible ? (
-            <FaRegEye onClick={togglePasswordVisibility} className="w-[10%] text-[#292D32] bg-transparent  text-xl cursor-pointer" />
+            <FaRegEye
+              onClick={togglePasswordVisibility}
+              className="w-[10%] text-[#292D32] bg-transparent  text-xl cursor-pointer"
+            />
           ) : (
             <FaRegEyeSlash
               onClick={togglePasswordVisibility}
