@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 
-const DownloadButton = ({ onClick , children , os}) => {
+const DownloadButton = ({ onClick , children , os, bgColor, textColor, buttonText, downloadOn }) => {
   return (
     <button
-      className="border border-lightGray flex items-center md:py-2 w-full lg:w-[182px] max-w-[305px] font-inter h-[46px] md:h-[62px] justify-center px-3 rounded-full"
+      className={`${bgColor} ${textColor} border border-lightGray flex items-center md:py-2 w-full lg:w-[182px] max-w-[305px] font-inter h-[46px] md:h-[62px] justify-center px-3 rounded-full`}
       onClick={onClick}
     >
-      {children}
+      {children} {buttonText} 
       <p className=" text-start text-primary text-xs ml-3">
-        Download on <br /> <span className="font-bold text-xl">{os}</span>
+      {downloadOn}  <br /> <span className="font-bold text-xl">{os}</span>
       </p>
     </button>
   );
@@ -17,7 +17,11 @@ const DownloadButton = ({ onClick , children , os}) => {
 DownloadButton.propTypes = {
     onClick: PropTypes.func, 
     children: PropTypes.node.isRequired,
-    os: PropTypes.string.isRequired,
+    os: PropTypes.string,
+    bgColor: PropTypes.string,
+    textColor: PropTypes.string,
+    buttonText: PropTypes.string,
 };
+
 
 export default DownloadButton;

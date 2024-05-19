@@ -8,7 +8,7 @@ function ErrorPage() {
       <h1 className=' text-4xl font-bold'>Oops, Page not Found</h1>
       <p className="text-xl font-['Poppins']">The Link you followed is broken, or the page may have been removed. Go to</p>
       
-        <Link to={'/'}> <button className='rounded px-5 py-1 bg-green-700 text-white'>Home</button></Link>
+        <Link to={'/'}> <button className='rounded px-5 py-1 bg-[#F66B03] text-white'>Home</button></Link>
     </div>
   )
 }
