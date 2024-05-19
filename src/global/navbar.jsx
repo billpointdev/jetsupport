@@ -3,6 +3,7 @@ import avatar from "../assets/frameimage.png";
 import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
+import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
 
 const Navbar = ( { toggleSidebar } ) =>
 {
@@ -68,6 +69,7 @@ const Navbar = ( { toggleSidebar } ) =>
                 <NotificationIcon />
               </a>
             </div>
+            <StaggeredDropDown />
           </div>
         </div>
       </div>
