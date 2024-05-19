@@ -44,7 +44,7 @@ const Navbar = ( { toggleSidebar } ) =>
             <div className="text-center sm:text-left ml-1">
               <h1 className="  dark:text-white sm:text-2xl font-inter">
                 Good Morning,{" "}
-                <span className=" text-[#010E0E] font-bold ">Quine</span> 👋
+                <span className=" text-[#010E0E] dark:text-white font-bold ">Quine</span> 👋
               </h1>
 
               <p className=" text-xs text-[#616161] dark:text-white">
