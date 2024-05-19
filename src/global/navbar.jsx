@@ -16,7 +16,7 @@ const Navbar = ( { toggleSidebar } ) =>
           <img src={JetSupportLogo} alt="" className="w-[56px] h-[49px]" />
         </a>
         <button
-          className="block rounded  p-2.5 text-gray-600 transition hover:text-gray-600/75 lg:hidden"
+          className="block rounded  p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"
           onClick={toggleSidebar}
         >
           <span className="sr-only">Toggle menu</span>
