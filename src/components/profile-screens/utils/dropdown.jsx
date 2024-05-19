@@ -1,20 +1,42 @@
-import {
-  FiEdit,
-  FiChevronDown,
-  FiTrash,
-  FiShare,
-  FiPlusSquare,
-} from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Proptypes from "prop-types";
-import { useState } from "react";
 import avatar from "../../../assets/frameimage.png";
-
+import { RiArrowRightSLine } from "react-icons/ri";
+import { HiOutlineUser } from "react-icons/hi2";
+import { IoSettingsOutline } from "react-icons/io5";
+import { TbMessage2 } from "react-icons/tb";
+import { IoExit } from "react-icons/io5";
+import useLogout from "../hooks/useLogout";
+import useProviderContext from "../hooks/useProvideContext";
+import { useEffect } from "react";
 const StaggeredDropDown = () => {
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useProviderContext();
+
+  const { triggerLogoutModal } = useLogout();
+  const handleSignOut = () => {
+    setOpen(false);
+    triggerLogoutModal();
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        !event.target.closest(".staggered-dropdown") &&
+        !event.target.closest(".dropdown-button")
+      ) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [setOpen]);
 
   return (
-    <div className=" flex items-center justify-center bg-grey-800">
+    <div className=" flex items-center staggered-dropdown justify-center bg-grey-800">
       <motion.div animate={open ? "open" : "closed"} className="relative">
         <button
           onClick={() => setOpen((pv) => !pv)}
@@ -36,12 +58,52 @@ const StaggeredDropDown = () => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2 rounded-lg bg-white shadow-xl absolute top-[120%] left-[50%] w-48 overflow-hidden"
+          className="flex flex-col gap-2 p-2 rounded-lg bg-[#f5f5f5] z-10  shadow-md absolute top-[120%] -left-[25%] md:left-[1%] w-48 overflow-hidden"
         >
-          <Option setOpen={setOpen} Icon={FiEdit} text="Edit" />
-          <Option setOpen={setOpen} Icon={FiPlusSquare} text="Duplicate" />
-          <Option setOpen={setOpen} Icon={FiShare} text="Share" />
-          <Option setOpen={setOpen} Icon={FiTrash} text="Remove" />
+          <div className="bg-white p-2 w-full  rounded-lg">
+            <div className="flex items-center">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-400 ">
+                <img src={avatar} alt="avatar" />
+              </div>
+              <div className="ml-2 text-start">
+                <p className="text-[#010E0E] text-[12px]">Quine John</p>
+                <p className="text-[9px] text-[#616161] leading-1">
+                  QuineJohn@gmail.com
+                </p>
+              </div>
+            </div>
+            <div className="mt-3">
+              <Option
+                setOpen={setOpen}
+                Icon={HiOutlineUser}
+                text="Your Profile"
+              />
+              <Option
+                setOpen={setOpen}
+                Icon={IoSettingsOutline}
+                text="Acccount Settings"
+              />
+              <Option
+                setOpen={setOpen}
+                Icon={TbMessage2}
+                text="Contact Support"
+              />
+            </div>
+          </div>
+          <div
+            onClick={handleSignOut}
+            className="flex justify-between w-full pr-1 cursor-pointer focus:bg-[#f5f5f5]"
+          >
+            <div className="flex items-center text-[#FF3B3B] font-medium whitespace-nowrap  gap-5 ">
+              <motion.div>
+                <IoExit className="rotate-180 text-md" />
+              </motion.div>
+              <motion.span className="text-xs">Sign out</motion.span>
+            </div>
+            <div className="h-8 w-8 rounded-full border-2 dark:text-white flex items-center justify-center">
+              <RiArrowRightSLine className="text-lg" />
+            </div>
+          </div>
         </motion.ul>
       </motion.div>
     </div>

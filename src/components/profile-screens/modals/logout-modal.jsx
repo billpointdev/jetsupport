@@ -1,7 +1,5 @@
-// import useLogout from "../hooks/useLogout";
 import MasterExitIcon from "../../../utils/MasterExitIcon";
 import useLogout from "../hooks/useLogout";
-import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 
 const LogoutModal = () => {
@@ -26,16 +24,17 @@ const LogoutModal = () => {
             <button
               type="button"
               onClick={closeLogoutModal}
-              className={`block w-full rounded-[16px]  bg-[#F5F5F5] px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
+              className={`block w-full rounded-[16px]  bg-[#F5F5F5] px-6 py-4 text-sm md:text-md lg:text-lg font-medium transform  hover:scale-95 transition-transform duration-300`}
             >
               Close
             </button>
-            <Button
+            <button
               // onClick={handleLogout}
-              className="h-14 bg-[#FF3B3B]"
-              title="Sign me Out"
               type="button"
-            />
+              className={`block w-full rounded-[16px] h-14  bg-[#FF3B3B] text-white text-sm md:text-md lg:text-lg px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
+            >
+              Sign me Out
+            </button>
           </div>
         </div>
       </div>

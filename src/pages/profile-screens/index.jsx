@@ -23,12 +23,19 @@ const ProfilePage = ({ children }) => {
   const [confirmed, setConfirmed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const { showLogoutModal } = useProviderContext();
+  const { showLogoutModal , setOpen:setDropdown } = useProviderContext();
 
-  const toggleSidebar = () => setOpen((prev) => !prev);
+  const toggleSidebar = () =>
+  {
+    setDropdown(false);
+    setOpen((prev) => !prev);
+  }
+    ;
   const location = useLocation();
 
-  const handleClick = (index, title) => {
+  const handleClick = ( index, title ) =>
+  {
+        setDropdown(false);
     setActiveIndex(index);
     setModal(null);
     handleItemClick(title);
