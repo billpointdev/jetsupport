@@ -37,3 +37,5 @@ Circle.propTypes = {
 Circle.defaultProps = {
   clipPath: "circle(50% at 50% 50%)", // Default clip-path if not provided
 };
+
+

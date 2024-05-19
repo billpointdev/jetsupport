@@ -1,15 +1,14 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem ;
+  padding: 2rem;
   text-align: center;
 }
 
-*{
+* {
   box-sizing: border-box;
-
 }
-body{
+body {
   overflow-x: hidden;
 }
 
@@ -49,4 +48,7 @@ body{
   color: #888;
 }
 
-
+.password-field {
+  -webkit-text-security: disc;
+   caret-color: #FAFAFA;
+}
