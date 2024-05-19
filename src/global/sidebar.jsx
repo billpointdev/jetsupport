@@ -135,7 +135,7 @@ const Sidebar = ({
             </div>
             <div
               onClick={triggerLogoutModal}
-              className="flex justify-between mb-4 py-5 pl-5 w-[300px] pr-1 cursor-pointer focus:bg-[#f5f5f5]"
+              className="flex justify-between lg:mb-4 py-5 pl-5 w-[300px] pr-1 cursor-pointer focus:bg-[#f5f5f5]"
             >
               <div className="flex items-center text-[#FF3B3B] gap-5 ">
                 <motion.div {...framerIcon}>
@@ -257,7 +257,7 @@ export const SidebarLg = ({
               </div>
               <div
                 onClick={triggerLogoutModal}
-                className="flex justify-between mb-4 py-5 pl-5 w-[300px] pr-1 cursor-pointer focus:bg-[#f5f5f5]"
+                className="flex justify-between lg:mb-4 py-5 pl-5 w-[300px] pr-1 cursor-pointer focus:bg-[#f5f5f5]"
               >
                 <div className="flex items-center text-[#FF3B3B] gap-5 ">
                   <motion.div {...framerIcon}>
