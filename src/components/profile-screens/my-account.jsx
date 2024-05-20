@@ -56,7 +56,7 @@ const MyAccount = () => {
       <div className="font-inter text-start p-5 pt-6 flex  flex-col  overflow-y-auto">
         <Header
           title="My Account"
-          message="Your Jetpay profile is your personal gateway to managing your
+          message="Your Jet support profile is your personal gateway to managing your
             account information."
         />
 

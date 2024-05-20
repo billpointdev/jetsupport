@@ -27,7 +27,7 @@ const MyNotificaitions = () =>
       <div className="font-inter text-start p-5 pt-6 flex  flex-col  overflow-y-auto">
         <Header
           title="Notifications"
-          message="Your Jetpay profile is your personal gateway to managing your account information."
+          message="Your Jet support profile is your personal gateway to managing your account information."
         />
         <div className="max-w-[421px] flex flex-col gap-8 mt-20 ml-2">
           <div className="flex justify-between items-center">

@@ -10,6 +10,7 @@ import { IoExit } from "react-icons/io5";
 import useLogout from "../hooks/useLogout";
 import useProviderContext from "../hooks/useProvideContext";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 const StaggeredDropDown = () => {
   const { open, setOpen } = useProviderContext();
 
@@ -77,6 +78,7 @@ const StaggeredDropDown = () => {
                 setOpen={setOpen}
                 Icon={HiOutlineUser}
                 text="Your Profile"
+                route="/profile"
               />
               <Option
                 setOpen={setOpen}
@@ -110,11 +112,19 @@ const StaggeredDropDown = () => {
   );
 };
 
-const Option = ({ text, Icon, setOpen }) => {
+const Option = ({ text, Icon, setOpen, route }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    setOpen(false);
+    if (route) {
+      navigate(route);
+    }
+  };
+
   return (
     <motion.li
       variants={itemVariants}
-      onClick={() => setOpen(false)}
+      onClick={handleClick}
       className="flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md hover:bg-[#FAFAFA] text-slate-700 hover:text-primary transition-colors cursor-pointer"
     >
       <motion.span variants={actionIconVariants}>
@@ -129,6 +139,7 @@ Option.propTypes = {
   Icon: Proptypes.elementType.isRequired,
   text: Proptypes.string.isRequired,
   setOpen: Proptypes.func.isRequired,
+  route: Proptypes.string,
 };
 
 export default StaggeredDropDown;
