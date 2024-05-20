@@ -1,17 +1,19 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
   overflow-x: hidden;
 }
 
+/* 
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -51,4 +53,4 @@ body {
 .password-field {
   -webkit-text-security: disc;
    caret-color: #FAFAFA;
-}
+} */
