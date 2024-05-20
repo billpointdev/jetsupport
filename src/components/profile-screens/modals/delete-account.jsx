@@ -23,7 +23,7 @@ const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
         <div className="mt-7">
           <p>Confirm account deletion</p>
           <p className="text-[#757575]">
-            By deleting your account you loose all your Jetpay data and
+            By deleting your account you loose all your Jet support data and
             information
           </p>
         </div>
