@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userLogin } from '../../features/auth/authActions'
 import Input from '../reusables/customInput'
 import DownloadButton from '../reusables/DownloadButton'
+import AuthLayout from './shared/AuthLayout'
 // import Error from '../reusables/Error'
 // import Spinner from '../reusables/Spinner'
 
@@ -29,24 +30,26 @@ const LoginScreen = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(submitForm)}>
-      <Input
-        label="Email Address"
-        id="email"
-        type="email"
-        placeholder="Enter your email address"
-      />
+    <AuthLayout>
+      <form onSubmit={handleSubmit(submitForm)}>
+        <Input
+          label="Email Address"
+          id="email"
+          type="email"
+          placeholder="Enter your email address"
+        />
 
-      <Input
-        label="Account Password"
-        id="password"
-        type="tel"
-        placeholder="Enter your password"
-      />
+        <Input
+          label="Account Password"
+          id="password"
+          type="tel"
+          placeholder="Enter your password"
+        />
 
-<DownloadButton  buttonText='Continue' bgColor={'bg-primary'} textColor={'text-white'}/>
+        <DownloadButton buttonText='Continue' bgColor={'bg-primary'} textColor={'text-white'} />
 
-    </form>
+      </form>
+    </AuthLayout>
   )
 }
 export default LoginScreen
