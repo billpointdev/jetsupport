@@ -19,7 +19,7 @@ const HelpSupport = () => {
       <div className="font-inter text-start p-5 pt-6 flex  flex-col  overflow-y-auto">
         <Header
           title="Help & Support"
-          message="Your Jetpay profile is your personal gateway to managing your account information.
+          message="Your Jet support profile is your personal gateway to managing your account information.
           "
         />
         <div className="  max-w-[421px] mt-8 md:ml-6  text-center flex flex-col items-center">
@@ -32,7 +32,7 @@ const HelpSupport = () => {
           </div>
           <p className="text-[#212121] text-lg dark:text-white ">How can we help you?</p>
           <p className="text-[#757575] text-md  dark:text-white leading-5">
-            At Jetpay, we&apos;re committed to providing you with the best
+            At Jet support, we&apos;re committed to providing you with the best
             possible experience. If you have any questions, concerns, or issues,
             we&apos;re here to help.
           </p>
