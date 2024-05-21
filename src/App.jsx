@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes  } from "react-router-dom";
+import { BrowserRouter, Route, Routes, } from "react-router-dom";
 import './App.css'
 import Home from "./pages/landing-pages/home";
 import ErrorPage from "./pages/landing-pages/error-page";
@@ -11,8 +11,13 @@ import HelpSupport from "./components/profile-screens/help-support";
 import OtpPage from "./components/auth/OTP-Screen";
 import SecurityPin from "./components/auth/SecurityPin";
 import AvatarScreen from "./components/auth/AvatarScreen";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPinScreen from "./components/auth/ResetPinScreen";
+
 
 function App() {
+
+
   return (
     <BrowserRouter>
       <Routes>
@@ -23,6 +28,8 @@ function App() {
         <Route exact path="/otp" element={<OtpPage />} />
         <Route exact path="/security-pin" element={<SecurityPin />} />
         <Route exact path="/set-avatar" element={<AvatarScreen />} />
+        <Route exact path="/forgot-password" element={<ForgotPassword />} />
+        <Route exact path="/reset-password" element={<ResetPinScreen />} />
 
         {/* Profile */}
         <Route exact path="/profile" element={<MyAccount />} />
