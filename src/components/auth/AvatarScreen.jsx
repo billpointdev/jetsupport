@@ -27,10 +27,10 @@ const AvatarScreen = () => {
 
       return (
             <div>
-                  <div className='flex flex-col justify-start relative top-20 place-items-center gap-10 px-4'>
+                  <div className='flex flex-col  justify-center h-screen items-center gap-10 px-4'>
                         <AuthHeader />
                         {currentStep === 1 && (
-                              <div className="text-center h-[100vh]">
+                              <div className="text-center">
                                     <h4 className='font-semibold text-[24px] text-center font-helvetica'>Set your avatar</h4>
                                     <p>Select an avatar for your profile to personalize your account.</p>
 
@@ -50,10 +50,10 @@ const AvatarScreen = () => {
                         )}
                   </div>
 
-                  <div className='flex flex-col justify-start relative top-20 place-items-center gap-10 px-4'>
+                  <div className='flex flex-col justify-start items-center gap-10 px-4'>
                         {/* <AuthHeader /> */}
                         {currentStep === 2 && (
-                              <div className="flex flex-col justify-between text-center h-[70vh] md:w-[30%] w-[100%]">
+                              <div className="flex flex-col justify-between text-center  md:w-[30%] w-[100%]">
                                     <div className='relative'>
                                           <h4 className='font-semibold text-[20px] text-center font-helvetica mt-10'>One last thing 👋</h4>
                                           <p className='text-center'>What do we call you by on Jetpay?</p>
@@ -65,6 +65,7 @@ const AvatarScreen = () => {
                                                 placeholder="      James"
                                                 width={'md:w-[100%] '}
                                                 bgColor={'bg-[#FAFAFA]'}
+                                                className="border-none"
                                                 onChange={(e) => setValue("username", e.target.value)}
                                                 className="mb-4"
                                           />

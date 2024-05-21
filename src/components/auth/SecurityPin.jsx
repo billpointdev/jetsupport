@@ -53,23 +53,31 @@ const SecurityPin = () => {
 
 
   return (
-    <div className='flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4'>
+    <div className="flex flex-col  justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
       <AuthHeader />
 
-      <div className='text-center'>
+      <div className="text-center">
         {location.state?.fromLogin ? (
           <>
             {userInfo?.avatar && (
-              <div className='my-4 flex justify-center'>
-                <img src={userInfo.avatar} alt="User Avatar" className='rounded-full w-24 h-24 object-cover' />
+              <div className="my-4 flex justify-center">
+                <img
+                  src={userInfo.avatar}
+                  alt="User Avatar"
+                  className="rounded-full w-24 h-24 object-cover"
+                />
               </div>
             )}
-            <h4 className=' font-semibold text-[24px] text-center font-helvetica'>Hello, James</h4>
+            <h4 className=" font-semibold text-[24px] text-center font-helvetica">
+              Hello, James
+            </h4>
             <p>Sign in with your security PIN</p>
           </>
         ) : (
           <>
-            <h4 className=' font-semibold text-[24px] text-center font-helvetica'>Create your security pin</h4>
+            <h4 className=" font-semibold text-[24px] text-center font-helvetica">
+              Create your security pin
+            </h4>
             <p>We will require this pin to process your transactions</p>
           </>
         )}
@@ -82,9 +90,10 @@ const SecurityPin = () => {
               key={index}
               id={`pin-input-${index}`}
               type="text"
-              placeholder="_"
+              placeholder="-"
               bgColor="bg-lightGray"
               value={value}
+              className="pl-[29.5px]"
               onChange={(e) => handlePinChange(e.target.value, index)}
               maxLength={1} // Allow only one character
               autoFocus={index === 0}
@@ -95,12 +104,12 @@ const SecurityPin = () => {
 
       {!location.state?.fromLogin && (
         <DownloadButton
-          buttonText='Continue'
-          padding={'px-20'}
-          width={'md:w-[30%] '}
-          bgColor={'bg-primary'}
-          textColor={'text-white'}
-          onClick={() => navigate('/set-avatar')}
+          buttonText="Continue"
+          padding={"px-20"}
+          width={"md:w-[30%] "}
+          bgColor={"bg-primary"}
+          textColor={"text-white"}
+          onClick={() => navigate("/set-avatar")}
         />
       )}
     </div>
