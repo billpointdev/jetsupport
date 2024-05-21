@@ -3,8 +3,19 @@ import Modal from "../reusables/modal";
 import Proptypes from "prop-types";
 import OtpInputWithValidation from "../utils/reset-pin";
 import avatar from "../../../assets/frameimage.png"
+import { useState } from "react";
 
-const AuthorizeDelete = ({ setAuthorizeDelete }) => {
+const AuthorizeDelete = ( { setAuthorizeDelete } ) =>
+{
+    const [otpFilled, setOtpFilled] = useState(false);
+
+  
+    const handleChange = (otp) => {
+      const isFilled = otp.length === 4;
+      setOtpFilled(isFilled);
+    };
+
+
   const handleClick = () => {
     setAuthorizeDelete(false);
   };
@@ -24,7 +35,7 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
           <p className="text-[#828282] text-md font-inter leading-5">
             Enter your BillPoint PIN to authorize account deletion{" "}
           </p>
-        <OtpInputWithValidation numberOfDigits={4} />
+          <OtpInputWithValidation numberOfDigits={4} handleOtp={handleChange} />
         </div>
 
         <Button
@@ -32,6 +43,7 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
           onClick={handleAuthorizeDelete}
           title="Continue"
           className="lg:mb-4"
+          disabled={!otpFilled}
         />
       </div>
     </Modal>

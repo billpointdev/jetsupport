@@ -11,7 +11,7 @@ const Navbar = ( { toggleSidebar } ) =>
   return (
     <header className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="hidden md:block text-teal-600" href="#">
+        <a className="hidden lg:block text-teal-600" href="#">
           <span className="sr-only">Home</span>
           <img src={JetSupportLogo} alt="" className="w-[56px] h-[49px]" />
         </a>
@@ -38,10 +38,10 @@ const Navbar = ( { toggleSidebar } ) =>
 
         <div className="flex flex-1 items-center justify-end md:justify-between">
           <nav aria-label="Global" className="hidden md:flex items-center">
-            <div className=" w-12 h-12 rounded-full border">
+            <div className="hidden lg:block w-12 h-12 rounded-full border">
               <img src={avatar} alt="" className="object-cover h-full w-full" />
             </div>
-            <div className="text-center sm:text-left ml-1">
+            <div className="hidden lg:block text-center sm:text-left ml-1">
               <h1 className="  dark:text-white sm:text-2xl font-inter">
                 Good Morning,{" "}
                 <span className=" text-[#010E0E] dark:text-white font-bold ">Quine</span> 👋

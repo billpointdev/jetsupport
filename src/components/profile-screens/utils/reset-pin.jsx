@@ -3,10 +3,14 @@ import PropTypes from "prop-types";
 
 const correctOTP = "1234";
 
-function OtpInputWithValidation({ numberOfDigits }) {
+function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
+
+  useEffect(() => {
+    handleOtp(otp.join(""));
+  }, [otp, handleOtp]);
 
   function handleChange(value, index) {
     if (!isNaN(value)) {
@@ -58,6 +62,7 @@ function OtpInputWithValidation({ numberOfDigits }) {
       >
         {otp.map((digit, index) => (
           <input
+            type="password"
             key={index}
             value={digit} // Set value to digit
             maxLength={1}
@@ -78,6 +83,7 @@ function OtpInputWithValidation({ numberOfDigits }) {
 
 OtpInputWithValidation.propTypes = {
   numberOfDigits: PropTypes.number.isRequired,
+  handleOtp: PropTypes.func.isRequired,
 };
 
 export default OtpInputWithValidation;

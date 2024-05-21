@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import  { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Input from "../reusables/customInput";
 import AuthHeader from './shared/AuthHeader';
@@ -82,12 +82,14 @@ const OtpPage = () => {
               key={index}
               id={`otp-input-${index}`}
               type="text"
-              placeholder="  _"
+              placeholder="-"
               bgColor="bg-lightGray"
-              value={value}
+              value={ value }
+              className="pl-[25px]"
               onChange={(e) => handleOtpChange(e.target.value, index)}
               autoFocus={index === 0}
             />
+            
           ))}
         </div>
       </div>
