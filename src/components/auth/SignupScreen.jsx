@@ -22,9 +22,9 @@ const SignupScreen = () => {
 
   useEffect(() => {
     // redirect user to login page if registration was successful
-    if (success) navigate('/profile')
+    if (success) navigate('/otp')
     // redirect authenticated user to profile screen
-    if (userInfo) navigate('/profile')
+    if (userInfo) navigate('/otp')
   }, [navigate, userInfo, success])
 
   const submitForm = (data) => {
@@ -34,7 +34,7 @@ const SignupScreen = () => {
       return
     }
     // transform email string to lowercase to avoid case sensitivity issues in login
-    data.email = data.email.toLowerCase()
+    // data.email = data.email.toLowerCase()
     dispatch(registerUser(data))
   }
 

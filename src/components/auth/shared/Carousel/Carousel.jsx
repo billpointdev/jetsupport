@@ -16,8 +16,8 @@ const Carousel = ({ items }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-    }, 10000); // Change slide every 3 seconds
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
+    }, 10000); 
 
     return () => {
       clearInterval(interval);

@@ -9,7 +9,6 @@ import AuthLayout from './shared/AuthLayout'
 // import Error from '../reusables/Error'
 // import Spinner from '../reusables/Spinner'
 
-
 const LoginScreen = () => {
   const { loading, userInfo, error } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
@@ -21,7 +20,7 @@ const LoginScreen = () => {
   // redirect authenticated user to profile screen
   useEffect(() => {
     if (userInfo) {
-      navigate('/profile')
+      navigate('/security-pin', { state: { fromLogin: true } });
     }
   }, [navigate, userInfo])
 
@@ -31,25 +30,45 @@ const LoginScreen = () => {
 
   return (
     <AuthLayout>
-      <form onSubmit={handleSubmit(submitForm)}>
-        <Input
-          label="Email Address"
-          id="email"
-          type="email"
-          placeholder="Enter your email address"
-        />
+    <div className='mt-20'>
+      <div>
+        <h4 className=' font-semibold text-[24px] font-helvetica'>Welcome back 👋</h4>
+        <p>Log in to your account to continue</p>
+      </div>
+      <form onSubmit={handleSubmit(submitForm)} className=' py-14 flex flex-col justify-between gap-[20px]'>
+        <div className='flex flex-col gap-2'>
+          <Input
+            label="Email Address"
+            id="email"
+            type="email"
+            placeholder="Enter your email address"
+            bgColor={'bg-[#FAFAFA]'}
+          />
+      
+          <Input
+            label="Account Password"
+            id="password"
+            type="password"
+            placeholder="Enter your password..."
+            bgColor={'bg-[#FAFAFA]'}
+          />
+          <small>Forget Password? </small>
+        </div>
 
-        <Input
-          label="Account Password"
-          id="password"
-          type="tel"
-          placeholder="Enter your password"
-        />
-
-        <DownloadButton buttonText='Continue' bgColor={'bg-primary'} textColor={'text-white'} />
-
+        <div className='mt-40'>
+          <DownloadButton
+            buttonText='Continue'
+            padding={'px-20'}
+            width={'w-[100%]'}
+            bgColor={'bg-primary'}
+            textColor={'text-white'}
+          />
+          <small className='text-center block mt-10'>New to Jetpay? Create an account</small>
+        </div>
       </form>
-    </AuthLayout>
+    </div>
+
+  </AuthLayout>
   )
 }
 export default LoginScreen

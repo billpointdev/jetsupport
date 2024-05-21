@@ -1,10 +1,8 @@
 .carousel {
   position: relative;
   overflow: hidden;
-  /* width: 50%;  */
   max-width: 400px; 
   margin: auto; 
-  /* height: fit-content; */
 }
 
 .carousel-content {
@@ -17,6 +15,12 @@
   min-width: 100%;
   box-sizing: border-box;
   text-align: center;
+}
+
+.carousel-item img {
+  max-width: 300px !important;
+  height: auto;
+  margin: auto;
 }
 
 .carousel-item-image {
@@ -39,8 +43,8 @@
 }
 
 .indicator {
-  width: 30px;
-  height: 10px;
+  width: 22px;
+  height: 7px;
   margin: 0 5px;
   border-radius: 98px;
   background-color: #000000;

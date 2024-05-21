@@ -25,7 +25,7 @@ const AvatarSelector = ({ onSelect }) => {
     
       return (
         <div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-2">
             {Avatarsicons.map((avatar, index) => (
               <div
                 key={index}

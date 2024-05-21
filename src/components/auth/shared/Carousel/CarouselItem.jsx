@@ -7,8 +7,8 @@ const CarouselItem = ({ item, isActive }) => {
     <div className={`carousel-item ${isActive ? 'active' : ''}`}>
       <img src={item.image} alt={item.title} />
       <div className="carousel-item-content">
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
+        <h3 className='font-bold text-[20px]'>{item.title}</h3>
+        <p className='font-[400] font-inter'>{item.description}</p>
       </div>
     </div>
   );
