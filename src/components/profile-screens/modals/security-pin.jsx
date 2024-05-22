@@ -37,7 +37,7 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
 
   return (
     <Modal handleClick={handleClick}>
-      <div className="bg-white w-full h-[400px] flex text-center flex-col justify-between mt-14 rounded-[24px] p-2 py-3 ">
+      <div className="bg-white w-[348px] md:w-96 h-[400px] flex text-center flex-col justify-between mt-14 rounded-[24px] p-2 py-3 ">
         <div>
           <p className="font-inter font-semibold text-lg">
             Reset your security pin
@@ -63,7 +63,7 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
           type="submit"
           title="Continue"
           className=""
-          disabled={ !otpFilled }
+          disabled={!otpFilled}
           onClick={() => console.log("button clicked")}
         />
       </div>

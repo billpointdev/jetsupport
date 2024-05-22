@@ -115,7 +115,7 @@ const MyAccount = () => {
             value={data.phone}
             onChange={(e) => updateFields({ phone: e.target.value })}
           />
-          <div className="mt-36 w-full">
+          <div className=" mt-16 md:mt-36 w-full">
             <button
               type="submit"
               className="block w-full rounded-[16px] bg-primary px-6 py-4 font-medium text-white transform scale-95 hover:scale-100 transition-transform duration-300"

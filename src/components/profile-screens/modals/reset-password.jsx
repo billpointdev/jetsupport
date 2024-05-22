@@ -34,7 +34,7 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            className="w-[90%] bg-transparent px-4 py-2 h-full outline-none border-none"
+            className="w-[90%] bg-transparent px-4 text-sm py-2 h-full outline-none border-none"
           />
           {isPasswordVisible ? (
             <FaRegEye
@@ -76,7 +76,7 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
   };
   return (
     <Modal handleClick={handleClick}>
-      <div className="bg-white w-full text-center h-[420px] flex flex-col  mt-14 rounded-[24px] p-4 py-3 ">
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[420px] flex flex-col  mt-14 rounded-[24px] p-4 py-3 ">
         <div>
           <p className="font-inter font-semibold text-lg">
             Reset your security pin
@@ -112,9 +112,8 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
               updateFields({ confirmNewPassword: e.target.value })
             }
           />
-        <Button type="submit" title="Continue" className="mt-3" />
+          <Button type="submit" title="Continue" className="mt-3" />
         </form>
-
       </div>
     </Modal>
   );
