@@ -34,7 +34,7 @@ const OtpModal = ( { setModal, handleContinue } ) =>
   };
   return (
     <Modal handleClick={handleClick}>
-      <div className="bg-white w-full h-[400px] text-center flex flex-col justify-between mt-14 rounded-[24px] p-2 py-3 ">
+      <div className="bg-white md:w-96 h-[400px] text-center flex flex-col justify-between mt-14 rounded-[24px] p-2 py-3 ">
         <div>
           <p className="font-inter font-semibold text-lg">
             OTP code verification
