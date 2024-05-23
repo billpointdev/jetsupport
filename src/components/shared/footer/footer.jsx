@@ -4,8 +4,6 @@ import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
 import DownloadButton from "../../reusables/DownloadButton";
 import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
-import ChatIcon from '../../../chat/ChatIcon'
-import ChatComponent from '../../../chat/ChatComponent'
 
 
 
@@ -83,8 +81,6 @@ function Footer() {
       </footer>
       <RightReserved />
       <div>
-      <ChatIcon onClick={handleChatIconClick} />
-      <ChatComponent isVisible={isChatVisible} onClose={handleChatClose} />
     </div>
     </div>
   );
