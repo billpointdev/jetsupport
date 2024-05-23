@@ -4,10 +4,11 @@ import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
 import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ( { toggleSidebar } ) =>
 {
-  
+  const navigate = useNavigate()
   return (
     <header className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b">
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
@@ -55,12 +56,12 @@ const Navbar = ( { toggleSidebar } ) =>
 
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <a
+              <div
                 className="flex rounded-full gap-2  bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary/75"
-                href="#"
+                onClick={() => navigate("/chat")}
               >
                 <NewChatIcon /> New Chat{" "}
-              </a>
+              </div>
 
               <a
                 className="hidden rounded-full bg-gray-100 px-2.5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-primary/75 sm:block"
