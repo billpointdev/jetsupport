@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
-const Input = ({ label, id, type, placeholder, bgColor, value, onChange, width }) => {
+const Input = ({ label, id, type, placeholder, bgColor,className, value, onChange, width }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const inputType = type === "password" ? (isPasswordVisible ? "text" : "password") : type;
@@ -16,7 +16,7 @@ const Input = ({ label, id, type, placeholder, bgColor, value, onChange, width }
       <label htmlFor={id} className="block mb-2">{label}</label>
       <div className="relative">
         <input
-          className={`${bgColor} ${width} w-full rounded-[16px] border-gray-200 p-[20px] text-sm`}
+          className={`${bgColor} ${className} ${width} w-full rounded-[16px] border-gray-200 p-[20px] text-sm`}
           placeholder={placeholder}
           type={inputType}
           id={id}
@@ -46,6 +46,7 @@ Input.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 export default Input;

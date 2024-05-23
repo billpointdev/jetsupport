@@ -14,7 +14,7 @@ const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
 
   return (
     <Modal handleClick={closeModal}>
-      <div className="bg-white w-full h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
         <div className="flex items-center justify-center">
           <div className="flex justify-center items-center bg-[#f5f5f5] h-16 w-16 rounded-full p-0.5">
             <CautionIcon />
@@ -32,13 +32,13 @@ const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
             <button
               type="button"
               onClick={() => setConfirmDeleteModal(false)}
-              className={`block w-full rounded-[16px]  bg-[#F5F5F5] px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
+              className={`block w-full rounded-[16px] text-sm md:text-md lg:text-lg bg-[#F5F5F5] px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
             >
               Close
             </button>
             <Button
               onClick={handleAuthorization}
-              className="h-14"
+              className="h-14 text-sm md:text-md lg:text-lg"
               title="Delete"
               type="button"
             />

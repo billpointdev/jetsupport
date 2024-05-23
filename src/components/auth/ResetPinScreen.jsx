@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import  { useState } from 'react';
 import Input from '../reusables/customInput';
 import DownloadButton from '../reusables/DownloadButton';
 import AuthHeader from './shared/AuthHeader';
@@ -13,18 +12,34 @@ const ResetPinScreen = () => {
       const handleSubmit = (e) => {
             e.preventDefault();
             setModalContent(
-                  <div className='text-center place-items-center bg-white w-full h-full flex flex-col gap-8  mt-14 rounded-[24px] p-4 py-10 '>
-                        <TickCircle />
-                        <h4 className='font-semibold text-[24px] font-helvetica'>Password Reset Successfully</h4>
-                        <p>You have requested to reset your password. <br /> Click Continue to login to your account.</p>
-                        <DownloadButton
-                              buttonText='Continue'
-                              padding={'px-20'}
-                              width={'w-[100%]'}
-                              bgColor={'bg-primary'}
-                              textColor={'text-white'}
-                        />
-                  </div>
+              <div className="text-center place-items-center bg-white w-full h-full flex flex-col gap-8  mt-14 rounded-[24px] p-4 pt-10 ">
+                <TickCircle />
+                {/* <h4 className="font-semibold text-[24px] font-helvetica">
+                  Password Reset Successfully
+                </h4>
+                <p>
+                  You have requested to reset your password. <br /> Click
+                  Continue to login to your account.
+                </p> */}
+                <div>
+                  <p className="font-inter font-semibold text-lg">
+                    Password Reset Successfully
+                  </p>
+                  <p className="text-[#828282] text-md font-inter leading-5">
+                    You have requested to reset your password. <br /> Click
+                    Continue to login to your account.
+                  </p>
+                </div>
+                <div className='mt-8 w-full'>
+                  <DownloadButton
+                    buttonText="Continue"
+                    padding={"px-20"}
+                    width={"w-[100%]"}
+                    bgColor={"bg-primary"}
+                    textColor={"text-white"}
+                  />
+                </div>
+              </div>
             );
             setIsModalOpen(true); // Open the modal on form submit
       };

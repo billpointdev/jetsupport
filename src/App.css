@@ -54,3 +54,55 @@ body {
   -webkit-text-security: disc;
    caret-color: #FAFAFA;
 } */
+
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.2) 80%, rgba(0, 0, 0, 0.1) 100%);
+  background-size: 200% 100%;
+}
+
+
+.str-chat{
+  height: 100vh;
+  overflow-y: auto;
+  border: none;
+}
+
+.str-chat__channel{
+  display: flex;
+  height: 100vh;
+}
+
+.str-chat__channel-list {
+  overflow: scroll;
+
+}
+
+#children.open{
+  display: none;
+}
+
+
+
+#chatDisplay.open{
+  display: none;
+  height: 100vh;
+  border: 1px solid;
+}
+
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}

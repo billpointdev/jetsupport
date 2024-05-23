@@ -1,12 +1,16 @@
 import { useRef, useEffect, useState } from "react";
 import Proptypes from "prop-types";
 
-const correctOTP = "12345";
+const correctOTP = "123456";
 
-function OtpInputWithValidation({ numberOfDigits }) {
+function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
+
+  useEffect(() => {
+    handleOtp(otp.join(""));
+  }, [otp, handleOtp]);
 
   function handleChange(value, index) {
     if (!isNaN(value)) {
@@ -77,6 +81,7 @@ function OtpInputWithValidation({ numberOfDigits }) {
 
 OtpInputWithValidation.propTypes = {
   numberOfDigits: Proptypes.number.isRequired,
+  handleOtp: Proptypes.func.isRequired,
 };
 
 export default OtpInputWithValidation;
