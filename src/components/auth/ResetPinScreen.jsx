@@ -14,13 +14,6 @@ const ResetPinScreen = () => {
             setModalContent(
               <div className="text-center place-items-center bg-white w-full h-full flex flex-col gap-8  mt-14 rounded-[24px] p-4 pt-10 ">
                 <TickCircle />
-                {/* <h4 className="font-semibold text-[24px] font-helvetica">
-                  Password Reset Successfully
-                </h4>
-                <p>
-                  You have requested to reset your password. <br /> Click
-                  Continue to login to your account.
-                </p> */}
                 <div>
                   <p className="font-inter font-semibold text-lg">
                     Password Reset Successfully
@@ -41,7 +34,7 @@ const ResetPinScreen = () => {
                 </div>
               </div>
             );
-            setIsModalOpen(true); // Open the modal on form submit
+            setIsModalOpen(true); 
       };
 
       const handleCloseModal = () => {
