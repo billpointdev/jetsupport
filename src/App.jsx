@@ -13,6 +13,7 @@ import SecurityPin from "./components/auth/SecurityPin";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPinScreen from "./components/auth/ResetPinScreen";
 import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
+import JetChat from "./pages/chat/index.jsx";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
         <Route exact path="/set-avatar" element={<MultiStep />} />
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route exact path="/reset-password" element={<ResetPinScreen />} />
+
+        {/* Chat */}
+        <Route exact path="/chat" element={<JetChat />} />
 
         {/* Profile */}
         <Route exact path="/profile" element={<MyAccount />} />
