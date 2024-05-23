@@ -1,10 +1,26 @@
+import { useState } from 'react';
 import JetSupportLogo from "../../../utils/JetSupportLogo";
 import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
 import DownloadButton from "../../reusables/DownloadButton";
 import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
+import ChatIcon from '../../../chat/ChatIcon'
+import ChatComponent from '../../../chat/ChatComponent'
+
+
 
 function Footer() {
+
+  const [isChatVisible, setIsChatVisible] = useState(false);
+
+  const handleChatIconClick = () => {
+    setIsChatVisible(true);
+  };
+
+  const handleChatClose = () => {
+    setIsChatVisible(false);
+  };
+
   const links = [
     {
       name: "About us",
@@ -66,6 +82,10 @@ function Footer() {
         </div>
       </footer>
       <RightReserved />
+      <div>
+      <ChatIcon onClick={handleChatIconClick} />
+      <ChatComponent isVisible={isChatVisible} onClose={handleChatClose} />
+    </div>
     </div>
   );
 }
