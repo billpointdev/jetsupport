@@ -6,57 +6,79 @@ import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
 import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
 import { useNavigate } from "react-router-dom";
-import Modal from '../components/profile-screens/reusables/modal';
+import Modal from "../components/profile-screens/reusables/modal";
 import InfoCircleIcon from "../utils/InfoCircle";
 import DownloadButton from "../components/reusables/DownloadButton";
-import NothingHereImg from '../assets/nothing-here-image-notification.gif'
-
+import NothingHereImg from "../assets/nothing-here-image-notification.gif";
+import Button from "../components/profile-screens/reusables/button";
 
 const Navbar = ({ toggleSidebar }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
   const toggleNotificationDropdown = () => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
-
   };
 
   const notifications = [
-    { id: 1, img: JetSupportLogo, message: "Time to trade! Don't miss out on the latest crypto prices on JetPay app. Start trading now" },
-    { id: 2, img: JetSupportLogo, message: "Crypto prices are on the rise! Open your JetPay app and make a move now to maximize your profit." },
-    { id: 3, img: JetSupportLogo, message: "JetPay app is here to offer you the best crypto trading experience. Buy and sell crypto with ease and get real-time notifications for market updates." },
-
+    {
+      id: 1,
+      img: JetSupportLogo,
+      message:
+        "Time to trade! Don't miss out on the latest crypto prices on JetPay app. Start trading now",
+    },
+    {
+      id: 2,
+      img: JetSupportLogo,
+      message:
+        "Crypto prices are on the rise! Open your JetPay app and make a move now to maximize your profit.",
+    },
+    {
+      id: 3,
+      img: JetSupportLogo,
+      message:
+        "JetPay app is here to offer you the best crypto trading experience. Buy and sell crypto with ease and get real-time notifications for market updates.",
+    },
   ];
 
   const openClearNotificationsModal = () => {
     setModalContent(
-      <div className="text-center place-items-center bg-white w-full h-full flex flex-col gap-2 mt-14 rounded-[24px] p-4 pt-10">
-        <InfoCircleIcon />
-        <h4 className="font-inter font-semibold text-lg my-1">
-          Clear All Notifications
-        </h4>
-        <p className="font-inter text-base max-w-[350px]">By clearing your account notifications you loose all your Jetpay notifications.</p>
-        <div className='mt-16 w-full flex justify-between gap-4'>
-          <DownloadButton
-            onClick={clearNotifications}
-            buttonText="Close"
-            padding={"px-20"}
-            width={"w-[100%]"}
-            bgColor={"bg-[#F5F5F5]"}
-            textColor={"text-[#424242]"}
-          />
 
-          <DownloadButton
-            onClick={clearNotifications}
-            buttonText="Clear Notifications"
-            padding={"px-20"}
-            width={"w-[100%]"}
-            bgColor={"bg-primary"}
-            textColor={"text-white"}
-          />
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
+        <div className="flex items-center justify-center">
+          <div className="flex justify-center items-center bg-[#f5f5f5] h-16 w-16 rounded-full p-0.5">
+            <InfoCircleIcon />
+          </div>
+        </div>
+        <div className="mt-7">
+          <p> Clear All Notifications</p>
+          <p className="text-[#757575]">
+            By clearing your account notifications you loose all your Jetsupport
+            notifications.
+          </p>
+        </div>
+        <div className="mt-8">
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={clearNotifications}
+              className={`block w-full rounded-[16px] text-sm md:text-md  bg-[#F5F5F5] px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              onClick={clearNotifications}
+              className={`block w-full rounded-[16px] text-white whitespace-nowrap text-md  bg-primary px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
+            >
+              Clear Notifications
+            </button>
+            
+          </div>
         </div>
       </div>
     );
@@ -109,7 +131,10 @@ const Navbar = ({ toggleSidebar }) => {
             <div className="hidden lg:block text-center sm:text-left ml-1">
               <h1 className="  dark:text-white sm:text-2xl font-inter">
                 Good Morning,{" "}
-                <span className=" text-[#010E0E] dark:text-white font-bold ">Quine</span> 👋
+                <span className=" text-[#010E0E] dark:text-white font-bold ">
+                  Quine
+                </span>{" "}
+                👋
               </h1>
 
               <p className=" text-xs text-[#616161] dark:text-white">
@@ -133,41 +158,59 @@ const Navbar = ({ toggleSidebar }) => {
                 >
                   <NotificationIcon />
                 </button>
-                {isNotificationDropdownOpen && (          
-                  <div className="absolute top-[60px] right-[-80px] mt-2 w-96 h-fit bg-white border rounded-3xl shadow-lg p-4">
-                    <h4 className="text-left text-[#171D33] font-inter font-bold text-base">Notifications</h4>
-                    <div className="p-4">
+                {isNotificationDropdownOpen && (
+                  <div className="absolute top-[60px] right-[-80px] mt-2 w-80 h-fit bg-white border rounded-2xl shadow-lg pt-4">
+                    <h4 className="text-left text-[#171D33] font-inter font-medium text-base ml-4">
+                      Notifications
+                    </h4>
+                    <div className="">
                       {notifications.length > 0 ? (
-                        notifications.map(notification => (
+                        notifications.map((notification) => (
                           <div
                             key={notification.id}
-                            className="flex items-center gap-2 p-2 hover:bg-gray-100"
+                            className="flex items-center gap-2  py-2 px-4 cursor-pointer hover:bg-gray-100"
                           >
-                            <img className=" w-16 h-16 rounded-full" src={notification.img} alt="" />
-                            <span className="text-sm">{notification.message}</span>
+                            <div className="w-10 h-10 border-2 overflow-hidden border-primary rounded-full">
+                              <img
+                                className="w-full h-full object-cover "
+                                src={notification.img}
+                                alt="notification-image"
+                              />
+                            </div>
+                            <span className="text-sm w-[220px]  line-clamp-2 ">
+                              {notification.message}
+                            </span>
                           </div>
                         ))
                       ) : (
                         <div className="text-center pb-10">
                           <div>
-                            <img src={NothingHereImg} alt="nothing here notification" />
+                            <img
+                              src={NothingHereImg}
+                              alt="nothing here notification"
+                            />
                           </div>
-                          <h4 className="font-inter font-semibold text-lg my-1">No Notifications yet</h4>
-                          <p  className="font-inter text-base max-w-[350px]">Looks like there's no recent activity to show here. </p>
+                          <h4 className="font-inter font-semibold text-lg my-1">
+                            No Notifications yet
+                          </h4>
+                          <p className="font-inter text-base max-w-[350px]">
+                            Looks like there&apos;s no recent activity to show
+                            here.{" "}
+                          </p>
                         </div>
-                      )}                     
+                      )}
                     </div>
                     {notifications.length > 0 && (
-                      <div className="p-2 border-t">
-                      <button
-                        className="w-full text-center text-sm font-medium text-primary hover:bg-gray-100"
-                        onClick={openClearNotificationsModal}
-                      >
-                        Clear Notifications
-                      </button>
-                    </div>
-                    )}                  
-                  </div>                  
+                      <div className="p-2">
+                        <button
+                          className="w-full text-center text-sm font-medium border border-primary py-2 rounded-full text-primary transition duration-300 ease-in-out hover:bg-primary hover:text-white transform hover:scale-95"
+                          onClick={openClearNotificationsModal}
+                        >
+                          Clear Notifications
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -175,9 +218,7 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
         </div>
         {isModalOpen && (
-          <Modal handleClick={handleCloseModal}>
-            {modalContent}
-          </Modal>
+          <Modal handleClick={handleCloseModal}>{modalContent}</Modal>
         )}
       </div>
     </header>

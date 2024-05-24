@@ -114,7 +114,7 @@ CustomChannelPreview.propTypes = {
   channel: Proptypes.object,
   setActiveChannel: Proptypes.func,
   activeChannel: Proptypes.object,
-  latestMessage: Proptypes.string,
+  latestMessage: Proptypes.object,
   displayTitle: Proptypes.string,
   displayImage: Proptypes.string,
   unread: Proptypes.number,
