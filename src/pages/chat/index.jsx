@@ -3,7 +3,6 @@ import {
   // useCreateChatClient,
   Chat,
   Channel,
-  ChannelHeader,
   MessageInput,
   MessageList,
   Thread,
@@ -14,7 +13,7 @@ import {
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
 
-import {  SearchIndex } from "emoji-mart";
+import { SearchIndex } from "emoji-mart";
 // import data from "@emoji-mart/data";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -22,10 +21,13 @@ import "stream-chat-react/dist/css/v2/index.css";
 import Navbar from "../../global/navbar";
 import { CustomChannelPreview } from "../../components/chat/custom-channel-preview";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
-import { USER1, USER2, USER3, framerSidebarPanel } from "../../utils";
+import { USER1, USER2, USER3, framerSidebarPanel, items } from "../../utils";
 import { CustomSearch } from "../../components/chat/custom-search-bar";
 import { CustomChannelList } from "../../components/chat/search/custom-channel-list";
 import { StreamChat } from "stream-chat";
+import { CustomChannelHeader } from "../../components/chat/channel-header";
+import ChatBody from "../../components/chat/chat-body";
+import { useLocation } from "react-router-dom";
 
 const apiKey = "65p4bnpn4rhd";
 // const userId = "hidden-shadow-2";
@@ -51,7 +53,28 @@ const JetChat = () => {
   const [chatClient, setChatClient] = useState();
   const [open, setOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [navCheck, setNavCheck] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [modal, setModal] = useState(null);
+
   const { setOpen: setDropdown } = useProviderContext();
+
+  const location = useLocation();
+  useEffect(() => {
+    if (modal) {
+      const modalIndex = items.findIndex((item) => item.title === modal);
+      if (modalIndex !== -1) {
+        setActiveIndex(modalIndex);
+      }
+    } else {
+      const pathIndex = items.findIndex(
+        (item) => item.href === location.pathname
+      );
+      if (pathIndex !== -1) {
+        setActiveIndex(pathIndex);
+      }
+    }
+  }, [location, modal]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,6 +94,45 @@ const JetChat = () => {
   //   userData: user,
   // });
   const ref = useRef(null);
+
+  useEffect(() => {
+    const navbar = document.querySelector("#navbar");
+
+    const checkClass = () => {
+      if (navbar) {
+        if (navbar.classList.contains("open")) {
+          setNavCheck(true);
+        } else {
+          setNavCheck(false);
+        }
+      }
+    };
+
+    checkClass(); // Initial check
+
+    const observer = new MutationObserver(checkClass);
+    if (navbar) {
+      observer.observe(navbar, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    const chatDisplay = document.querySelector("#channel");
+    if (chatDisplay) {
+      if (window.innerWidth <= 768) {
+        chatDisplay.classList.add("open");
+      } else {
+        chatDisplay.classList.remove("open");
+      }
+    }
+  });
 
   useEffect(() => {
     // if (!client) return;
@@ -95,11 +157,11 @@ const JetChat = () => {
 
     initChat();
 
-    return () => {
-      if (chatClient) chatClient.disconnectUser();
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [  ]);
+    // return () => {
+    //   if (chatClient) chatClient.disconnectUser();
+    // };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!chatClient) return <div>Setting up client & connection...</div>;
 
@@ -107,8 +169,6 @@ const JetChat = () => {
     setDropdown(false);
     setOpen((prev) => !prev);
   };
-
-
 
   const i18nInstance = new Streami18n({
     language: "en",
@@ -118,52 +178,57 @@ const JetChat = () => {
     },
   });
 
+  const handleItemClick = (title) => {
+    switch (title) {
+      case "New Chat":
+        setModal(title);
+        break;
+      default:
+        // Handle other cases here if needed
+        break;
+    }
+  };
+
+  const handleClick = (index, title) => {
+    setDropdown(false);
+    setActiveIndex(index);
+    setModal(null);
+    handleItemClick(title);
+  };
   return (
     <Chat client={chatClient} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
-      <div className="pt-[66px] flex w-full h-screen border border-purple-600 fixed top-0 left-0 ">
-        {windowWidth >= 768 ? (
-          <motion.div
-            {...framerSidebarPanel}
-            className={`flex flex-col w-full  overflow-y-auto   max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
-            ref={ref}
-            aria-label="Sidebar"
-          >
-            <ChannelSearch SearchBar={() => <CustomSearch />} />
-            <ChannelList
-              List={CustomChannelList}
-              sendChannelsToList
-              Preview={CustomChannelPreview}
-              showChannelSearch={false}
-              additionalChannelSearchProps={{ searchForChannels: true }}
-            />
-          </motion.div>
-        ) : (
+      <div className="lg:pt-[66px] flex w-full h-screen  fixed top-0 left-0 ">
+        {windowWidth <= 768 && (
           <AnimatePresence>
             {open && (
-              <motion.div
-                key="sidebar"
-                {...framerSidebarPanel}
-                className={`fixed left-0 top-0 flex z-10 flex-col w-full justify-between overflow-y-auto h-screen pt-[66px] max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
-                ref={ref}
-                aria-label="Sidebar"
-              >
-                <ChannelSearch SearchBar={() => <CustomSearch />} />
-                <ChannelList
-                  List={CustomChannelList}
-                  sendChannelsToList
-                  Preview={CustomChannelPreview}
-                  showChannelSearch={false}
-                  additionalChannelSearchProps={{ searchForChannels: true }}
-                />
-              </motion.div>
+              <ChatBody activeIndex={activeIndex} setOpen={setOpen} handleClick={handleClick} />
             )}
           </AnimatePresence>
         )}
-        <div className="flex-1">
+
+        <motion.div
+          {...framerSidebarPanel}
+          className={`flex flex-col w-full  overflow-y-auto ${
+            navCheck ? "" : "pt-[66px] lg:pt-0"
+          }  lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
+          ref={ref}
+          aria-label="Sidebar"
+          id="chatlist"
+        >
+          <ChannelSearch SearchBar={() => <CustomSearch />} />
+          <ChannelList
+            List={CustomChannelList}
+            sendChannelsToList
+            Preview={CustomChannelPreview}
+            showChannelSearch={false}
+            additionalChannelSearchProps={{ searchForChannels: true }}
+          />
+        </motion.div>
+        <div className="lg:flex-1 w-full" id="channel">
           <Channel EmojiPicker={EmojiPicker} emojiSearchIndex={SearchIndex}>
             <Window>
-              <ChannelHeader />
+              <CustomChannelHeader />
               <MessageList />
               <MessageInput audioRecordingEnabled />
             </Window>
@@ -171,6 +236,7 @@ const JetChat = () => {
           </Channel>
         </div>
       </div>
+      {modal === 'New chat' && <p>hi there am a modal</p>}
     </Chat>
   );
 };
