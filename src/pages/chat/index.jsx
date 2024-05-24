@@ -10,6 +10,7 @@ import {
   Window,
   ChannelList,
   ChannelSearch,
+  Streami18n,
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
 
@@ -107,8 +108,18 @@ const JetChat = () => {
     setOpen((prev) => !prev);
   };
 
+
+
+  const i18nInstance = new Streami18n({
+    language: "en",
+    translationsForLanguage: {
+      "Connection failure, reconnecting now...":
+        "Alert, connection issue happening",
+    },
+  });
+
   return (
-    <Chat client={chatClient}>
+    <Chat client={chatClient} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
       <div className="pt-[66px] flex w-full h-screen border border-purple-600 fixed top-0 left-0 ">
         {windowWidth >= 768 ? (
@@ -154,7 +165,7 @@ const JetChat = () => {
             <Window>
               <ChannelHeader />
               <MessageList />
-              <MessageInput />
+              <MessageInput audioRecordingEnabled />
             </Window>
             <Thread />
           </Channel>

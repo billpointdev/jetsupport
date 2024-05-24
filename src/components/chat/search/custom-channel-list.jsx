@@ -55,7 +55,7 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-24" id="children">
+    <div className="h-full  pb-24" id="children">
       {loadedChannels && (
         <div style={{ margin: " 0 10px 8px" }} className="text-[#858688] ">
           <p className="text-sm text-[#616161] mt-5 ml-1">Conversations</p>
