@@ -1,6 +1,5 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../utils";
-import useProviderContext from "../profile-screens/hooks/useProvideContext";
 import { useTranslationContext } from "stream-chat-react";
 import { useMemo } from "react";
 
@@ -14,8 +13,6 @@ export const CustomChannelPreview = (props) => {
     displayImage,
     unread,
   } = props;
-  const { isSearching } = useProviderContext();
-  // console.log("props", props)
 
   const isSelected = channel.id === activeChannel?.id;
   const latestMessageAt = channel.state.last_message_at;
@@ -32,7 +29,6 @@ export const CustomChannelPreview = (props) => {
     return formatter.format(latestMessageAt);
   }, [latestMessageAt, userLanguage]);
 
-  console.log("isSearching", isSearching);
   const channelColorsMap = {};
 
   function getRandomColor() {
@@ -56,10 +52,24 @@ export const CustomChannelPreview = (props) => {
     : "Unnamed Channel";
   const channelColor = getChannelColor(channelName);
 
+  const handleClick = () => {
+    setActiveChannel?.(channel);
+    const chatDisplay = document.querySelector("#channel");
+    const chatList = document.querySelector("#chatlist");
+
+    const navbar = document.querySelector("#navbar");
+    //  if (chatDisplay) {
+    if (window.innerWidth <= 768) {
+      chatDisplay.classList.remove("open");
+      chatList.classList.add("open");
+      navbar.classList.add("open");
+    }
+  };
+
   return (
     <>
       <div
-        onClick={() => setActiveChannel?.(channel)}
+        onClick={handleClick}
         style={{ margin: "", display: "flex", gap: "5px" }}
         className={`items-center mt-4 mx-1 px-2 rounded-md py-2 overflow-y-auto bg-[#fff] cursor-pointer ${
           isSelected ? "border-2 border-primary" : " hover:bg-primarylight "

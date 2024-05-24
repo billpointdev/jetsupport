@@ -9,7 +9,7 @@ import { CiSearch } from "react-icons/ci";
 import useProviderContext from "../profile-screens/hooks/useProvideContext";
 
 export const CustomSearch = () => {
-  const { client } = useChatContext();
+  const { client , channel } = useChatContext();
   const [query, setQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const [allResults, setAllResults] = useState(null);
@@ -19,7 +19,7 @@ export const CustomSearch = () => {
   const [pending, setPending] = useState(false);
   const { setIsSearching } = useProviderContext();
 
-  console.log("client", client.user);
+  console.log("client", channel);
   useEffect(() => {
     const childrenElement = document.querySelector("#children");
     const chatDisplay = document.querySelector("#chatDisplay");

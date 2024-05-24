@@ -1,5 +1,5 @@
 import { useState } from "react";
-import JetSupportLogo from "../assets/jetsupportcropped.png";
+import JetSupportLogo from "../assets/jetsupportcropped.jpg";
 import avatar from "../assets/frameimage.png";
 import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
@@ -8,9 +8,7 @@ import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/profile-screens/reusables/modal";
 import InfoCircleIcon from "../utils/InfoCircle";
-import DownloadButton from "../components/reusables/DownloadButton";
 import NothingHereImg from "../assets/nothing-here-image-notification.gif";
-import Button from "../components/profile-screens/reusables/button";
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
@@ -48,7 +46,7 @@ const Navbar = ({ toggleSidebar }) => {
   const openClearNotificationsModal = () => {
     setModalContent(
 
-      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 " >
         <div className="flex items-center justify-center">
           <div className="flex justify-center items-center bg-[#f5f5f5] h-16 w-16 rounded-full p-0.5">
             <InfoCircleIcon />
@@ -96,11 +94,14 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   return (
-    <header className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b">
+    <header
+      className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b"
+      id="navbar"
+    >
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         <a className="hidden lg:block text-teal-600" href="#">
           <span className="sr-only">Home</span>
-          <img src={JetSupportLogo} alt="" className="w-[56px] h-[49px]" />
+          <img src={JetSupportLogo} alt="" className="w-[52px] h-[49px]" />
         </a>
         <button
           className="block rounded  p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"
@@ -153,7 +154,7 @@ const Navbar = ({ toggleSidebar }) => {
               </div>
               <div className="relative">
                 <button
-                  className="hidden rounded-full bg-gray-100 px-2.5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-primary/75  sm:block"
+                  className="hidden rounded-full bg-gray-100 px-2.5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-gray-200  sm:block"
                   onClick={toggleNotificationDropdown}
                 >
                   <NotificationIcon />
@@ -164,7 +165,7 @@ const Navbar = ({ toggleSidebar }) => {
                       Notifications
                     </h4>
                     <div className="">
-                      {notifications.length > 0 ? (
+                      {!notifications.length > 0 ? (
                         notifications.map((notification) => (
                           <div
                             key={notification.id}

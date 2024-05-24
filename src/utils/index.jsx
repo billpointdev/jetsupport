@@ -2,6 +2,12 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaDribbble } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa6";
+import { MdOutlineLibraryAdd } from "react-icons/md";
+import { GoBellFill } from "react-icons/go";
+import { TbSettings } from "react-icons/tb";
+
+import { TbLayoutDashboardFilled } from "react-icons/tb";
+
 
 export const socialLinks = [
   {
@@ -22,24 +28,23 @@ export const socialLinks = [
   },
 ];
 
-
 export const USER1 = {
-  name: 'Nathan-Trust',
-  avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-  id:"nathan1323jfsdlj"
-}
+  name: "Nathan-Trust",
+  avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+  id: "nathan1323jfsdlj",
+};
 
 export const USER2 = {
-  name: 'Dee vyne',
-  avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-  id:"jkjkafj12301j"
-}
+  name: "Dee vyne",
+  avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+  id: "jkjkafj12301j",
+};
 
 export const USER3 = {
-  name: 'Crystal',
-  avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
-  id:"nak23487j"
-}
+  name: "Crystal",
+  avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+  id: "nak23487j",
+};
 
 export const framerSidebarBackground = {
   initial: { opacity: 0 },
@@ -76,7 +81,6 @@ export const framerIcon = {
   },
 };
 
-
 export function getInitials(name) {
   const words = name.split(" ");
   const initials = words.map((word) => word.charAt(0).toUpperCase());
@@ -85,18 +89,25 @@ export function getInitials(name) {
 
 const channelColorsMap = {};
 
-  export function getRandomColor() {
-    const colors = ["#CCDFF7", "#FCD3B3"];
-    const randomIndex = Math.floor(Math.random() * colors.length);
-    return colors[randomIndex];
-  }
+export function getRandomColor() {
+  const colors = ["#CCDFF7", "#FCD3B3"];
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+}
 
-  export function getChannelColor(channelName) {
-    if (channelColorsMap[channelName]) {
-      return channelColorsMap[channelName];
-    } else {
-      const color = getRandomColor();
-      channelColorsMap[channelName] = color;
-      return color;
-    }
+export function getChannelColor(channelName) {
+  if (channelColorsMap[channelName]) {
+    return channelColorsMap[channelName];
+  } else {
+    const color = getRandomColor();
+    channelColorsMap[channelName] = color;
+    return color;
   }
+}
+
+export const items = [
+  { title: "Chats", Icon: TbLayoutDashboardFilled, href: "/chat" },
+  { title: "Notifications", Icon: GoBellFill, href: "/notifications" },
+  { title: "New Chat", Icon: MdOutlineLibraryAdd },
+  { title: "Settings", Icon: TbSettings },
+];

@@ -1,4 +1,4 @@
-import JetSupportImage from "../assets/jetsupportcropped.png"
+import JetSupportImage from "../assets/jetsupportcropped.jpg"
 
 const JetSupportLogo = () => {
   return (

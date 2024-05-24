@@ -1,11 +1,9 @@
-import JetSupportLogo from "../../../assets/jetsupportcropped.png"
+import JetSupportLogo from "../../../assets/jetsupportcropped.jpg"
 
 function AuthHeader() {
   return (
     <div className="">
-      <div className="w-12 h-12">
-        <img src={JetSupportLogo} alt="logo" />
-      </div>
+        <img src={JetSupportLogo} alt="logo" className="w-12 h-15" />
     </div>
   );
 }

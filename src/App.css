@@ -55,7 +55,6 @@ body {
    caret-color: #FAFAFA;
 } */
 
-
 @keyframes shimmer {
   0% {
     background-position: 200% 0;
@@ -67,39 +66,41 @@ body {
 
 .shimmer {
   animation: shimmer 1.5s infinite linear;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.2) 80%, rgba(0, 0, 0, 0.1) 100%);
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.2) 20%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
   background-size: 200% 100%;
 }
 
-
-.str-chat{
+.str-chat {
   height: 100vh;
   overflow-y: auto;
   border: none;
 }
 
-.str-chat__channel{
+.str-chat__channel {
   display: flex;
   height: 100vh;
 }
 
 .str-chat__channel-list {
   overflow: scroll;
-
 }
 
-#children.open{
+#children.open {
   display: none;
 }
 
-
-
-#chatDisplay.open{
+#chatDisplay.open {
   display: none;
   height: 100vh;
   border: 1px solid;
 }
-
 
 ::-webkit-scrollbar {
   width: 0;
@@ -107,7 +108,18 @@ body {
   background-color: transparent;
 }
 
-
 .str-chat__message-attachment__voice-recording-widget__title {
+  display: none;
+}
+
+#channel.open {
+  display: none;
+}
+
+#chatlist.open {
+  display: none;
+}
+
+#navbar.open {
   display: none;
 }
