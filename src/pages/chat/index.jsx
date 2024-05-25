@@ -28,6 +28,7 @@ import { StreamChat } from "stream-chat";
 import { CustomChannelHeader } from "../../components/chat/channel-header";
 import ChatBody from "../../components/chat/chat-body";
 import { useLocation } from "react-router-dom";
+import { CustomDateSeparator } from "../../components/chat/date-separator";
 
 const apiKey = "65p4bnpn4rhd";
 // const userId = "hidden-shadow-2";
@@ -56,9 +57,9 @@ const JetChat = () => {
   const [navCheck, setNavCheck] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
-
+  
   const { setOpen: setDropdown } = useProviderContext();
-
+  
   const location = useLocation();
   useEffect(() => {
     if (modal) {
@@ -152,14 +153,14 @@ const JetChat = () => {
       channel.addMembers([user.id]);
       setChannel(channel);
 
-      setChatClient(client);
+      setChatClient( client );
     }
 
     initChat();
 
-    // return () => {
-    //   if (chatClient) chatClient.disconnectUser();
-    // };
+    return () => {
+      if (chatClient) chatClient.disconnectUser();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -202,7 +203,12 @@ const JetChat = () => {
         {windowWidth <= 768 && (
           <AnimatePresence>
             {open && (
-              <ChatBody activeIndex={activeIndex} setOpen={setOpen} handleClick={handleClick} />
+              <ChatBody
+                activeIndex={activeIndex}
+                setOpen={setOpen}
+                handleClick={handleClick}
+                open={open}
+              />
             )}
           </AnimatePresence>
         )}
@@ -226,7 +232,11 @@ const JetChat = () => {
           />
         </motion.div>
         <div className="lg:flex-1 w-full" id="channel">
-          <Channel EmojiPicker={EmojiPicker} emojiSearchIndex={SearchIndex}>
+          <Channel
+            // DateSeparator={CustomDateSeparator}
+            EmojiPicker={EmojiPicker}
+            emojiSearchIndex={SearchIndex}
+          >
             <Window>
               <CustomChannelHeader />
               <MessageList />
@@ -236,7 +246,7 @@ const JetChat = () => {
           </Channel>
         </div>
       </div>
-      {modal === 'New chat' && <p>hi there am a modal</p>}
+      {modal === "New chat" && <p>hi there am a modal</p>}
     </Chat>
   );
 };

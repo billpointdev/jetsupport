@@ -1,6 +1,8 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../../utils";
+import emptyChannelImg from "../../../assets/image.gif";
 export const CustomChannelList = ({ loadedChannels, children, loading }) => {
+
   if (loading) {
     const items = Array.from({ length: 10 }, (_, index) => (
       <div
@@ -48,14 +50,45 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
 
   if (loadedChannels?.length === 0) {
     return (
-      <div className="py-[120px] px-5 text-center">
-        🤷 You have no channels... yet
+      <div className="justify-center h-full mb-24 flex flex-col items-center px-5 text-center">
+        {/* 🤷 You have no channels... yet */}
+        <img
+          src={emptyChannelImg}
+          alt="no conversation"
+          className="w-48 h-56"
+        />
+        <p className="text-xl font-semibold mt-1 mb-2">No messages, yet.</p>
+        <p>No messages in your chat, yet! Start chatting with our admin.</p>
+        <div className="mt-4">
+          <button
+            type="button"
+            className={`block w-full rounded-[16px]  bg-primary px-6 py-4 font-medium text-white transform  hover:scale-95 transition-transform duration-300`}
+          >
+            Start new Chat{" "}
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="h-full  pb-24" id="children">
+      {loadedChannels?.length === 0 &&
+      
+        <div>
+          <h1 className="  dark:text-white sm:text-2xl font-inter">
+            Good Morning,{" "}
+            <span className=" text-[#010E0E] dark:text-white font-bold ">
+              Quine
+            </span>{" "}
+            👋
+          </h1>
+
+          <p className=" text-xs text-[#616161] dark:text-white">
+            What would you live to buy or sell today?
+          </p>
+        </div>
+      }
       {loadedChannels && (
         <div style={{ margin: " 0 10px 8px" }} className="text-[#858688] ">
           <p className="text-sm text-[#616161] mt-5 ml-1">Conversations</p>

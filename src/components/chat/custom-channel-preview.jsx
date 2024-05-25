@@ -14,6 +14,7 @@ export const CustomChannelPreview = (props) => {
     unread,
   } = props;
 
+  console.log("props ==>" , props)
   const isSelected = channel.id === activeChannel?.id;
   const latestMessageAt = channel.state.last_message_at;
 
@@ -124,7 +125,7 @@ CustomChannelPreview.propTypes = {
   channel: Proptypes.object,
   setActiveChannel: Proptypes.func,
   activeChannel: Proptypes.object,
-  latestMessage: Proptypes.object,
+  latestMessage: Proptypes.string,
   displayTitle: Proptypes.string,
   displayImage: Proptypes.string,
   unread: Proptypes.number,
