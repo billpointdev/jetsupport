@@ -25,7 +25,7 @@ const LoginScreen = () => {
   }, [navigate, userInfo])
 
   const submitForm = (data) => {
-    dispatch(userLogin(data))
+    dispatch( userLogin( data ) )
   }
 
   return (

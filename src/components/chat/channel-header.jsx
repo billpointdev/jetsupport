@@ -32,7 +32,7 @@ export const CustomChannelHeader = ({ title }) => {
   };
 
   return (
-    <div className="str-chat__header-livestream lg:px-4 justify-between py-1 border- flex items-center">
+    <div className="str-chat__header-livestream px-2 py-2 lg:px-4 justify-between  border- flex items-center">
       <div className="flex items-center">
         <div
           onClick={handleClick}

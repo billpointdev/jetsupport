@@ -48,14 +48,16 @@ const OtpPage = () => {
   };
 
 
-  const handleLogin = () => {
-      setTimeout(() => {
-        if (isFromForgotPassword) {
-          navigate('/reset-password');
-        } else {
-          navigate('/security-pin');
-        }
-      }, 2000);
+  const handleLogin = () =>
+  {
+    
+      // setTimeout(() => {
+      //   if (isFromForgotPassword) {
+      //     navigate('/reset-password');
+      //   } else {
+      //     navigate('/security-pin');
+      //   }
+      // }, 2000);
     };
 
   return (
@@ -99,7 +101,7 @@ const OtpPage = () => {
         {timer > 0 ? (
           <p className='py-4'>You can resend code in <span className='text-[#0063F7]'>{timer}</span> s</p>
         ) : (
-          <p className='py-4'>Click the "Resend OTP" button to resend OTP</p>
+          <p className='py-4' onClick={handleResend}>Click the "Resend OTP" button to resend OTP</p>
         )}
       </div>
     </div>

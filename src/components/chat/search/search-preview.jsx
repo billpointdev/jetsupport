@@ -190,6 +190,8 @@ export const AllSearchResultsPreview = ({ results }) => {
   if (!results || Object.keys(results).length === 0) {
     return <div className="search-results">No results</div>;
   }
+
+  console.log("results", results)
   return (
     <div className="search-results flex flex-col gap-8">
       {Object.entries(results).map(([entity, items]) => {

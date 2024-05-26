@@ -1,33 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// Mocking API responses
-const mockLoginResponse = {
-  userToken: 'mockToken123',
-  userInfo: {
-    id: 1,
-    name: 'Mock User',
-    email: 'mockuser@example.com',
-  },
-};
 
-const mockRegisterResponse = {
-  message: 'Registration successful',
-};
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
+
+
 
 // Async thunk for user login
 export const userLogin = createAsyncThunk(
-  'auth/userLogin',
+  '/auth/login',
   async (userCredentials, { rejectWithValue }) => {
     try {
       // Mocked fetch
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            ok: true,
-            json: async () => mockLoginResponse,
-          });
-        }, 1000);
-      });
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userCredentials),
+    });
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -44,25 +34,24 @@ export const userLogin = createAsyncThunk(
 
 // Async thunk for user registration
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  "/auth/register",
   async (userDetails, { rejectWithValue }) => {
     try {
-      // Mocked fetch
-      const response = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            ok: true,
-            json: async () => mockRegisterResponse,
-          });
-        }, 1000);
-      });
+         const response = await fetch(`${BASE_URL}/auth/register`, {
+           method: "POST",
+           headers: {
+             "Content-Type": "application/json",
+           },
+           body: JSON.stringify(userDetails),
+         });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || 'Failed to register');
+        throw new Error(errorText || "Failed to register");
       }
 
       const data = await response.json();
+      console.log("data" , data)
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
