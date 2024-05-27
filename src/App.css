@@ -138,34 +138,10 @@ body {
   padding: 3px 5.5px;
 }
 
-.custom-message-ui {
-  --cmui-gap-size: 0.5rem;
-  --cmui-inline-spacing: 2rem;
-  --cmui-block-spacing: 0.5rem;
-
-  display: flex;
-  gap: var(--cmui-gap-size);
-  padding-inline: var(--cmui-inline-spacing);
-  padding-block: var(--cmui-block-spacing);
+.str-chat__message .str-chat__message-inner .str-chat__message-bubble{
+  background-color: #F5F5F5 !important;
 }
-
-.custom-message-ui--mine {
-  flex-direction: row-reverse;
-  text-align: right;
-}
-
-.custom-message-ui .str-chat__message-text p {
-  all: unset;
-}
-
-.custom-message-ui .str-chat__message-text {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-}
-
-.custom-message-ui .str-chat__message-mention {
-  font-weight: bold;
-  color: palevioletred;
-  cursor: pointer;
+.str-chat__message.str-chat__message--me .str-chat__message-bubble {
+  background-color: #F66B03 !important;
+  color: #FEFEFE !important;
 }

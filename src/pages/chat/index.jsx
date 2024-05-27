@@ -29,7 +29,6 @@ import { CustomChannelHeader } from "../../components/chat/channel-header";
 import ChatBody from "../../components/chat/chat-body";
 import { useLocation } from "react-router-dom";
 import { CustomDateSeparator } from "../../components/chat/date-separator";
-import { CustomMessageUi } from "../../components/chat/custom-message";
 
 const apiKey = "65p4bnpn4rhd";
 // const userId = "hidden-shadow-2";
@@ -238,7 +237,6 @@ const JetChat = () => {
             DateSeparator={CustomDateSeparator}
             EmojiPicker={EmojiPicker}
             emojiSearchIndex={SearchIndex}
-            Message={CustomMessageUi}
           >
             <Window>
               <CustomChannelHeader />
