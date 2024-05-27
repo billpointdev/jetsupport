@@ -5,7 +5,7 @@ export const CustomDateSeparator = (props) => {
     const { date } = props
 
     function formatDate(date) {
-        return `The message date is: ${date.toDateString()}`;
+        return `${date.toDateString()}`;
     }
 
     return (

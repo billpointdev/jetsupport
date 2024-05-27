@@ -1,7 +1,7 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../utils";
 import { useTranslationContext } from "stream-chat-react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export const CustomChannelPreview = (props) => {
   const {
@@ -14,7 +14,7 @@ export const CustomChannelPreview = (props) => {
     unread,
   } = props;
 
-  console.log("props ==>" , props)
+  // console.log("props ==>" , props)
   const isSelected = channel.id === activeChannel?.id;
   const latestMessageAt = channel.state.last_message_at;
 
@@ -67,6 +67,11 @@ export const CustomChannelPreview = (props) => {
     }
   };
 
+  useEffect( () =>
+  {
+    
+    console.log("istYPING" , channel?.isTyping)
+  },[channel?.isTyping])
   return (
     <>
       <div
@@ -107,7 +112,7 @@ export const CustomChannelPreview = (props) => {
               className="text-[#616161] text-sm flex justify-between "
               style={{ fontSize: "14px" }}
             >
-              {latestMessage}
+              {channel?.isTyping ? `typing` : latestMessage}
               {unread > 0 && (
                 <p className="w-5 text-xs h-5 bg-[#06C270] text-white rounded-full flex items-center justify-center">
                   {unread}
@@ -125,7 +130,7 @@ CustomChannelPreview.propTypes = {
   channel: Proptypes.object,
   setActiveChannel: Proptypes.func,
   activeChannel: Proptypes.object,
-  latestMessage: Proptypes.string,
+  latestMessage: Proptypes.object,
   displayTitle: Proptypes.string,
   displayImage: Proptypes.string,
   unread: Proptypes.number,

@@ -9,7 +9,7 @@ import { CiSearch } from "react-icons/ci";
 import useProviderContext from "../profile-screens/hooks/useProvideContext";
 
 export const CustomSearch = () => {
-  const { client , channel } = useChatContext();
+  const { client, channel } = useChatContext();
   const [query, setQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const [allResults, setAllResults] = useState(null);
@@ -50,8 +50,8 @@ export const CustomSearch = () => {
           name: { $autocomplete: query },
           members: { $in: [client.user?.id] },
           //   from the api we will get we will use to filter this later
-          //   last_message_at: new Date(), // Assuming you want channels sorted by last message date
-          //   updated_at: new Date(), // Assuming you want channels sorted by update date
+          //   last_message_at: new Date(), // Assuming we want channels sorted by last message date
+          //   updated_at: new Date(), // Assuming we want channels sorted by update date
         },
         { limit: 5 }
       );
@@ -83,12 +83,6 @@ export const CustomSearch = () => {
         items: results.map((item) => item.message),
       });
 
-      setAllResults({
-        channels: channels,
-        users: users,
-        messages: results.map((item) => item.message),
-      });
-
       setIsSearching(false);
     } catch (error) {
       console.error("Error searching:", error);
@@ -96,6 +90,17 @@ export const CustomSearch = () => {
       setPending(false);
     }
   };
+
+  useEffect(() => {
+    if ((channelsResults, usersResults, messagesResults)) {
+      setAllResults({
+        channels: channelsResults.items,
+        users: usersResults?.items,
+        messages: messagesResults?.items,
+      });
+    }
+  }, [channelsResults, usersResults, messagesResults]);
+
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
