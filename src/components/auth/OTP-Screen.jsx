@@ -2,6 +2,7 @@ import  { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Input from "../reusables/customInput";
 import AuthHeader from './shared/AuthHeader';
+import axios from 'axios';
 
 const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(''));
@@ -48,9 +49,13 @@ const OtpPage = () => {
   };
 
 
-  const handleLogin = () =>
+  const handleLogin = async () =>
   {
-    
+    try {
+      const response = await axios.post(`/auth/verify/email`, {
+        email: "user@example.com",
+        otp: otp.join(""),
+      });
       // setTimeout(() => {
       //   if (isFromForgotPassword) {
       //     navigate('/reset-password');
@@ -58,21 +63,35 @@ const OtpPage = () => {
       //     navigate('/security-pin');
       //   }
       // }, 2000);
+    } catch (error) {
+      // Handle verification error
+      console.error("Email verification error:", error);
+    }
     };
 
   return (
-    <div className='flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4'>
+    <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
       <AuthHeader />
-      <div className='text-center'>
+      <div className="text-center">
         {isFromForgotPassword ? (
           <>
-            <h4 className='font-semibold text-[24px] text-center font-helvetica'>OTP code verification 👋</h4>
-            <p>We’ve sent a unique code to your mobile number. Enter the code below to verify. <br /> (+234) 9035017863</p>
+            <h4 className="font-semibold text-[24px] text-center font-helvetica">
+              OTP code verification 👋
+            </h4>
+            <p>
+              We’ve sent a unique code to your mobile number. Enter the code
+              below to verify. <br /> (+234) 9035017863
+            </p>
           </>
         ) : (
           <>
-            <h4 className='font-semibold text-[24px] text-center font-helvetica'>Account Verification 👋</h4>
-            <p>We’ve sent a unique code to your mobile number <br /> (+234) 9035017863</p>
+            <h4 className="font-semibold text-[24px] text-center font-helvetica">
+              Account Verification 👋
+            </h4>
+            <p>
+              We’ve sent a unique code to your mobile number <br /> (+234)
+              9035017863
+            </p>
           </>
         )}
       </div>
@@ -86,22 +105,26 @@ const OtpPage = () => {
               type="text"
               placeholder="-"
               bgColor="bg-lightGray"
-              value={ value }
+              value={value}
               className="pl-[25px]"
               onChange={(e) => handleOtpChange(e.target.value, index)}
               autoFocus={index === 0}
             />
-            
           ))}
         </div>
       </div>
-      <div className='text-center'>
+      <div className="text-center">
         <small>Didn’t receive code?</small>
 
         {timer > 0 ? (
-          <p className='py-4'>You can resend code in <span className='text-[#0063F7]'>{timer}</span> s</p>
+          <p className="py-4">
+            You can resend code in{" "}
+            <span className="text-[#0063F7]">{timer}</span> s
+          </p>
         ) : (
-          <p className='py-4' onClick={handleResend}>Click the "Resend OTP" button to resend OTP</p>
+          <p className="py-4" onClick={handleResend}>
+            Click the &quot;Resend OTP&quot; button to resend OTP
+          </p>
         )}
       </div>
     </div>
