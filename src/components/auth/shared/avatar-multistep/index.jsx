@@ -6,10 +6,11 @@ import useMultiForm from "../hooks/useMultiStep";
 import DownloadButton from "../../../reusables/DownloadButton";
 import AuthHeader from "../AuthHeader";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const INITIAL_DATA = {
-  image: "",
-  name: "",
+  avatar: null,
+  userName: "",
 };
 
 const MultiStep = () => {
@@ -30,8 +31,16 @@ const MultiStep = () => {
     isLastStep,
     next,
   } = useMultiForm([
-    <ChooseAvatar {...data} key="userForm" updateFields={updateFields} />,
-    <AddName {...data} key="completionForm" updateFields={updateFields} />,
+    <ChooseAvatar
+      key="chooseAvatar"
+      avatar={data.avatar}
+      updateFields={updateFields}
+    />,
+    <AddName
+      key="addName"
+      username={data.username}
+      updateFields={updateFields}
+    />,
   ]);
 
   const handleLogin = () => {
@@ -40,48 +49,59 @@ const MultiStep = () => {
     }, 1000);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (!isLastStep) return next();
-    handleLogin();
+  const handleSubmitAvatar = async () => {
+    try {
+      const response = await axios.post("/auth/avatar", {
+        avatar: data.avatar,
+      });
+      console.log("Avatar set successfully:", response.data);
+      next();
+    } catch (error) {
+      console.error("Error setting avatar:", error);
+    }
   };
 
+  const disabled = Boolean(data.avatar);
+  const onSubmit = () => {
+    if (!isLastStep) return handleSubmitAvatar();
+    handleLogin();
+  };
   return (
     <div className=" ">
       <div className="">
-        <form onSubmit={onSubmit}>
-          <div>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStateIndex}
-                initial={{ opacity: 0, x: isFirstStep ? -100 : 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: isLastStep ? 100 : -100 }}
-                transition={{ type: "tween" }}
-                className="flex flex-col   justify-center h-screen items-center gap-10 px-4"
-              >
-                <div className="flex flex-col max-w-lg  w-full justify-center items-center gap-10 px-4">
-                  <AuthHeader />
-                  <div className="text-center h-full w-full">
-                    {step}
-                    <div className="flex justify-center">
-                      <div className="w-[448px] ">
-                        <DownloadButton
-                          buttonText="Continue"
-                          type="submit"
-                          padding={"px-20"}
-                          width={"md:w-[100%] mt-8"}
-                          bgColor={"bg-primary"}
-                          textColor={"text-white"}
-                        />
-                      </div>
+        <div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStateIndex}
+              initial={{ opacity: 0, x: isFirstStep ? -100 : 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: isLastStep ? 100 : -100 }}
+              transition={{ type: "tween" }}
+              className="flex flex-col   justify-center h-screen items-center gap-10 px-4"
+            >
+              <div className="flex flex-col max-w-lg  w-full justify-center items-center gap-10 px-4">
+                <AuthHeader />
+                <div className="text-center h-full w-full">
+                  {step}
+                  <div className="flex justify-center">
+                    <div className="w-[448px] ">
+                      <DownloadButton
+                        buttonText="Continue"
+                        type="button"
+                        padding={"px-20"}
+                        width={"md:w-[100%] mt-8"}
+                        bgColor={"bg-primary"}
+                        textColor={"text-white"}
+                        onClick={onSubmit}
+                        disabled={disabled}
+                      />
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </form>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

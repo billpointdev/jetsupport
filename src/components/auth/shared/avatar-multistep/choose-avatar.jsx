@@ -1,12 +1,9 @@
-import { useState } from "react";
 import AvatarSelector from "../../AvatarUploader";
+import Proptypes from "prop-types";
 
-const ChooseAvatar = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-
-  const handleAvatarSelect = (avatar) => {
-    setSelectedAvatar(avatar);
+const ChooseAvatar = ({ updateFields }) => {
+  const handleAvatarSelect = (selectedAvatar) => {
+    updateFields({ avatar: selectedAvatar });
   };
 
   return (
@@ -21,6 +18,10 @@ const ChooseAvatar = () => {
       </div>
     </>
   );
+};
+
+ChooseAvatar.propTypes = {
+  updateFields: Proptypes.func,
 };
 
 export default ChooseAvatar;

@@ -1,14 +1,16 @@
-import  { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Input from "../reusables/customInput";
-import AuthHeader from './shared/AuthHeader';
-import axios from 'axios';
+import AuthHeader from "./shared/AuthHeader";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const OtpPage = () => {
-  const [otp, setOtp] = useState(Array(6).fill(''));
+  const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(45);
-  const buttonRef = useRef(null);
+  // const buttonRef = useRef(null);
   const navigate = useNavigate();
+  const { userEmail } = useSelector((state) => state.auth);
   const location = useLocation();
   const isFromForgotPassword = location.state?.fromForgotPassword;
 
@@ -26,20 +28,20 @@ const OtpPage = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    if (index < 5 && value !== '') {
+    if (index < 5 && value !== "") {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       if (nextInput) {
         nextInput.focus();
       }
-    } else if (index > 0 && value === '') {
+    } else if (index > 0 && value === "") {
       const prevInput = document.getElementById(`otp-input-${index - 1}`);
       if (prevInput) {
         prevInput.focus();
       }
     }
 
-    if (newOtp.every((digit) => digit !== '')) {
-      handleLogin();
+    if (newOtp.every((digit) => digit !== "")) {
+      handleSubmit();
     }
   };
 
@@ -48,26 +50,47 @@ const OtpPage = () => {
     // Will Add logic for resending OTP here:
   };
 
+  // const handleLogin = async () => {
+  //   try {
+  //     const response = await axios.post(`/auth/verify/email`, {
+  //       email: "user@example.com",
+  //       otp: otp.join(""),
+  //     });
+  //     // setTimeout(() => {
+  //     //   if (isFromForgotPassword) {
+  //     //     navigate('/reset-password');
+  //     //   } else {
+  //     //     navigate('/security-pin');
+  //     //   }
+  //     // }, 2000);
+  //   } catch (error) {
+  //     // Handle verification error
+  //     console.error("Email verification error:", error);
+  //   }
+  // };
 
-  const handleLogin = async () =>
-  {
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
+  const handleSubmit = async () => {
     try {
       const response = await axios.post(`/auth/verify/email`, {
-        email: "user@example.com",
-        otp: otp.join(""),
+        email: storedUserEmail ? storedUserEmail : userEmail,
+        verify_code: otp.join(""),
       });
-      // setTimeout(() => {
-      //   if (isFromForgotPassword) {
-      //     navigate('/reset-password');
-      //   } else {
-      //     navigate('/security-pin');
-      //   }
-      // }, 2000);
+
+      if (!response.data) {
+        throw new Error("OTP verification failed");
+      }
+
+      console.log("OTP verified:", response.data);
+      if (isFromForgotPassword) {
+        navigate("/reset-password");
+      } else {
+        navigate("/security-pin");
+      }
     } catch (error) {
-      // Handle verification error
-      console.error("Email verification error:", error);
+      console.error("Error verifying OTP:", error.message);
     }
-    };
+  };
 
   return (
     <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
