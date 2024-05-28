@@ -18,18 +18,18 @@ import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
 import JetChat from "./pages/chat/index.jsx";
 import initAxios from "./api/config.js";
 import { selectAuthToken } from "./features/auth/authSlice.js";
+import ProtectedRoute from "./routing/ProtectedRoute.jsx";
 
 function App() {
   const token = useSelector(selectAuthToken);
   useEffect(() => {
     initAxios({ token });
-  }, [ token ] );
-  
+  }, [token]);
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth */}
+        {/* Public Routes  */}
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
@@ -39,14 +39,16 @@ function App() {
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route exact path="/reset-password" element={<ResetPinScreen />} />
 
-        {/* Chat */}
-        <Route exact path="/chat" element={<JetChat />} />
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route exact path="/profile" element={<MyAccount />} />
+          <Route exact path="/notifications" element={<MyNotificaitions />} />
+          <Route exact path="/delete-account" element={<DeleteAccount />} />
+          <Route exact path="/help-support" element={<HelpSupport />} />
+          <Route exact path="/chat" element={<JetChat />} />
+        </Route>
 
-        {/* Profile */}
-        <Route exact path="/profile" element={<MyAccount />} />
-        <Route exact path="/notifications" element={<MyNotificaitions />} />
-        <Route exact path="/delete-account" element={<DeleteAccount />} />
-        <Route exact path="/help-support" element={<HelpSupport />} />
+        {/* Catch-All Route */}
         <Route exact path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
