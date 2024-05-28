@@ -1,20 +1,21 @@
-import { createSlice, } from '@reduxjs/toolkit';
-import { userLogin, registerUser,  } from './authActions';
+import { createSlice } from "@reduxjs/toolkit";
+import { userLogin, registerUser } from "./authActions";
+import initAxios from "../../api/config";
 
-// Initialize userToken from local storage
-const userToken = localStorage.getItem('userToken') ? localStorage.getItem('userToken') : null;
+const userToken = localStorage.getItem("userToken") || null;
+const userEmail = localStorage.getItem("userEmail") || null;
 
 const initialState = {
   loading: false,
-  userInfo: null, // for user object
-  userToken: userToken, // for storing the JWT
+  userInfo: null,
+  userToken: userToken,
   error: null,
-  success: false, // for monitoring the registration process
+  success: false,
+  userEmail: userEmail,
 };
 
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
@@ -23,35 +24,52 @@ const authSlice = createSlice({
       state.userToken = null;
       state.error = null;
       state.success = false;
+      state.userEmail = null;
+      localStorage.removeItem("userToken");
     },
     setCredentials: (state, { payload }) => {
-      state.userInfo = payload;
+      state.userInfo = payload.data;
+      state.userToken = payload.data.access_token;
+      localStorage.setItem("userToken", payload.data.access_token);
+      localStorage.setItem("userEmail", payload.data.user.email);
+      initAxios({ token: payload.data.access_token });
     },
   },
   extraReducers: (builder) => {
     builder
-      // login user
       .addCase(userLogin.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.userInfo = payload;
-        state.userToken = payload.userToken;
+        state.userInfo = payload.data;
+        state.userEmail = payload.data.user.email;
+        state.userToken = payload.data.access_token;
+        localStorage.setItem("userToken", payload.data.access_token);
+        localStorage.setItem("userEmail", payload.data.user.email);
+        initAxios({ token: payload.access_token });
       })
       .addCase(userLogin.rejected, (state, { payload }) => {
         state.loading = false;
-        state.error = payload;
+        state.error = payload.data;
       })
-      // register user
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state) => {
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.success = true; // registration successful
+        state.success = true;
+        state.userEmail = payload.data.user.email;
+        state.userInfo = payload.data;
+        // If the registration API returns a token
+        if (payload.data.access_token && payload.data.user.email) {
+          state.userToken = payload.data.access_token;
+          localStorage.setItem("userToken", payload.data.access_token);
+          localStorage.setItem("userEmail", payload.data.user.email);
+          initAxios({ token: payload.data.access_token });
+        }
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.loading = false;
@@ -62,6 +80,6 @@ const authSlice = createSlice({
 
 export const { logout, setCredentials } = authSlice.actions;
 export const selectAuthToken = (state) => state.auth.userToken;
-
+export const selectUserEmail = (state) => state.auth.userEmail;
 
 export default authSlice.reducer;

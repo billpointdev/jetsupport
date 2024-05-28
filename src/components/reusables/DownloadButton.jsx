@@ -29,7 +29,7 @@ const DownloadButton = ({
 
 DownloadButton.propTypes = {
   onClick: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   os: PropTypes.string,
   bgColor: PropTypes.string,
   textColor: PropTypes.string,

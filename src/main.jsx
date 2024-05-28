@@ -6,9 +6,10 @@ import { Provider } from "react-redux";
 import store from "./app/store";
 
 import MyProvider from "./components/profile-screens/hooks/useContext.jsx";
-import init from "./api/config.js";
+// import initAxios from "./api/config.js";
 
-init();
+// initAxios()
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>

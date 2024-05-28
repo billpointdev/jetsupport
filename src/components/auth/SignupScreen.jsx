@@ -10,7 +10,7 @@ import Input from "../reusables/customInput";
 import AuthLayout from "./shared/AuthLayout";
 
 const SignupScreen = () => {
-  const { loading, userInfo, error, success } = useSelector(
+  const { loading, userInfo, error, success, userEmail } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
@@ -18,21 +18,18 @@ const SignupScreen = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // redirect user to login page if registration was successful
-    if (success) navigate("/otp");
-    // redirect authenticated user to profile screen
-    if (userInfo) navigate("/otp");
-  }, [navigate, userInfo, success]);
 
+  useEffect(() => {
+    if (success && userEmail && userInfo) navigate("/otp");
+  }, [navigate, userInfo, success, userEmail]);
+
+
+  console.log(userEmail);
   const submitForm = (data) => {
-    // check if passwords match
     if (data.password !== data.password_confirmation) {
       alert("Password mismatch");
       return;
     }
-    // transform email string to lowercase to avoid case sensitivity issues in login
-    // data.email = data.email.toLowerCase()
     dispatch(registerUser(data));
   };
 

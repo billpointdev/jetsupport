@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import  { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Input from "../reusables/customInput";
@@ -8,10 +8,10 @@ import DownloadButton from '../../components/reusables/DownloadButton';
 const SecurityPin = () => {
   const [pin, setPin] = useState(Array(4).fill(''));
   const [timer, setTimer] = useState(45);
-  const buttonRef = useRef(null);
+  // const buttonRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo , userEmail } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (timer > 0) {
@@ -50,7 +50,7 @@ const SecurityPin = () => {
 
   };
 
-
+console.log("userinfo", userEmail);
 
   return (
     <div className="flex flex-col  justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
