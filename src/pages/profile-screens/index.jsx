@@ -17,73 +17,80 @@ import LogoutModal from "../../components/profile-screens/modals/logout-modal";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
+import  Notification  from "../../components/reusables/notifications";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [notifications, setNotifications] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const { userEmail } = useSelector((state) => state.auth);
-  const { showLogoutModal , setOpen:setDropdown } = useProviderContext();
+  const { showLogoutModal, setOpen: setDropdown } = useProviderContext();
 
-  const toggleSidebar = () =>
-  {
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
+  };
+
+  const toggleSidebar = () => {
     setDropdown(false);
     setOpen((prev) => !prev);
-  }
-    ;
+  };
   const location = useLocation();
 
-  const handleClick = ( index, title ) =>
-  {
-        setDropdown(false);
+  const handleClick = (index, title) => {
+    setDropdown(false);
     setActiveIndex(index);
     setModal(null);
     handleItemClick(title);
   };
 
-   const darkModeHandler = () => {
-     setDarkMode((prev) => {
-       const newDarkMode = !prev;
-       localStorage.setItem("darkMode", newDarkMode);
-       document.body.classList.toggle("dark", newDarkMode);
-       return newDarkMode;
-     });
-   };
+  const darkModeHandler = () => {
+    setDarkMode((prev) => {
+      const newDarkMode = !prev;
+      localStorage.setItem("darkMode", newDarkMode);
+      document.body.classList.toggle("dark", newDarkMode);
+      return newDarkMode;
+    });
+  };
 
- const handleResendOtp = async () => {
-   try {
-     const response = await axios.post(`/resend/email`, {
-       email: userEmail,
-     });
-     if (!response.data) {
-       throw new Error("Update failed");
-     }
-   } catch (error) {
-     console.error("Error sending otp:", error);
-   }
- };
+  const handleResendOtp = async () => {
+    try
+    {
+        setNotifications((prev) => [
+          { id: Date.now(), text: "Sending otp" },
+          ...prev,
+        ]);
+      const response = await axios.post(`/send/otp`, {
+        email: userEmail,
+      });
+      if (!response.data) {
+        throw new Error("Update failed");
+      }
+    } catch (error) {
+      console.error("Error sending otp:", error);
+    }
+  };
 
-    
- const handleItemClick = async (title) => {
-   switch (title) {
-     case "Reset security PIN":
-       await handleResendOtp(); 
-       setModal(title);
-       break;
-     case "Reset password":
-       setModal(title);
-       break;
-     case "Help & Support":
-       setModal(title);
-       break;
-     default:
-       // Handle other cases here if needed
-       break;
-   }
- };
-
+  const handleItemClick = async (title) => {
+    switch (title) {
+      case "Reset security PIN":
+        await handleResendOtp();
+        setModal(title);
+        break;
+      case "Reset password":
+        setModal(title);
+        break;
+      case "Help & Support":
+        setModal(title);
+        break;
+      default:
+        // Handle other cases here if needed
+        break;
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -134,8 +141,8 @@ const ProfilePage = ({ children }) => {
         setActiveIndex(pathIndex);
       }
     }
-  }, [ location, items, modal ] );
-    
+  }, [location, items, modal]);
+
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode") === "true";
     setDarkMode(savedDarkMode);
@@ -189,6 +196,13 @@ const ProfilePage = ({ children }) => {
         <ResetPassword setModal={setModal} setConfirmed={setConfirmed} />
       )}
       {showLogoutModal && <LogoutModal />}
+       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+         <AnimatePresence>
+           {notifications.map((n) => (
+            <Notification removeNotif={removeNotif} {...n} key={n.id} />
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
