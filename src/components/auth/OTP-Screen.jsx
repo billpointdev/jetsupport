@@ -40,10 +40,10 @@ const OtpPage = () => {
       }
     }
 
-    if (newOtp.every((digit) => digit !== "")) {
-      handleSubmit();
-    }
+  
   };
+
+ 
 
   const handleResend = () => {
     setTimer(60);
@@ -69,28 +69,38 @@ const OtpPage = () => {
   //   }
   // };
 
-  const storedUserEmail = localStorage.getItem("userEmail") || null;
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post(`/auth/verify/email`, {
-        email: storedUserEmail ? storedUserEmail : userEmail,
-        verify_code: otp.join(""),
-      });
+  const storedUserEmail = localStorage.getItem( "userEmail" ) || null;
+  
+  useEffect(() => {
+    const handleSubmit = async () => {
+      try {
+        const response = await axios.post(`/auth/verify/otp`, {
+          email: storedUserEmail ? storedUserEmail : userEmail,
+          verify_code: otp.join(""),
+        });
 
-      if (!response.data) {
-        throw new Error("OTP verification failed");
-      }
+        if (!response.data) {
+          throw new Error("OTP verification failed");
+        }
 
-      console.log("OTP verified:", response.data);
-      if (isFromForgotPassword) {
-        navigate("/reset-password");
-      } else {
-        navigate("/security-pin");
+        console.log("OTP verified:", response.data);
+        if (isFromForgotPassword) {
+          navigate("/reset-password");
+        } else {
+          navigate("/security-pin");
+        }
+      } catch (error) {
+        console.error("Error verifying OTP:", error.message);
       }
-    } catch (error) {
-      console.error("Error verifying OTP:", error.message);
+    };
+
+    // Check if all OTP digits are filled
+    if (otp.every((digit) => digit !== "")) {
+      // Trigger form submission
+      handleSubmit();
     }
-  };
+  }, [otp, storedUserEmail, userEmail, isFromForgotPassword, navigate]);
+
 
   return (
     <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">

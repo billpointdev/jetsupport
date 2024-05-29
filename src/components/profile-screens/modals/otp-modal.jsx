@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import OtpInputWithValidation from "../utils/otp-input";
-import Proptypes from "prop-types"
+import Proptypes from "prop-types";
 
-const OtpModal = ( { setModal, handleContinue } ) =>
-{ const [otpFilled, setOtpFilled] = useState(false);
+const OtpModal = ({ setModal, handleContinue }) => {
+  const [otpFilled, setOtpFilled] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+
   const [timer, setTimer] = useState(60);
 
-  // Timer logic using useEffect
   useEffect(() => {
     let interval;
     if (timer > 0) {
@@ -19,15 +20,14 @@ const OtpModal = ( { setModal, handleContinue } ) =>
     return () => clearInterval(interval);
   }, [timer]);
 
-  // Function to handle timer reset and resend
   const handleResend = () => {
-    setTimer(60); 
+    setTimer(60);
   };
+
   const handleChange = (otp) => {
     const isFilled = otp.length === 6;
     setOtpFilled(isFilled);
   };
-
 
   const handleClick = () => {
     setModal(null);
@@ -47,7 +47,11 @@ const OtpModal = ( { setModal, handleContinue } ) =>
             (+234) 9035017863
           </p>
         </div>
-        <OtpInputWithValidation numberOfDigits={6} handleOtp={handleChange} />
+        <OtpInputWithValidation
+          numberOfDigits={6}
+          handleOtp={handleChange}
+          setOtpVerified={setOtpVerified}
+        />
         <div>
           <p className="text-[#757575] mt-7">
             Didn’t receive code?{" "}
@@ -65,29 +69,16 @@ const OtpModal = ( { setModal, handleContinue } ) =>
           type="submit"
           title="Continue"
           className=""
-          disabled={!otpFilled}
+          disabled={!otpFilled && !otpVerified}
         />
       </div>
     </Modal>
   );
 };
 
-
 OtpModal.propTypes = {
-    setModal: Proptypes.func.isRequired,
-    handleContinue: Proptypes.func.isRequired,
-}
+  setModal: Proptypes.func.isRequired,
+  handleContinue: Proptypes.func.isRequired,
+};
 
 export default OtpModal;
-
-
-  //  {
-  //    timer > 0 && otp.join("") === "" ? (
-  //      <p>
-  //        You can resend code in <span className="text-primary">{timer}</span>{" "}
-  //        seconds
-  //      </p>
-  //    ) : (
-  //      <button onClick={handleResend}>Resend OTP</button>
-  //    );
-  //  }

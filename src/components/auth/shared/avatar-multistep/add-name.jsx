@@ -2,6 +2,7 @@ import userAvatar from "../../../../assets/avatar-images/user-avatar.svg";
 const AddName = () => {
   return (
     <div className=" h-[500px]  w-full">
+      
       <h4 className="font-semibold text-[20px] text-center font-helvetica ">
         One last thing 👋
       </h4>

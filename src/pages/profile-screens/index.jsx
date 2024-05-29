@@ -15,6 +15,8 @@ import SecurityPin from "../../components/profile-screens/modals/security-pin";
 import ResetPassword from "../../components/profile-screens/modals/reset-password";
 import LogoutModal from "../../components/profile-screens/modals/logout-modal";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ const ProfilePage = ({ children }) => {
   const [modal, setModal] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-
+  const { userEmail } = useSelector((state) => state.auth);
   const { showLogoutModal , setOpen:setDropdown } = useProviderContext();
 
   const toggleSidebar = () =>
@@ -49,23 +51,39 @@ const ProfilePage = ({ children }) => {
        return newDarkMode;
      });
    };
+
+ const handleResendOtp = async () => {
+   try {
+     const response = await axios.post(`/resend/email`, {
+       email: userEmail,
+     });
+     if (!response.data) {
+       throw new Error("Update failed");
+     }
+   } catch (error) {
+     console.error("Error sending otp:", error);
+   }
+ };
+
     
-  const handleItemClick = (title) => {
-    switch (title) {
-      case "Reset security PIN":
-        setModal(title);
-        break;
-      case "Reset password":
-        setModal(title);
-        break;
-      case "Help & Support":
-        setModal(title);
-        break;
-      default:
-        // Handle other cases here if needed
-        break;
-    }
-  };
+ const handleItemClick = async (title) => {
+   switch (title) {
+     case "Reset security PIN":
+       await handleResendOtp(); 
+       setModal(title);
+       break;
+     case "Reset password":
+       setModal(title);
+       break;
+     case "Help & Support":
+       setModal(title);
+       break;
+     default:
+       // Handle other cases here if needed
+       break;
+   }
+ };
+
 
   useEffect(() => {
     const handleResize = () => {

@@ -1,9 +1,11 @@
 import ProfilePage from "../../pages/profile-screens";
-import avatar from "../../assets/frameimage.png";
+// import avatar from "../../assets/frameimage.png";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { useState } from "react";
 import Proptypes from "prop-types";
 import Header from "./reusables/header";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const INITIAL_DATA = {
   firstName: "",
@@ -16,7 +18,10 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   return (
     <>
       <div>
-        <label className="text-[#616161]/75 dark:text-white text-xs font-semibold" htmlFor={id}>
+        <label
+          className="text-[#616161]/75 dark:text-white text-xs font-semibold"
+          htmlFor={id}
+        >
           {label}
         </label>
         <input
@@ -42,13 +47,32 @@ InputComponent.propTypes = {
 
 const MyAccount = () => {
   const [data, setData] = useState(INITIAL_DATA);
+  const { userInfo } = useSelector((state) => state.auth);
 
   const updateFields = (fields) => {
     setData((prev) => {
       return { ...prev, ...fields };
     });
   };
+  // wrong route
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.post(`/update/user`, {
+        firstname: data?.firstName,
+        lastname: data?.lastName,
+      });
 
+      if (!response.data) {
+        throw new Error("Update failed");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error.message);
+    }
+  };
+  const userObject = userInfo.user;
+  const avatar = userInfo.user.picture;
+  console.log("userinfo ==>", userInfo.user);
   // value={country}
   //       onChange={(e) => updateFields({ country: e.target.value })}
   return (
@@ -73,13 +97,15 @@ const MyAccount = () => {
           </div>
           <div>
             <p className="font-semibold text-md text-[#010E0E] dark:text-white">
-              James Adeshina
+              {userObject?.firstname} {userObject?.lastname}
             </p>
-            <p className="text-[#616161] dark:text-white text-xs">jamesadeshina@gmail.com</p>
+            <p className="text-[#616161] dark:text-white text-xs">
+              {userObject?.email}
+            </p>
           </div>
         </div>
         {/* form */}
-        <form action="#" className="  max-w-[421px] mt-8 md:ml-6 ">
+        <form onSubmit={handleSubmit} className="  max-w-[421px] mt-8 md:ml-6 ">
           <div className="grid grid-cols-2 gap-3">
             <InputComponent
               label="Your First Name"

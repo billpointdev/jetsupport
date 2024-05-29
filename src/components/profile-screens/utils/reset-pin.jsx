@@ -1,12 +1,15 @@
 import { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const correctOTP = "1234";
+// const correctOTP = "1234";
 
-function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
+function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
+  const { userEmail } = useSelector((state) => state.auth);
 
   useEffect(() => {
     handleOtp(otp.join(""));
@@ -44,13 +47,37 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
     setOtp(newOtp);
   }
 
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
+
   useEffect(() => {
-    if (otp.join("") !== "" && otp.join("") !== correctOTP) {
-      setOtpError("❌ Wrong OTP Please Check Again");
+    if (otp.every((digit) => digit !== "")) {
+      const handleSubmit = async () => {
+        try {
+          const response = await axios.post(`/auth/verify/otp`, {
+            email: storedUserEmail ? storedUserEmail : userEmail,
+            verify_code: otp.join(""),
+          });
+
+          if (!response.data) {
+            throw new Error("OTP verification failed");
+          }
+
+          console.log("OTP verified:", response.data);
+          setOtpVerified(true);
+        } catch (error) {
+          console.error("Error verifying OTP:", error.message);
+          setOtpVerified(false);
+        }
+      };
+
+      handleSubmit(); // Call the handleSubmit function directly
+
+      // If you want to set OTP error here, uncomment the line below
+      // setOtpError("❌ Wrong OTP Please Check Again");
     } else {
       setOtpError(null);
     }
-  }, [otp]);
+  }, [otp, setOtpVerified, storedUserEmail, userEmail]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center mt-5">
@@ -62,17 +89,17 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
       >
         {otp.map((digit, index) => (
           <input
-            type="password"
             key={index}
-            value={digit} // Set value to digit
+            type="password"
+            value={digit}
             maxLength={1}
             onChange={(e) => handleChange(e.target.value, index)}
             onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
             onPaste={(e) => handlePaste(e)}
             ref={(ref) => (otpBoxReference.current[index] = ref)}
-            className={`h-16 text-center text-primary  text-6xl password-field px-3 pb-2 rounded-xl bg-[#FAFAFA] focus:border focus:border-primary focus:outline-none appearance-none ${
-              digit ? "password-field" : ""
-            }`}
+            placeholder="-"
+            style={{ caretColor: "transparent" }}
+            className={` h-14 text-center text-6xl placeholder:text-2xl  text-primary p-3 rounded-md bg-[#FAFAFA]  focus:border focus:border-primary focus:outline-none appearance-none`}
           />
         ))}
       </div>
@@ -84,6 +111,7 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
 OtpInputWithValidation.propTypes = {
   numberOfDigits: PropTypes.number.isRequired,
   handleOtp: PropTypes.func.isRequired,
+  setOtpVerified: PropTypes.func,
 };
 
 export default OtpInputWithValidation;
