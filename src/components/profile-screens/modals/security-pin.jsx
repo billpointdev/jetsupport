@@ -6,7 +6,9 @@ import Proptypes from "prop-types";
 
 const SecurityPin = ( { setModal, setConfirmed } ) =>
 {
-  const [otpFilled, setOtpFilled] = useState(false);
+  const [ otpFilled, setOtpFilled ] = useState( false );
+    const [otpVerified, setOtpVerified] = useState(false);
+
   const [timer, setTimer] = useState(60);
 
   // Timer logic using useEffect
@@ -46,7 +48,11 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
             Choose a 4-digit code that&apos;s easy for you to remember.
           </p>
         </div>
-        <OtpInputWithValidation numberOfDigits={4} handleOtp={handleChange} />
+        <OtpInputWithValidation
+          setOtpVerified={setOtpVerified}
+          numberOfDigits={6}
+          handleOtp={handleChange}
+        />
         <div>
           <p className="text-[#757575] mt-7">
             Didn’t receive code?{" "}
@@ -63,7 +69,7 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
           type="submit"
           title="Continue"
           className=""
-          disabled={!otpFilled}
+          disabled={!otpFilled && !otpVerified}
           onClick={() => console.log("button clicked")}
         />
       </div>

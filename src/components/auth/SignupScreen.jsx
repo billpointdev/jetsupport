@@ -2,29 +2,27 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Error from "../reusables/Error";
+// import Error from "../reusables/Error"; @~Ellovick(Ezekiel Elom) please dont forget to utilize this  
 import { registerUser } from "../../features/auth/authActions";
-import Spinner from "../reusables/Spinner";
+// import Spinner from "../reusables/Spinner";
 import DownloadButton from "../reusables/DownloadButton";
 import Input from "../reusables/customInput";
 import AuthLayout from "./shared/AuthLayout";
 
 const SignupScreen = () => {
-  const { loading, userInfo, error, success, userEmail } = useSelector(
+  const {  userInfo, success, userEmail } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();
+  // eslint-disable-next-line no-unused-vars
   const { register, handleSubmit, setValue, watch } = useForm();
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     if (success && userEmail && userInfo) navigate("/otp");
   }, [navigate, userInfo, success, userEmail]);
 
-
-  console.log(userEmail);
   const submitForm = (data) => {
     if (data.password !== data.password_confirmation) {
       alert("Password mismatch");
@@ -32,6 +30,14 @@ const SignupScreen = () => {
     }
     dispatch(registerUser(data));
   };
+
+  // if (loading) {
+  //   return (
+  //     <div className="mt-20">
+  //       <Spinner />
+  //     </div>
+  //   );
+  // }
 
   return (
     <AuthLayout>
@@ -44,6 +50,7 @@ const SignupScreen = () => {
             Welcome, put in your account information to continue. Please enter
             your email & password to create an account.
           </p>
+          {/* {error && <p>{error} </p>} */}
         </div>
         <form
           onSubmit={handleSubmit(submitForm)}
@@ -129,7 +136,8 @@ const SignupScreen = () => {
               textColor={"text-white"}
             />
             <small className="text-center block mt-10">
-              Have a Jetpay account? Login
+              Have a Jetpay account?{" "}
+              <span onClick={() => navigate("/login")}>Login</span>
             </small>
           </div>
         </form>

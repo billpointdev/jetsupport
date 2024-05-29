@@ -1,6 +1,5 @@
 import { useState } from "react";
 import JetSupportLogo from "../assets/jetsupportcropped.jpg";
-import avatar from "../assets/frameimage.png";
 import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
@@ -9,10 +8,13 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../components/profile-screens/reusables/modal";
 import InfoCircleIcon from "../utils/InfoCircle";
 import NothingHereImg from "../assets/nothing-here-image-notification.gif";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
-
+const { userInfo } = useSelector(
+  (state) => state.auth
+);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -127,13 +129,13 @@ const Navbar = ({ toggleSidebar }) => {
         <div className="flex flex-1 items-center justify-end md:justify-between">
           <nav aria-label="Global" className="hidden md:flex items-center">
             <div className="hidden lg:block w-12 h-12 rounded-full border">
-              <img src={avatar} alt="" className="object-cover h-full w-full" />
+              <img src={userInfo?.user?.picture} alt="" className="object-cover h-full w-full" />
             </div>
             <div className="hidden lg:block text-center sm:text-left ml-1">
               <h1 className="  dark:text-white sm:text-2xl font-inter">
                 Good Morning,{" "}
                 <span className=" text-[#010E0E] dark:text-white font-bold ">
-                  Quine
+                  {userInfo?.user?.firstname}
                 </span>{" "}
                 👋
               </h1>

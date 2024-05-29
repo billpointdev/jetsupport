@@ -38,3 +38,32 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
+
+export const validatePin = createAsyncThunk(
+  "auth/validatePin",
+  async ({ email, security_pin }, thunkAPI) => {
+    try {
+      const response = await axios.post("/auth/login/pin", {
+        email,
+        security_pin,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+export const updatePin = createAsyncThunk(
+  "auth/updatePin",
+  async (pinData, thunkAPI) => {
+    try {
+      const response = await axios.post(`/auth/update/pin`, pinData);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);

@@ -16,6 +16,7 @@ const INITIAL_DATA = {
 const MultiStep = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const navigate = useNavigate();
+  const [skip, setSkip] = useState(false);
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -43,15 +44,24 @@ const MultiStep = () => {
     />,
   ]);
 
-  const handleLogin = () => {
-    setTimeout(() => {
+  const handleSetName = async () => {
+    try {
+      const response = await axios.post("not determined yet", {
+        // avatar: data.avatar,
+      });
+      console.log("Avatar set successfully:", response.data);
       navigate("/profile");
-    }, 1000);
+    } catch (error) {
+      console.error("Error setting avatar:", error);
+    }
+    // setTimeout(() => {
+    //
+    // }, 1000);
   };
 
   const handleSubmitAvatar = async () => {
     try {
-      const response = await axios.post("/auth/avatar", {
+      const response = await axios.post("/auth/update/avatar", {
         avatar: data.avatar,
       });
       console.log("Avatar set successfully:", response.data);
@@ -61,11 +71,20 @@ const MultiStep = () => {
     }
   };
 
+  const handleSkip = () => {
+    setSkip(true);
+    if (skip) {
+      navigate("/profile");
+    }
+  };
+
   const disabled = Boolean(data.avatar);
   const onSubmit = () => {
     if (!isLastStep) return handleSubmitAvatar();
-    handleLogin();
+
+    handleSetName();
   };
+
   return (
     <div className=" ">
       <div className="">
@@ -79,6 +98,9 @@ const MultiStep = () => {
               transition={{ type: "tween" }}
               className="flex flex-col   justify-center h-screen items-center gap-10 px-4"
             >
+              <p className="self-end" onClick={handleSkip}>
+                Skip
+              </p>
               <div className="flex flex-col max-w-lg  w-full justify-center items-center gap-10 px-4">
                 <AuthHeader />
                 <div className="text-center h-full w-full">

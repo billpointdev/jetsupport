@@ -1,12 +1,15 @@
 import { useRef, useEffect, useState } from "react";
 import Proptypes from "prop-types";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const correctOTP = "123456";
+// const correctOTP = "123456";
 
-function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
+function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
+  const { userEmail } = useSelector((state) => state.auth);
 
   useEffect(() => {
     handleOtp(otp.join(""));
@@ -44,13 +47,37 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
     setOtp(newOtp);
   }
 
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
+
   useEffect(() => {
-    if (otp.join("") !== "" && otp.join("") !== correctOTP) {
-      setOtpError("❌ Wrong OTP Please Check Again");
+    if (otp.every((digit) => digit !== "")) {
+      const handleSubmit = async () => {
+        try {
+          const response = await axios.post(`/auth/verify/otp`, {
+            email: storedUserEmail ? storedUserEmail : userEmail,
+            verify_code: otp.join(""),
+          });
+
+          if (!response.data) {
+            throw new Error("OTP verification failed");
+          }
+
+          console.log("OTP verified:", response.data);
+          setOtpVerified(true);
+        } catch (error) {
+          console.error("Error verifying OTP:", error.message);
+          setOtpVerified(false);
+        }
+      };
+
+      handleSubmit(); // Call the handleSubmit function directly
+
+      // If you want to set OTP error here, uncomment the line below
+      // setOtpError("❌ Wrong OTP Please Check Again");
     } else {
       setOtpError(null);
     }
-  }, [otp]);
+  }, [otp, setOtpVerified, storedUserEmail, userEmail]);
 
   return (
     <div className="w-full  flex flex-col items-center justify-center mt-5">
@@ -82,6 +109,7 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp }) {
 OtpInputWithValidation.propTypes = {
   numberOfDigits: Proptypes.number.isRequired,
   handleOtp: Proptypes.func.isRequired,
+  setOtpVerified: Proptypes.func,
 };
 
 export default OtpInputWithValidation;

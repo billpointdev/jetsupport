@@ -1,7 +1,6 @@
 import { FiChevronDown } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Proptypes from "prop-types";
-import avatar from "../../../assets/frameimage.png";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { HiOutlineUser } from "react-icons/hi2";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -11,9 +10,10 @@ import useLogout from "../hooks/useLogout";
 import useProviderContext from "../hooks/useProvideContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const StaggeredDropDown = () => {
   const { open, setOpen } = useProviderContext();
-
+  const { userInfo } = useSelector((state) => state.auth);
   const { triggerLogoutModal } = useLogout();
   const handleSignOut = () => {
     setOpen(false);
@@ -43,9 +43,9 @@ const StaggeredDropDown = () => {
           onClick={() => setOpen((pv) => !pv)}
           className="flex items-center gap-2 rounded-md  transition-colors"
         >
-          <span className="font-medium text-sm px-3 py-2 w-12 h-12 rounded-full  bg-primary">
+          <span className="font-medium text-sm  w-12 h-12 rounded-full">
             <img
-              src={avatar}
+              src={userInfo?.user?.picture}
               className="object-cover w-full h-full"
               alt="avatar"
             />
@@ -64,12 +64,14 @@ const StaggeredDropDown = () => {
           <div className="bg-white p-2 w-full  rounded-lg">
             <div className="flex items-center">
               <div className="w-12 h-12 rounded-full border-2 border-gray-400 ">
-                <img src={avatar} alt="avatar" />
+                <img src={userInfo?.user?.picture} alt="avatar" />
               </div>
               <div className="ml-2 text-start">
-                <p className="text-[#010E0E] text-[12px]">Quine John</p>
+                <p className="text-[#010E0E] text-[12px]">
+                  {userInfo?.user?.firstname} {userInfo?.user?.lastname}
+                </p>
                 <p className="text-[9px] text-[#616161] leading-1">
-                  QuineJohn@gmail.com
+                  {userInfo?.user?.email}
                 </p>
               </div>
             </div>

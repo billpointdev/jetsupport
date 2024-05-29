@@ -42,10 +42,10 @@ Input.propTypes = {
   id: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "email", "tel", "password"]).isRequired,
   placeholder: PropTypes.string.isRequired,
-  bgColor: PropTypes.string.isRequired,
+  bgColor: PropTypes.string,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired,
+  width: PropTypes.string,
   className: PropTypes.string,
 };
 
