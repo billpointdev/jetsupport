@@ -3,6 +3,7 @@ import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import Proptypes from "prop-types";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import axios from "axios";
 
 const INITIAL_DATA = {
   oldPassword: "",
@@ -19,7 +20,6 @@ const InputComponent = ({ placeholder, label, id, type, value, onChange }) => {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
-     
 
   return (
     <>
@@ -74,6 +74,32 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
     setModal(null);
     setConfirmed(false);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (data.newPassword !== data.confirmNewPassword) {
+      alert("Password mismatch");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/auth/change/password", {
+        password: data.oldPassword,
+        new_password: data.newPassword,
+        new_password_confirmation: data.confirmNewPassword,
+      });
+
+      if (!response.data) {
+        throw new Error("Update failed");
+      }
+
+      alert("Password updated successfully!");
+    } catch (error) {
+      console.error("Error changing password:", error);
+      alert("An error occurred while changing the password. Please try again.");
+    }
+  };
+
   return (
     <Modal handleClick={handleClick}>
       <div className="bg-white sm:w-[348px] md:w-96 text-center h-[420px] flex flex-col  mt-14 rounded-[24px] p-4 py-3 ">
@@ -85,7 +111,10 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
             Choose a 4-digit code that&apos;s easy for you to remember.
           </p>
         </div>
-        <form className="text-start flex flex-col gap-3">
+        <form
+          onSubmit={handleSubmit}
+          className="text-start flex flex-col gap-3"
+        >
           <InputComponent
             label="Old Password"
             id="name"
