@@ -1,9 +1,11 @@
 import AvatarSelector from "../../AvatarUploader";
 import Proptypes from "prop-types";
 
-const ChooseAvatar = ({ updateFields }) => {
-  const handleAvatarSelect = (selectedAvatar) => {
-    updateFields({ avatar: selectedAvatar });
+const ChooseAvatar = ( { updateFields } ) =>
+{
+  
+  const handleAvatarSelect = (selectedAvatar, isCustom) => {
+    updateFields({ avatar: selectedAvatar, isCustom });
   };
 
   return (

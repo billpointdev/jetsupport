@@ -40,21 +40,36 @@ export const registerUser = createAsyncThunk(
 );
 
 
+
 export const validatePin = createAsyncThunk(
   "auth/validatePin",
   async ({ email, security_pin }, thunkAPI) => {
     try {
-      const response = await axios.post("/auth/login/pin", {
-        email,
-        security_pin,
+      const response = await fetch(`${BASE_URL}/auth/login/pin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          security_pin,
+        }),
       });
-      return response.data;
+
+      // Check if the response is not OK (status code not in the range 200-299)
+      if (!response.ok) {
+        const errorData = await response.json();
+        return thunkAPI.rejectWithValue(errorData);
+      }
+      const data = await response.json();
+      console.log("pin", data);
+      localStorage.setItem("access_token", data.data.access_token);
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue({ message: error.message });
     }
   }
 );
-
 
 export const updatePin = createAsyncThunk(
   "auth/updatePin",

@@ -18,7 +18,8 @@ import useProviderContext from "../../components/profile-screens/hooks/useProvid
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
-import  Notification  from "../../components/reusables/notifications";
+import Notification from "../../components/reusables/notifications";
+import axiosInstance from "../../api/config";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -57,13 +58,12 @@ const ProfilePage = ({ children }) => {
   };
 
   const handleResendOtp = async () => {
-    try
-    {
-        setNotifications((prev) => [
-          { id: Date.now(), text: "Sending otp" },
-          ...prev,
-        ]);
-      const response = await axios.post(`/send/otp`, {
+    try {
+      setNotifications((prev) => [
+        { id: Date.now(), text: "Sending otp" },
+        ...prev,
+      ]);
+      const response = await axiosInstance.post(`/auth/send/otp`, {
         email: userEmail,
       });
       if (!response.data) {
@@ -81,7 +81,7 @@ const ProfilePage = ({ children }) => {
         setModal(title);
         break;
       case "Reset password":
-                await handleResendOtp();
+        // await handleResendOtp();
 
         setModal(title);
         break;
@@ -198,9 +198,9 @@ const ProfilePage = ({ children }) => {
         <ResetPassword setModal={setModal} setConfirmed={setConfirmed} />
       )}
       {showLogoutModal && <LogoutModal />}
-       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
-         <AnimatePresence>
-           {notifications.map((n) => (
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        <AnimatePresence>
+          {notifications.map((n) => (
             <Notification removeNotif={removeNotif} {...n} key={n.id} />
           ))}
         </AnimatePresence>

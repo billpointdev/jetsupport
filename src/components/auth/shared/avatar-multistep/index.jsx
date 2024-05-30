@@ -11,6 +11,7 @@ import axios from "axios";
 const INITIAL_DATA = {
   avatar: null,
   userName: "",
+  isCustom: false,
 };
 
 const MultiStep = () => {
@@ -39,7 +40,7 @@ const MultiStep = () => {
     />,
     <AddName
       key="addName"
-      username={data.username}
+      username={data.userName}
       updateFields={updateFields}
     />,
   ]);
@@ -47,7 +48,7 @@ const MultiStep = () => {
   const handleSetName = async () => {
     try {
       const response = await axios.post("not determined yet", {
-        // avatar: data.avatar,
+        // name: data.userName,
       });
       console.log("Avatar set successfully:", response.data);
       navigate("/profile");
@@ -59,18 +60,24 @@ const MultiStep = () => {
     // }, 1000);
   };
 
-  const handleSubmitAvatar = async () => {
-    try {
-      const response = await axios.post("/auth/update/avatar", {
-        avatar: data.avatar,
-      });
-      console.log("Avatar set successfully:", response.data);
-      next();
-    } catch (error) {
-      console.error("Error setting avatar:", error);
-    }
-  };
-
+   const handleSubmitAvatar = async () => {
+     try {
+       if (data.isCustom) {
+         const response = await axios.post("/update/user/picture", {
+           picture: data.avatar,
+         });
+         console.log("Custom image set successfully:", response.data);
+       } else {
+         const response = await axios.post("/auth/update/avatar", {
+           avatar: data.avatar,
+         });
+         console.log("Avatar set successfully:", response.data);
+       }
+       next();
+     } catch (error) {
+       console.error("Error setting avatar:", error);
+     }
+   };
   const handleSkip = () => {
     setSkip(true);
     if (skip) {
