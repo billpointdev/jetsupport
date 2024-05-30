@@ -60,6 +60,8 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
           setOtpVerified={setOtpVerified}
           numberOfDigits={6}
           handleOtp={handleChange}
+          setConfirmed={setConfirmed}
+          setModal={setModal}
         />
         <div>
           <p className="text-[#757575] mt-7">

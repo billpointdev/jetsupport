@@ -192,7 +192,7 @@ const ProfilePage = ({ children }) => {
         </div>
       </div>
       {modal && !confirmed && (
-        <OtpModal title={title} setModal={setModal} handleContinue={handleContinue} />
+        <OtpModal title={title} setConfirmed={setConfirmed} setModal={setModal} handleContinue={handleContinue} />
       )}
       {modal === "Reset security PIN" && confirmed && (
         <SecurityPin title={title} setModal={setModal}  setConfirmed={setConfirmed} />

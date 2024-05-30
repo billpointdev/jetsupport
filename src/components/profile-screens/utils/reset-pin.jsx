@@ -6,7 +6,7 @@ import axiosInstance from "../../../api/config";
 
 // const correctOTP = "1234";
 
-function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
+function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified,setConfirmed, setModal }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
@@ -65,6 +65,8 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
 
           console.log("OTP verified:", response.data);
           setOtpVerified(true);
+          setModal(null)
+          setConfirmed(false)
         } catch (error) {
           console.error("Error verifying OTP:", error.message);
           setOtpVerified(false);
