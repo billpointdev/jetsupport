@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Avatarsicons } from "../../utils/AvatarIcons";
 import UploadIcon from "../../assets/avatar-images/Upload own photo.svg";
-import Proptypes from "prop-types"
+import PropTypes from "prop-types";
 
 const AvatarSelector = ({ onSelect }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [isCustomImage, setIsCustomImage] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -12,7 +13,8 @@ const AvatarSelector = ({ onSelect }) => {
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedAvatar(reader.result);
-        onSelect(reader.result);
+        setIsCustomImage(true);
+        onSelect(reader.result, isCustomImage);
       };
       reader.readAsDataURL(file);
     }
@@ -20,7 +22,8 @@ const AvatarSelector = ({ onSelect }) => {
 
   const handleAvatarClick = (avatarSrc, index) => {
     setSelectedAvatar(avatarSrc);
-    onSelect(index + 1);
+    setIsCustomImage(false);
+    onSelect(index + 1, isCustomImage);
   };
 
   return (
@@ -62,9 +65,8 @@ const AvatarSelector = ({ onSelect }) => {
   );
 };
 
-
-
 AvatarSelector.propTypes = {
-  onSelect: Proptypes.func,
+  onSelect: PropTypes.func.isRequired,
 };
+
 export default AvatarSelector;

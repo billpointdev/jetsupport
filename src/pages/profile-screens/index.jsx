@@ -18,7 +18,8 @@ import useProviderContext from "../../components/profile-screens/hooks/useProvid
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
-import  Notification  from "../../components/reusables/notifications";
+import Notification from "../../components/reusables/notifications";
+import axiosInstance from "../../api/config";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -28,6 +29,7 @@ const ProfilePage = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const { userEmail } = useSelector((state) => state.auth);
+  const [title, setTitle] = useState("")
   const { showLogoutModal, setOpen: setDropdown } = useProviderContext();
 
   const removeNotif = (id) => {
@@ -57,13 +59,12 @@ const ProfilePage = ({ children }) => {
   };
 
   const handleResendOtp = async () => {
-    try
-    {
-        setNotifications((prev) => [
-          { id: Date.now(), text: "Sending otp" },
-          ...prev,
-        ]);
-      const response = await axios.post(`/send/otp`, {
+    try {
+      setNotifications((prev) => [
+        { id: Date.now(), text: "Sending otp" },
+        ...prev,
+      ]);
+      const response = await axiosInstance.post(`/auth/send/otp`, {
         email: userEmail,
       });
       if (!response.data) {
@@ -79,14 +80,16 @@ const ProfilePage = ({ children }) => {
       case "Reset security PIN":
         await handleResendOtp();
         setModal(title);
+        setTitle(title)
         break;
       case "Reset password":
-                await handleResendOtp();
-
+        await handleResendOtp();
         setModal(title);
+        setTitle(title)
         break;
       case "Help & Support":
         setModal(title);
+        setTitle(title)
         break;
       default:
         // Handle other cases here if needed
@@ -189,18 +192,18 @@ const ProfilePage = ({ children }) => {
         </div>
       </div>
       {modal && !confirmed && (
-        <OtpModal setModal={setModal} handleContinue={handleContinue} />
+        <OtpModal title={title} setModal={setModal} handleContinue={handleContinue} />
       )}
       {modal === "Reset security PIN" && confirmed && (
-        <SecurityPin setModal={setModal} setConfirmed={setConfirmed} />
+        <SecurityPin title={title} setModal={setModal}  setConfirmed={setConfirmed} />
       )}
       {modal === "Reset password" && confirmed && (
         <ResetPassword setModal={setModal} setConfirmed={setConfirmed} />
       )}
       {showLogoutModal && <LogoutModal />}
-       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
-         <AnimatePresence>
-           {notifications.map((n) => (
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        <AnimatePresence>
+          {notifications.map((n) => (
             <Notification removeNotif={removeNotif} {...n} key={n.id} />
           ))}
         </AnimatePresence>

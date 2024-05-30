@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userLogin, registerUser, validatePin, updatePin } from "./authActions";
-import initAxios from "../../api/config";
+// import initAxios from "../../api/config";
 
 const userToken = localStorage.getItem("userToken") || null;
 const userEmail = localStorage.getItem( "userEmail" ) || null;
+const isPinValidated = localStorage.getItem("isPinValidated") || false;
 const storedUserInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
@@ -11,9 +12,9 @@ const storedUserInfo = localStorage.getItem("userInfo")
 
 const initialState = {
   loading: false,
-  userInfo: storedUserInfo,
+  userInfo: storedUserInfo?.user,
   userToken: userToken,
-  isPinValidated: false,
+  isPinValidated: isPinValidated,
   error: null,
   success: false,
   userEmail: userEmail,
@@ -32,17 +33,20 @@ const authSlice = createSlice({
       state.userEmail = null;
       localStorage.removeItem("userToken");
       localStorage.removeItem("isPinValidated");
-       localStorage.removeItem("userInfo"); 
+      localStorage.removeItem("userInfo");
     },
     setCredentials: (state, { payload }) => {
-      state.userInfo = payload.data;
+      state.userInfo = payload.data.user;
       state.userToken = payload.data.access_token;
       state.isPinValidated = true;
       localStorage.setItem("isPinValidated", true);
-      localStorage.setItem("userToken", payload.data.access_token);
+      // localStorage.setItem("userToken", payload.data.access_token);
       localStorage.setItem("userEmail", payload.data.user.email);
-        localStorage.setItem("userInfo", JSON.stringify(payload.data));
-      initAxios({ token: payload.data.access_token });
+      localStorage.setItem("userInfo", JSON.stringify(payload.data));
+      // initAxios({ token: payload.data.access_token });
+    },
+    setUserInfo: (state, {payload}) => {
+      state.userInfo = payload;
     },
   },
   extraReducers: (builder) => {
@@ -53,13 +57,12 @@ const authSlice = createSlice({
       })
       .addCase(userLogin.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.userInfo = payload.data;
+        state.userInfo = payload.data.user;
         state.userEmail = payload.data.user.email;
-        state.userToken = payload.data.access_token;
-        localStorage.setItem("userToken", payload.data.access_token);
-        localStorage.setItem( "userEmail", payload.data.user.email );
-          localStorage.setItem("userInfo", JSON.stringify(payload.data));
-        initAxios({ token: payload.access_token });
+        // localStorage.setItem("userToken", payload.data.access_token);
+        localStorage.setItem("userEmail", payload.data.user.email);
+        localStorage.setItem("userInfo", JSON.stringify(payload.data));
+        // initAxios({ token: payload.data.access_token });
       })
       .addCase(userLogin.rejected, (state, { payload }) => {
         state.loading = false;
@@ -73,14 +76,14 @@ const authSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.userEmail = payload.data.user.email;
-        state.userInfo = payload.data;
+        state.userInfo = payload.data.user;
         // If the registration API returns a token
         if (payload.data.access_token && payload.data.user.email) {
           state.userToken = payload.data.access_token;
           localStorage.setItem("userToken", payload.data.access_token);
-          localStorage.setItem( "userEmail", payload.data.user.email );
-            localStorage.setItem("userInfo", JSON.stringify(payload.data));
-          initAxios({ token: payload.data.access_token });
+          localStorage.setItem("userEmail", payload.data.user.email);
+          localStorage.setItem("userInfo", JSON.stringify(payload.data.user));
+          // initAxios({ token: payload.data.access_token });
         }
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
@@ -91,9 +94,11 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(validatePin.fulfilled, (state) => {
+      .addCase(validatePin.fulfilled, (state, { payload }) => {
         state.isPinValidated = true;
+        state.userToken = payload.data.access_token;
         localStorage.setItem("isPinValidated", true);
+       
       })
       .addCase(validatePin.rejected, (state, { payload }) => {
         state.loading = false;
@@ -114,7 +119,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setCredentials } = authSlice.actions;
+export const { logout, setCredentials , setUserInfo } = authSlice.actions;
 export const selectAuthToken = (state) => state.auth.userToken;
 export const selectUserEmail = (state) => state.auth.userEmail;
 

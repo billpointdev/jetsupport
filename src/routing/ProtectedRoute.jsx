@@ -3,27 +3,28 @@ import { NavLink, Outlet, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const ProtectedRoute = () => {
-  const { userInfo, isPinValidated } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
   const [redirect, setRedirect] = useState(false);
+  
 
-  useEffect(() => {
-    if (!userInfo || !isPinValidated) {
-      const timer = setTimeout(() => {
-        setRedirect(true);
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [userInfo, isPinValidated]);
+  // useEffect(() => {
+  //   if (!userInfo || !isPinValidated) {
+  //     const timer = setTimeout(() => {
+  //       setRedirect(true);
+  //     }, 1000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [userInfo, isPinValidated]);
 
-  if (redirect) {
-    return isPinValidated ? (
-      <Navigate to="/security_pin" state={{ fromLogin: true }} />
-    ) : (
-      <Navigate to="/login" />
-    );
-  }
-
-  if (!userInfo || !isPinValidated) {
+  // if (redirect) {
+  //   return isPinValidated ? (
+  //     <Navigate to="/security-pin" state={{ fromLogin: true }} />
+  //   ) : (
+  //     <Navigate to="/login" />
+  //   );
+  // }
+console.log(userInfo)
+  if (!userInfo ) {
     return (
       <div className="unauthorized">
         <h1>Unauthorized :(</h1>

@@ -4,7 +4,7 @@ import Modal from "../reusables/modal";
 import OtpInputWithValidation from "../utils/otp-input";
 import Proptypes from "prop-types";
 
-const OtpModal = ({ setModal, handleContinue }) => {
+const OtpModal = ({ setModal, handleContinue , title}) => {
   const [otpFilled, setOtpFilled] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
@@ -51,6 +51,8 @@ const OtpModal = ({ setModal, handleContinue }) => {
           numberOfDigits={6}
           handleOtp={handleChange}
           setOtpVerified={setOtpVerified}
+          setModal={setModal}
+          title={title}
         />
         <div>
           <p className="text-[#757575] mt-7">

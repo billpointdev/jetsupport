@@ -95,6 +95,17 @@ const { userInfo } = useSelector(
     setIsModalOpen(false);
   };
 
+    const getGreeting = () => {
+      const currentHour = new Date().getHours();
+      if (currentHour < 12) {
+        return "Good Morning";
+      } else if (currentHour < 18) {
+        return "Good Afternoon";
+      } else {
+        return "Good Evening";
+      }
+    };
+
   return (
     <header
       className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b"
@@ -129,11 +140,15 @@ const { userInfo } = useSelector(
         <div className="flex flex-1 items-center justify-end md:justify-between">
           <nav aria-label="Global" className="hidden md:flex items-center">
             <div className="hidden lg:block w-12 h-12 rounded-full border">
-              <img src={userInfo?.user?.picture} alt="" className="object-cover h-full w-full" />
+              <img
+                src={userInfo?.user?.picture}
+                alt=""
+                className="object-cover h-full w-full"
+              />
             </div>
             <div className="hidden lg:block text-center sm:text-left ml-1">
               <h1 className="  dark:text-white sm:text-2xl font-inter">
-                Good Morning,{" "}
+                {getGreeting()},{" "}
                 <span className=" text-[#010E0E] dark:text-white font-bold ">
                   {userInfo?.user?.firstname}
                 </span>{" "}

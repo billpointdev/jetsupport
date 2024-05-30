@@ -1,6 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/landing-pages/home";
 import ErrorPage from "./pages/landing-pages/error-page";
@@ -16,16 +14,15 @@ import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPinScreen from "./components/auth/ResetPinScreen";
 import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
 import JetChat from "./pages/chat/index.jsx";
-import initAxios from "./api/config.js";
-import { logout, selectAuthToken } from "./features/auth/authSlice.js";
 import ProtectedRoute from "./routing/ProtectedRoute.jsx";
 
 function App() {
-  const dispatch = useDispatch();
-  const token = useSelector(selectAuthToken);
-  useEffect(() => {
-    initAxios({ token, logoutCallback: () => dispatch(logout()) });
-  }, [token, dispatch]);
+  // const dispatch = useDispatch();
+  // const token = useSelector( selectAuthToken );
+  // useEffect(() => {
+  //   initAxios({ token, logoutCallback: () => dispatch(logout()) });
+  // }, [token, dispatch]);
+ 
 
   return (
     <BrowserRouter>

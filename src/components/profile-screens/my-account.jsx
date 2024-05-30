@@ -2,9 +2,11 @@ import ProfilePage from "../../pages/profile-screens";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import Header from "./reusables/header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { setUserInfo } from "../../features/auth/authSlice";
+import axiosInstance from "../../api/config";
 
 const InputComponent = ({
   placeholder,
@@ -60,14 +62,16 @@ const INITIAL_DATA = {
 const MyAccount = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const userToken = localStorage.getItem("access_token")
 
   useEffect(() => {
     if (userInfo) {
       setData({
-        firstName: userInfo.user.firstname,
-        lastName: userInfo.user.lastname,
-        email: userInfo.user.email,
-        phone: userInfo.user.phone,
+        firstName: userInfo?.firstname,
+        lastName: userInfo?.lastname,
+        email: userInfo?.email,
+        phone: userInfo?.phone,
       });
     }
   }, [userInfo]);
@@ -81,23 +85,30 @@ const MyAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/update/user`, {
+      console.log("User Token:", userToken); 
+      const response = await axiosInstance.post(`/auth/update/user`, {
         firstname: data?.firstName,
         lastname: data?.lastName,
       });
-
+  
       if (!response.data) {
         throw new Error("Update failed");
       }
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify(response?.data?.data?.user)
+      );
+      dispatch(setUserInfo(response?.data?.data?.user));
     } catch (error) {
       console.error("Error updating user:", error.message);
     }
   };
+  
+  
 
-  const userObject = userInfo.user;
-  const avatar = userInfo.user.picture;
-  console.log("userinfo ==>", userInfo.user);
-
+  const userObject = userInfo;
+  const avatar = userInfo?.picture;
+  console.log("userInfo", userInfo);
   return (
     <ProfilePage>
       <div className="font-inter text-start p-5 pt-6 flex flex-col overflow-y-auto">

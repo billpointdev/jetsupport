@@ -15,7 +15,7 @@ const SecurityPin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { userInfo, userEmail } = useSelector((state) => state.auth);
+  const { userInfo, userEmail, userToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (timer > 0) {
@@ -88,7 +88,7 @@ const SecurityPin = () => {
         setIsLoading(false);
       });
   };
-  // console.log("userInfor" , userInfo?.user?.picture)
+  console.log("userToken" , userToken)
   return (
     <div className="flex flex-col  justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
       {/* <AuthHeader /> */}
@@ -96,17 +96,17 @@ const SecurityPin = () => {
       <div className="text-center">
         {location.state?.fromLogin ? (
           <>
-            {userInfo?.user?.picture && (
+            {userInfo?.picture && (
               <div className="my-4 flex justify-center">
                 <img
-                  src={userInfo?.user?.picture}
+                  src={userInfo?.picture}
                   alt="User Avatar"
                   className="rounded-full w-24 h-24 object-cover"
                 />
               </div>
             )}
             <h4 className=" font-semibold text-[24px] text-center font-helvetica">
-              Hello, {userInfo?.user?.firstname || "User"}
+              Hello, {userInfo?.firstname || "User"}
             </h4>
             <p>Sign in with your security PIN</p>
           </>
