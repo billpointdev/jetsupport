@@ -45,8 +45,8 @@ const authSlice = createSlice({
       localStorage.setItem("userInfo", JSON.stringify(payload.data));
       // initAxios({ token: payload.data.access_token });
     },
-    setUserInfo: (state, action) => {
-      state.userInfo = action.payload.user;
+    setUserInfo: (state, {payload}) => {
+      state.userInfo = payload;
     },
   },
   extraReducers: (builder) => {

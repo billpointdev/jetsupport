@@ -63,6 +63,7 @@ const MyAccount = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const userToken = localStorage.getItem("access_token")
 
   useEffect(() => {
     if (userInfo) {
@@ -84,11 +85,12 @@ const MyAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("User Token:", userToken); 
       const response = await axiosInstance.post(`/auth/update/user`, {
         firstname: data?.firstName,
         lastname: data?.lastName,
       });
-
+  
       if (!response.data) {
         throw new Error("Update failed");
       }
@@ -101,6 +103,7 @@ const MyAccount = () => {
       console.error("Error updating user:", error.message);
     }
   };
+  
   
 
   const userObject = userInfo;

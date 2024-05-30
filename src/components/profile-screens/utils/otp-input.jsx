@@ -1,12 +1,11 @@
 import { useRef, useEffect, useState } from "react";
 import Proptypes from "prop-types";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import axiosInstance from "../../../api/config";
 
 // const correctOTP = "123456";
 
-function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
+function OtpInputWithValidation({title, setModal, numberOfDigits, handleOtp, setOtpVerified }) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
@@ -65,16 +64,15 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
 
           console.log("OTP verified:", response.data);
           setOtpVerified(true);
+          setModal(null)
+          setModal(title)
         } catch (error) {
           console.error("Error verifying OTP:", error.message);
           setOtpVerified(false);
         }
       };
 
-      handleSubmit(); // Call the handleSubmit function directly
-
-      // If you want to set OTP error here, uncomment the line below
-      // setOtpError("❌ Wrong OTP Please Check Again");
+      handleSubmit(); 
     } else {
       setOtpError(null);
     }

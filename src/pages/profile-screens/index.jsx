@@ -29,6 +29,7 @@ const ProfilePage = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
   const { userEmail } = useSelector((state) => state.auth);
+  const [title, setTitle] = useState("")
   const { showLogoutModal, setOpen: setDropdown } = useProviderContext();
 
   const removeNotif = (id) => {
@@ -79,14 +80,16 @@ const ProfilePage = ({ children }) => {
       case "Reset security PIN":
         await handleResendOtp();
         setModal(title);
+        setTitle(title)
         break;
       case "Reset password":
-        // await handleResendOtp();
-
+        await handleResendOtp();
         setModal(title);
+        setTitle(title)
         break;
       case "Help & Support":
         setModal(title);
+        setTitle(title)
         break;
       default:
         // Handle other cases here if needed
@@ -189,10 +192,10 @@ const ProfilePage = ({ children }) => {
         </div>
       </div>
       {modal && !confirmed && (
-        <OtpModal setModal={setModal} handleContinue={handleContinue} />
+        <OtpModal title={title} setModal={setModal} handleContinue={handleContinue} />
       )}
       {modal === "Reset security PIN" && confirmed && (
-        <SecurityPin setModal={setModal} setConfirmed={setConfirmed} />
+        <SecurityPin title={title} setModal={setModal}  setConfirmed={setConfirmed} />
       )}
       {modal === "Reset password" && confirmed && (
         <ResetPassword setModal={setModal} setConfirmed={setConfirmed} />

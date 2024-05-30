@@ -6,22 +6,10 @@ const axiosInstance = axios.create({
   withCredentials: false,
 });
 
-// Retrieve user token from localStorage
-const userToken = localStorage.getItem("access_token");
-
-// Set the Authorization header if the token is available
-// if (userToken) {
-  axiosInstance.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${userToken}`;
-// } else {
-//   console.log( "No Access Token found" );
- 
-// }
-
 // Request interceptor to attach token to every request
 axiosInstance.interceptors.request.use(
   (config) => {
+    const userToken = localStorage.getItem("access_token");
     if (userToken) {
       config.headers["Authorization"] = `Bearer ${userToken}`;
     }
@@ -37,8 +25,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.log( "Session expired. Redirecting to login page..." );
-       console.log("axcess token", userToken);
+      console.log("Session expired. Redirecting to login page...");
       // Handle the session expiry case
       // window.location.href = "/login";
     }

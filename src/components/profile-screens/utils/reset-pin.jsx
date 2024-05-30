@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import axiosInstance from "../../../api/config";
 
 // const correctOTP = "1234";
 
@@ -53,10 +54,10 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified }) {
     if (otp.every((digit) => digit !== "")) {
       const handleSubmit = async () => {
         try {
-          const response = await axios.post(`/auth/verify/otp`, {
-            email: storedUserEmail ? storedUserEmail : userEmail,
-            verify_code: otp.join(""),
-          });
+          const response = await axiosInstance.post(`/auth/update/pin`,{
+            pin:otp.join(""),
+            pin_confirmation:otp.join(""),
+        });
 
           if (!response.data) {
             throw new Error("OTP verification failed");

@@ -35,7 +35,15 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
   const handleClick = () => {
       setModal( null );
       setConfirmed(false)
+
   };
+
+  useEffect(() => {
+    if (otpFilled && otpVerified) {
+      setModal(null);
+      setConfirmed(false);
+    }
+  },[otpFilled, otpVerified, setConfirmed, setModal])
 
   return (
     <Modal handleClick={handleClick}>
@@ -66,11 +74,11 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
           )}
         </div>
         <Button
-          type="submit"
+          type="button"
           title="Continue"
           className=""
           disabled={!otpFilled && !otpVerified}
-          onClick={() => console.log("button clicked")}
+          onClick={handleClick}
         />
       </div>
     </Modal>
