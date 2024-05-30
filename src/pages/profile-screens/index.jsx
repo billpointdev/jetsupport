@@ -81,6 +81,8 @@ const ProfilePage = ({ children }) => {
         setModal(title);
         break;
       case "Reset password":
+                await handleResendOtp();
+
         setModal(title);
         break;
       case "Help & Support":
