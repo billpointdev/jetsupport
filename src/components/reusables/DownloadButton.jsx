@@ -14,16 +14,16 @@ const DownloadButton = ({
   width,
 }) => {
   return (
-    <button
-      type={type}
-      className={`${bgColor} border-none outline-none ${textColor} ${height} ${padding} ${width} border border-lightGray flex items-center py-4 w-full  font-inter justify-center px-3 rounded-[16px]`}
-      onClick={onClick}
-    >
-      {children} {buttonText}
-      <p className=" text-start text-primary text-xs ml-3">
-        {downloadOn} <br /> <span className="font-bold text-xl">{os}</span>
-      </p>
-    </button>
+      <button
+        type={type}
+        className={`${bgColor} ${textColor} ${height} ${padding} ${width} border border-lightGray flex items-center py-4 w-full h-full font-inter justify-center px-2 rounded-full`}
+        onClick={onClick}
+      >
+        {children} {buttonText}
+        <p className=" text-start text-primary text-s ml-3">
+          {downloadOn} <br /> <span className="font-bold text-xs">{os}</span>
+        </p>
+      </button>
   );
 };
 

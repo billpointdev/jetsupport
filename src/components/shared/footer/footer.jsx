@@ -1,23 +1,31 @@
 import { useState } from 'react';
 import JetSupportLogo from "../../../utils/JetSupportLogo";
 import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
-import DownloadButton from "../../reusables/DownloadButton";
 import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
 
-
+const CustomButton = ({ children, os }) => {
+  return (
+      <button className="border flex items-center gap-2 px-7 py-3 rounded-full">
+        {children}
+        <p className=" text-start text-primary text-xs ml-3">
+          Download on <br /> <span className="font-bold text-xl">{os}</span>
+        </p>
+      </button>
+  );
+};
 
 function Footer() {
 
-  const [isChatVisible, setIsChatVisible] = useState(false);
-
-  const handleChatIconClick = () => {
-    setIsChatVisible(true);
-  };
-
-  const handleChatClose = () => {
-    setIsChatVisible(false);
-  };
+  // const [isChatVisible, setIsChatVisible] = useState(false);
+  //
+  // const handleChatIconClick = () => {
+  //   setIsChatVisible(true);
+  // };
+  //
+  // const handleChatClose = () => {
+  //   setIsChatVisible(false);
+  // };
 
   const links = [
     {
@@ -62,20 +70,20 @@ function Footer() {
           </ul>
         </div>
         {/* get the app div */}
-        <div className="flex flex-col  mt-3 py-12 md:py-0  md:mt-0 w-full lg:w-fit  md:items-start items-center ">
+        <div className="flex flex-col mt-3 py-8 md:py-0  md:mt-0 lg:w-[585px] w-full md:items-start">
           <p className="font-medium">Get the App</p>
-          <div className="flex flex-col md:flex-row mt-3 md:mt-5 w-full gap-[9px] items-center">
-            <DownloadButton os="Android" downloadOn={'Download on'}>
+          <div className="flex flex-col md:flex-row mt-3 md:mt-5 w-full gap-[9px] items-center justify-end">
+            <CustomButton os="Android">
               <div className="flex flex-col gap-[1px]">
                 <AndroidTop />
                 <AndroidBottom />
               </div>
-            </DownloadButton>
-            <DownloadButton os="Apple iOS"  downloadOn={'Download on'}>
+            </CustomButton>
+            <CustomButton os="Apple iOS">
               <div className="flex flex-col gap-[1px]">
                 <AppleIcon />
               </div>
-            </DownloadButton>
+            </CustomButton>
           </div>
         </div>
       </footer>

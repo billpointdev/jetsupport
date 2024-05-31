@@ -63,7 +63,7 @@ const GetInTouch = () => {
                 <div className="h-fit text-sm  gap-y-[19px] w-fit">
                   <p className="flex items-center text-[24px] ">
                     <IoCallOutline />{" "}
-                    <span className="text-sm  ml-2">+23434895395935</span>
+                    <span className="text-sm  ml-2">+ +234 906 421 9645</span>
                   </p>
                   <p className="flex items-center  mt-2">
                     <InboxIcon />{" "}
@@ -99,7 +99,7 @@ const GetInTouch = () => {
             </div>
           </div>
         </div>
-       
+
       </section>
     </div>
   );

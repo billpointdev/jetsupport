@@ -4,15 +4,17 @@ import PropTypes from "prop-types";
 
 const Layout = ({ children }) => {
   return (
-    <>
-      <section className="flex relative flex-col justify-between max-w-[1280px]">
-        <Navbar />
-        <div className=" p-8 mt-20">
-          <div className="bg-[white] p-16 rounded-[9px]">{children}</div>
+      <>
+        <div className="container mx-auto px-4">
+          <section className="flex relative flex-col justify-between max-w-[1280px]">
+            <Navbar/>
+            <div className="p-8 mt-20">
+              <div className="bg-[white] p-16 rounded-[9px]">{children}</div>
+            </div>
+            <Footer/>
+          </section>
         </div>
-        <Footer />
-      </section>
-    </>
+      </>
   );
 };
 // introduced this cause of my eslint
