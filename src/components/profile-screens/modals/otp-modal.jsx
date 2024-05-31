@@ -3,10 +3,16 @@ import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import OtpInputWithValidation from "../utils/otp-input";
 import Proptypes from "prop-types";
+import axiosInstance from "../../../api/config";
+import { useSelector } from "react-redux";
 
-const OtpModal = ({ setModal, handleContinue , title, setConfirmed}) => {
+const OtpModal = ({ setModal, handleContinue, title, setConfirmed }) => {
   const [otpFilled, setOtpFilled] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
+  const { userEmail } = useSelector((state) => state.auth);
+  const [otpError, setOtpError] = useState(null);
+  const [otp, setOtp] = useState(new Array(6).fill(""));
 
   const [timer, setTimer] = useState(60);
 
@@ -20,8 +26,27 @@ const OtpModal = ({ setModal, handleContinue , title, setConfirmed}) => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const handleResend = () => {
-    setTimer(60);
+  const handleResend = async () => {
+    try {
+      setTimer(60);
+      const response = await axiosInstance.post(`/auth/verify/otp`, {
+        email: storedUserEmail ? storedUserEmail : userEmail,
+        verify_code: otp.join(""),
+      });
+
+      if (!response.data) {
+        throw new Error("OTP verification failed");
+      }
+
+      console.log("OTP verified:", response.data);
+      setOtpVerified(true);
+      setModal(null);
+      setConfirmed(true);
+      setModal(title);
+    } catch (error) {
+      setOtpVerified(false);
+      setOtpError(error.response.data.message);
+    }
   };
 
   const handleChange = (otp) => {
@@ -54,6 +79,10 @@ const OtpModal = ({ setModal, handleContinue , title, setConfirmed}) => {
           setModal={setModal}
           title={title}
           setConfirmed={setConfirmed}
+          otpError={otpError}
+          setOtpError={setOtpError}
+          otp={otp}
+          setOtp={setOtp}
         />
         <div>
           <p className="text-[#757575] mt-7">
@@ -82,6 +111,8 @@ const OtpModal = ({ setModal, handleContinue , title, setConfirmed}) => {
 OtpModal.propTypes = {
   setModal: Proptypes.func.isRequired,
   handleContinue: Proptypes.func.isRequired,
+  title: Proptypes.string.isRequired,
+  setConfirmed: Proptypes.func,
 };
 
 export default OtpModal;

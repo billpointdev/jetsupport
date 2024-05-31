@@ -4,10 +4,9 @@ import Modal from "../reusables/modal";
 import OtpInputWithValidation from "../utils/reset-pin";
 import Proptypes from "prop-types";
 
-const SecurityPin = ( { setModal, setConfirmed } ) =>
-{
-  const [ otpFilled, setOtpFilled ] = useState( false );
-    const [otpVerified, setOtpVerified] = useState(false);
+const SecurityPin = ({ setModal, setConfirmed, setNotifications }) => {
+  const [otpFilled, setOtpFilled] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
 
   const [timer, setTimer] = useState(60);
 
@@ -31,11 +30,9 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
     setOtpFilled(isFilled);
   };
 
-
   const handleClick = () => {
-      setModal( null );
-      setConfirmed(false)
-
+    setModal(null);
+    setConfirmed(false);
   };
 
   useEffect(() => {
@@ -43,7 +40,7 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
       setModal(null);
       setConfirmed(false);
     }
-  },[otpFilled, otpVerified, setConfirmed, setModal])
+  }, [otpFilled, otpVerified, setConfirmed, setModal]);
 
   return (
     <Modal handleClick={handleClick}>
@@ -60,7 +57,8 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
           setOtpVerified={setOtpVerified}
           numberOfDigits={6}
           handleOtp={handleChange}
-          setConfirmed={setConfirmed}
+          setConfirmed={ setConfirmed }
+          setNotifications={setNotifications}
           setModal={setModal}
         />
         <div>
@@ -87,10 +85,10 @@ const SecurityPin = ( { setModal, setConfirmed } ) =>
   );
 };
 
-
 SecurityPin.propTypes = {
-    setModal: Proptypes.func.isRequired,
-    setConfirmed: Proptypes.func,
+  setModal: Proptypes.func.isRequired,
+  setConfirmed: Proptypes.func,
+  setNotifications: Proptypes.any
 };
 
 export default SecurityPin;

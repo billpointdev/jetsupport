@@ -1,13 +1,23 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import Proptypes from "prop-types";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../api/config";
+import ErrorBot from "../../../error";
 
 // const correctOTP = "123456";
 
-function OtpInputWithValidation({title,setConfirmed, setModal, numberOfDigits, handleOtp, setOtpVerified }) {
-  const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
-  const [otpError, setOtpError] = useState(null);
+function OtpInputWithValidation({
+  otpError,
+  setOtpError,
+  title,
+  setConfirmed,
+  setModal,
+  numberOfDigits,
+  handleOtp,
+  setOtpVerified,
+  otp,
+  setOtp,
+}) {
   const otpBoxReference = useRef([]);
   const { userEmail } = useSelector((state) => state.auth);
 
@@ -61,24 +71,43 @@ function OtpInputWithValidation({title,setConfirmed, setModal, numberOfDigits, h
           if (!response.data) {
             throw new Error("OTP verification failed");
           }
-
-          console.log("OTP verified:", response.data);
-          setOtpVerified(true);
-          setModal(null)
-          setConfirmed(true)
-          setModal(title)
           
+          // console.log("OTP verified:", response.data);
+          setOtpVerified(true);
+          setModal(null);
+          setConfirmed(true);
+          setModal(title);
         } catch (error) {
-          console.error("Error verifying OTP:", error.message);
           setOtpVerified(false);
+          setOtpError(error?.response?.data?.message);
+          setOtp(Array(6).fill(""));
         }
       };
 
-      handleSubmit(); 
-    } else {
-      setOtpError(null);
+      handleSubmit();
+    } 
+  }, [
+    numberOfDigits,
+    otp,
+    setConfirmed,
+    setModal,
+    setOtp,
+    setOtpError,
+    setOtpVerified,
+    storedUserEmail,
+    title,
+    userEmail,
+  ]);
+
+  useEffect(() => {
+    if (otpError) {
+      const timer = setTimeout(() => {
+        setOtpError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
     }
-  }, [otp, setOtpVerified, storedUserEmail, userEmail]);
+  }, [otpError, setOtpError]);
 
   return (
     <div className="w-full  flex flex-col items-center justify-center mt-5">
@@ -102,7 +131,7 @@ function OtpInputWithValidation({title,setConfirmed, setModal, numberOfDigits, h
           />
         ))}
       </div>
-      {otpError && <p className="text-sm mt-4">{otpError}</p>}
+      {otpError && <ErrorBot error={otpError} />}
     </div>
   );
 }
@@ -111,6 +140,13 @@ OtpInputWithValidation.propTypes = {
   numberOfDigits: Proptypes.number.isRequired,
   handleOtp: Proptypes.func.isRequired,
   setOtpVerified: Proptypes.func,
+  otpError: Proptypes.bool,
+  setOtpError: Proptypes.func,
+  title: Proptypes.any,
+  setConfirmed: Proptypes.any,
+  setModal: Proptypes.any,
+  otp: Proptypes.any,
+  setOtp: Proptypes.any,
 };
 
 export default OtpInputWithValidation;

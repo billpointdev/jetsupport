@@ -15,7 +15,6 @@ import SecurityPin from "../../components/profile-screens/modals/security-pin";
 import ResetPassword from "../../components/profile-screens/modals/reset-password";
 import LogoutModal from "../../components/profile-screens/modals/logout-modal";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
 import Notification from "../../components/reusables/notifications";
@@ -192,13 +191,27 @@ const ProfilePage = ({ children }) => {
         </div>
       </div>
       {modal && !confirmed && (
-        <OtpModal title={title} setConfirmed={setConfirmed} setModal={setModal} handleContinue={handleContinue} />
+        <OtpModal
+          title={title}
+          setConfirmed={setConfirmed}
+          setModal={setModal}
+          handleContinue={handleContinue}
+        />
       )}
       {modal === "Reset security PIN" && confirmed && (
-        <SecurityPin title={title} setModal={setModal}  setConfirmed={setConfirmed} />
+        <SecurityPin
+          setNotifications={setNotifications}
+          title={title}
+          setModal={setModal}
+          setConfirmed={setConfirmed}
+        />
       )}
       {modal === "Reset password" && confirmed && (
-        <ResetPassword setModal={setModal} setConfirmed={setConfirmed} />
+        <ResetPassword
+          setModal={setModal}
+          setNotifications={setNotifications}
+          setConfirmed={setConfirmed}
+        />
       )}
       {showLogoutModal && <LogoutModal />}
       <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">

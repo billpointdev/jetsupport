@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Input from "../reusables/customInput";
 import AuthHeader from "./shared/AuthHeader";
-import axios from "axios";
 import { useSelector } from "react-redux";
+import axiosInstance from "../../api/config";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(45);
-  // const buttonRef = useRef(null);
   const navigate = useNavigate();
   const { userEmail } = useSelector((state) => state.auth);
   const location = useLocation();
@@ -45,36 +44,32 @@ const OtpPage = () => {
 
  
 
-  const handleResend = () => {
-    setTimer(60);
-    // Will Add logic for resending OTP here:
-  };
-
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await axios.post(`/auth/verify/email`, {
-  //       email: "user@example.com",
-  //       otp: otp.join(""),
-  //     });
-  //     // setTimeout(() => {
-  //     //   if (isFromForgotPassword) {
-  //     //     navigate('/reset-password');
-  //     //   } else {
-  //     //     navigate('/security-pin');
-  //     //   }
-  //     // }, 2000);
-  //   } catch (error) {
-  //     // Handle verification error
-  //     console.error("Email verification error:", error);
-  //   }
-  // };
+   const handleResend = async () => {
+     setTimer(60);
+     try {
+       const storedUserEmail = localStorage.getItem("userEmail") || userEmail;
+       const response = await axiosInstance.post("/auth/forget/password", {
+         email: storedUserEmail,
+       });
+       setNotifications((prev) => [
+         {
+           id: Date.now(),
+           text: response?.message || "OTP resent successfully",
+         },
+         ...prev,
+       ]);
+     } catch (error) {
+       console.error("Error resending OTP:", error?.response?.data?.message);
+       setError(error?.response?.data?.message);
+     }
+   };
 
   const storedUserEmail = localStorage.getItem( "userEmail" ) || null;
   
   useEffect(() => {
     const handleSubmit = async () => {
       try {
-        const response = await axios.post(`/auth/verify/otp`, {
+        const response = await axiosInstance.post(`/auth/verify/otp`, {
           email: storedUserEmail ? storedUserEmail : userEmail,
           verify_code: otp.join(""),
         });

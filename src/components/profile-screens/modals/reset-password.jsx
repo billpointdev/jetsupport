@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import Proptypes from "prop-types";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
-import axios from "axios";
+import ErrorBot from "../../../error";
+import axiosInstance from "../../../api/config";
 
 const INITIAL_DATA = {
   oldPassword: "",
@@ -61,8 +62,9 @@ InputComponent.propTypes = {
   onChange: Proptypes.func,
 };
 
-const ResetPassword = ({ setModal, setConfirmed }) => {
+const ResetPassword = ({ setModal, setConfirmed, setNotifications }) => {
   const [data, setData] = useState(INITIAL_DATA);
+  const [errorResponse, setErrorResponse] = useState();
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -83,7 +85,7 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
     }
 
     try {
-      const response = await axios.post("/auth/change/password", {
+      const response = await axiosInstance.post("/auth/change/password", {
         password: data.oldPassword,
         new_password: data.newPassword,
         new_password_confirmation: data.confirmNewPassword,
@@ -93,12 +95,24 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
         throw new Error("Update failed");
       }
 
-      alert("Password updated successfully!");
+      setNotifications((prev) => [
+        { id: Date.now(), text: response?.data?.data?.message },
+        ...prev,
+      ]);
     } catch (error) {
-      console.error("Error changing password:", error);
-      alert("An error occurred while changing the password. Please try again.");
+      setErrorResponse(error?.response?.data?.message);
     }
   };
+
+    useEffect(() => {
+      if (errorResponse) {
+        const timer = setTimeout(() => {
+          setErrorResponse(null);
+        }, 5000);
+
+        return () => clearTimeout(timer);
+      }
+    }, [errorResponse, setErrorResponse]);
 
   return (
     <Modal handleClick={handleClick}>
@@ -144,6 +158,7 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
           <Button type="submit" title="Continue" className="mt-3" />
         </form>
       </div>
+      {errorResponse && <ErrorBot error={errorResponse} />}
     </Modal>
   );
 };
@@ -151,6 +166,7 @@ const ResetPassword = ({ setModal, setConfirmed }) => {
 ResetPassword.propTypes = {
   setModal: Proptypes.func.isRequired,
   setConfirmed: Proptypes.func,
+  setNotifications: Proptypes.any,
 };
 
 export default ResetPassword;
