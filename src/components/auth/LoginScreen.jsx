@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,29 +6,58 @@ import { userLogin } from "../../features/auth/authActions";
 import Input from "../reusables/customInput";
 import DownloadButton from "../reusables/DownloadButton";
 import AuthLayout from "./shared/AuthLayout";
+import { AnimatePresence } from "framer-motion";
+import Notification from "../reusables/notifications";
+import ErrorBot from "../../error";
 // import Error from '../reusables/Error'
 // import Spinner from '../reusables/Spinner'
 
 const LoginScreen = () => {
   // eslint-disable-next-line no-unused-vars
-  const { loading, userInfo, error } = useSelector((state) => state.auth);
+  const { loading, userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const [notifications, setNotifications] = useState([]);
+  const [error, setError] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const { register, handleSubmit, setValue, watch } = useForm();
 
   const navigate = useNavigate();
 
   // redirect authenticated user to profile screen
-  useEffect(() => {
+  useEffect(() =>  {
     if (userInfo) {
-      // navigate("/security-pin", { state: { fromLogin: true } });
-      navigate("/profile")
+      navigate("/security-pin", { state: { fromLogin: true } });
+      // navigate("/profile")
     }
   }, [navigate, userInfo]);
 
-  const submitForm = (data) => {
-    dispatch(userLogin(data));
+ const submitForm = async (data) => {
+   try {
+     const response = await dispatch(userLogin(data)).unwrap();
+     setNotifications((prev) => [
+       { id: Date.now(), text: response?.message },
+       ...prev,
+      ]);
+     console.log(response.data)
+   } catch ( error )
+   {
+     console.log("responseError", error.message);
+     setError( error?.message );
+   }
+ };
+
+   useEffect(() => {
+     if (error) {
+       const timer = setTimeout(() => {
+         setError(null);
+       }, 5000);
+
+       return () => clearTimeout(timer);
+     }
+   }, [error, setError]);
+
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
   };
 
   return (
@@ -64,7 +93,9 @@ const LoginScreen = () => {
               value={watch("password") || ""}
               onChange={(e) => setValue("password", e.target.value)}
             />
-            <small>Forget Password? </small>
+            <small className="cursor-pointer" onClick={() => navigate("/forgot-password")}>
+              Forget Password?{" "}
+            </small>
           </div>
 
           <div className="mt-40">
@@ -82,6 +113,14 @@ const LoginScreen = () => {
           </div>
         </form>
       </div>
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        <AnimatePresence>
+          {notifications.map((n) => (
+            <Notification removeNotif={removeNotif} {...n} key={n.id} />
+          ))}
+        </AnimatePresence>
+      </div>
+      {error && <ErrorBot error={error} />}
     </AuthLayout>
   );
 };

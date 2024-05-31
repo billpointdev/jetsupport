@@ -1,12 +1,18 @@
 import { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import axiosInstance from "../../../api/config";
 
 // const correctOTP = "1234";
 
-function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified,setConfirmed, setModal }) {
+function OtpInputWithValidation({
+  setNotifications,
+  numberOfDigits,
+  handleOtp,
+  setOtpVerified,
+  setConfirmed,
+  setModal,
+}) {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
@@ -54,19 +60,23 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified,setC
     if (otp.every((digit) => digit !== "")) {
       const handleSubmit = async () => {
         try {
-          const response = await axiosInstance.post(`/auth/update/pin`,{
-            pin:otp.join(""),
-            pin_confirmation:otp.join(""),
-        });
+          const response = await axiosInstance.post(`/auth/update/pin`, {
+            pin: otp.join(""),
+            pin_confirmation: otp.join(""),
+          });
 
           if (!response.data) {
             throw new Error("OTP verification failed");
           }
 
-          console.log("OTP verified:", response.data);
+          console.log("OTP verified:", response?.data?.data?.message);
           setOtpVerified(true);
-          setModal(null)
-          setConfirmed(false)
+          setModal(null);
+          setConfirmed(false);
+          setNotifications((prev) => [
+            { id: Date.now(), text: response?.data?.data?.message },
+            ...prev,
+          ]);
         } catch (error) {
           console.error("Error verifying OTP:", error.message);
           setOtpVerified(false);
@@ -80,7 +90,15 @@ function OtpInputWithValidation({ numberOfDigits, handleOtp, setOtpVerified,setC
     } else {
       setOtpError(null);
     }
-  }, [otp, setOtpVerified, storedUserEmail, userEmail]);
+  }, [
+    otp,
+    setConfirmed,
+    setModal,
+    setNotifications,
+    setOtpVerified,
+    storedUserEmail,
+    userEmail,
+  ]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center mt-5">
@@ -115,6 +133,9 @@ OtpInputWithValidation.propTypes = {
   numberOfDigits: PropTypes.number.isRequired,
   handleOtp: PropTypes.func.isRequired,
   setOtpVerified: PropTypes.func,
+  setConfirmed: PropTypes.func,
+  setModal: PropTypes.func,
+  setNotifications: PropTypes.any,
 };
 
 export default OtpInputWithValidation;
