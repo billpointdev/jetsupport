@@ -1,19 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import Error from "../reusables/Error"; @~Ellovick(Ezekiel Elom) please dont forget to utilize this  
+// import Error from "../reusables/Error"; @~Ellovick(Ezekiel Elom) please dont forget to utilize this
 import { registerUser } from "../../features/auth/authActions";
 // import Spinner from "../reusables/Spinner";
 import DownloadButton from "../reusables/DownloadButton";
 import Input from "../reusables/customInput";
 import AuthLayout from "./shared/AuthLayout";
+import Notification from "../reusables/notifications";
+import ErrorBot from "../../error";
 
 const SignupScreen = () => {
-  const {  userInfo, success, userEmail } = useSelector(
-    (state) => state.auth
-  );
+  const { userInfo, success, userEmail } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
+  const [error, setError] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const { register, handleSubmit, setValue, watch } = useForm();
 
@@ -23,21 +25,44 @@ const SignupScreen = () => {
     if (success && userEmail && userInfo) navigate("/otp");
   }, [navigate, userInfo, success, userEmail]);
 
-  const submitForm = (data) => {
-    if (data.password !== data.password_confirmation) {
-      alert("Password mismatch");
-      return;
+  // const submitForm = (data) => {
+  //   if (data.password !== data.password_confirmation) {
+  //     alert("Password mismatch");
+  //     return;
+  //   }
+  //   dispatch(registerUser(data));
+  // };
+  const submitForm = async (data) => {
+    try {
+      if (data.password !== data.password_confirmation) {
+        alert("Password mismatch");
+        return;
+      }
+      const response = await dispatch(registerUser(data)).unwrap();
+      setNotifications((prev) => [
+        { id: Date.now(), text: "Login successful" },
+        ...prev,
+      ]);
+      console.log(response);
+    } catch (error) {
+      console.log("responseError", error.message);
+      setError(error?.message);
     }
-    dispatch(registerUser(data));
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="mt-20">
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
+  };
 
   return (
     <AuthLayout>
@@ -137,11 +162,17 @@ const SignupScreen = () => {
             />
             <small className="text-center block mt-10">
               Have a Jetpay account?{" "}
-              <span onClick={() => navigate("/login")}>Login</span>
+              <span onClick={() => navigate("/login")} className="cursor-pointer">Login</span>
             </small>
           </div>
         </form>
       </div>
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        {notifications.map((n) => (
+          <Notification removeNotif={removeNotif} {...n} key={n.id} />
+        ))}
+      </div>
+      {error && <ErrorBot error={error} />}
     </AuthLayout>
   );
 };

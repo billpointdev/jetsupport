@@ -5,6 +5,9 @@ import Input from "../reusables/customInput";
 // import AuthHeader from "./shared/AuthHeader";
 import DownloadButton from "../../components/reusables/DownloadButton";
 import { updatePin, validatePin } from "../../features/auth/authActions";
+import ErrorBot from "../../error";
+import { AnimatePresence } from "framer-motion";
+import Notification from "../reusables/notifications";
 
 const SecurityPin = () => {
   const [pin, setPin] = useState(["", "", "", "", "", ""]);
@@ -12,10 +15,12 @@ const SecurityPin = () => {
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   // const buttonRef = useRef(null);
+  const [notifications, setNotifications] = useState([]);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { userInfo, userEmail, userToken } = useSelector((state) => state.auth);
+  const { userInfo, userEmail } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (timer > 0) {
@@ -61,17 +66,35 @@ const SecurityPin = () => {
       location.state?.fromLogin
     ) {
       // Trigger PIN validation
-      dispatch(
-        validatePin({ email: userEmail, security_pin: pin.join("") })
-      ).then((result) => {
-        if (validatePin.fulfilled.match(result)) {
-          navigate("/profile");
-        } else {
-          // Handle validation error, show a message,
-        }
-      });
+      dispatch(validatePin({ email: userEmail, security_pin: pin.join("") }))
+        .then((result) => {
+          if (validatePin.fulfilled.match(result)) {
+            navigate("/profile");
+            setNotifications((prev) => [
+              { id: Date.now(), text: "Login successful" },
+              ...prev,
+            ]);
+          } else {
+            console.log(result.payload.message);
+            setError(result?.payload?.message);
+            setNotifications([]);
+          }
+        })
+        .catch((error) => {
+          setError(error?.message);
+          setNotifications([]);
+          setPin(Array(6).fill(""));
+        });
     }
-  }, [pin, location.state?.fromLogin, dispatch, userEmail, navigate]);
+  }, [
+    pin,
+    location.state?.fromLogin,
+    dispatch,
+    userEmail,
+    navigate,
+    setError,
+    setNotifications,
+  ]);
 
   const handleCreatePin = () => {
     const pinValue = pin.join("");
@@ -88,7 +111,20 @@ const SecurityPin = () => {
         setIsLoading(false);
       });
   };
-  console.log("userToken" , userToken)
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
+  };
   return (
     <div className="flex flex-col  justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
       {/* <AuthHeader /> */}
@@ -148,6 +184,14 @@ const SecurityPin = () => {
           onClick={handleCreatePin}
         />
       )}
+      <AnimatePresence>
+        <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+          {notifications.map((n) => (
+            <Notification removeNotif={removeNotif} {...n} key={n.id} />
+          ))}
+        </div>
+        {error && <ErrorBot error={error} />}
+      </AnimatePresence>
     </div>
   );
 };

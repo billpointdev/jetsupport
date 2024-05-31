@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userLogin, registerUser, validatePin, updatePin } from "./authActions";
+import { userLogin, registerUser, validatePin, updatePin, logOut } from "./authActions";
 // import initAxios from "../../api/config";
 
 const userToken = localStorage.getItem("userToken") || null;
@@ -115,6 +115,17 @@ const authSlice = createSlice({
       .addCase(updatePin.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
+      })
+       .addCase(logOut.fulfilled, (state) => {
+        state.loading = false;
+        state.userInfo = null;
+        state.userToken = null;
+        state.error = null;
+        state.success = false;
+        state.userEmail = null;
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("isPinValidated");
+        localStorage.removeItem("userInfo");
       });
   },
 });
