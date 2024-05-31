@@ -10,8 +10,11 @@ import { logout } from "../../../features/auth/authSlice";
 const AuthorizeDelete = ({ setAuthorizeDelete }) => {
   // eslint-disable-next-line no-unused-vars
   const [otpFilled, setOtpFilled] = useState(false);
+  const [otpError, setOtpError] = useState(null);
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const { userInfo } = useSelector((state) => state.auth);
   // eslint-disable-next-line no-unused-vars
+  const [otpVerified, setOtpVerified] = useState(false);
   const [authorize, setAuthorize] = useState(false);
   const handleChange = (otp) => {
     const isFilled = otp.length === 4;
@@ -32,6 +35,8 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
       console.log("error", error);
     }
   };
+
+  console.log("setAuthorize" , authorize)
   return (
     <Modal handleClick={handleClick}>
       <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
@@ -46,9 +51,15 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
             Enter your BillPoint PIN to authorize account deletion{" "}
           </p>
           <OtpInputWithValidation
-            authorize={authorize}
-            numberOfDigits={6}
             handleOtp={handleChange}
+            setOtpVerified={setOtpVerified}
+            setAuthorizeDelete={setAuthorizeDelete}
+            otpError={otpError}
+            setOtpError={setOtpError}
+            setAuthorize={setAuthorize}
+            otp={otp}
+            setOtp={setOtp}
+            numberOfDigits={6}
           />
         </div>
 
@@ -57,7 +68,7 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
           onClick={handleAuthorizeDelete}
           title="Continue"
           className="mt-6"
-          // disabled={!otpFilled}
+          disabled={!otpFilled || authorize}
         />
       </div>
     </Modal>

@@ -62,7 +62,8 @@ const MyAccount = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const userToken = localStorage.getItem("access_token");
+  const userToken = localStorage.getItem( "access_token" );
+ 
 
   useEffect(() => {
     if (userInfo) {

@@ -1,20 +1,22 @@
-import { useRef, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useRef, useEffect } from "react";
+import Proptypes from "prop-types";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../../api/config";
+import ErrorBot from "../../../error";
 
-// const correctOTP = "1234";
+// const correctOTP = "123456";
 
 function OtpInputWithValidation({
-  setNotifications,
-  numberOfDigits,
+  setAuthorize,
   handleOtp,
   setOtpVerified,
-  setConfirmed,
-  setModal,
+  otpError,
+  setOtpError,
+  otp,
+  setOtp,
+  setAuthorizeDelete,
+  numberOfDigits,
 }) {
-  const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
-  const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
   const { userEmail } = useSelector((state) => state.auth);
 
@@ -60,54 +62,61 @@ function OtpInputWithValidation({
     if (otp.every((digit) => digit !== "")) {
       const handleSubmit = async () => {
         try {
-          const response = await axiosInstance.post(`/auth/update/pin`, {
-            pin: otp.join(""),
-            pin_confirmation: otp.join(""),
+          const response = await axiosInstance.post(`/auth/login/pin`, {
+            email: storedUserEmail ? storedUserEmail : userEmail,
+            security_pin: otp.join(""),
           });
 
           if (!response.data) {
             throw new Error("OTP verification failed");
           }
-
-          console.log("OTP verified:", response?.data?.data?.message);
+      localStorage.setItem("access_token", response?.data?.data?.access_token);
+          console.log("OTP verified:", response);
           setOtpVerified(true);
-          setModal(null);
-          setConfirmed(false);
-          setNotifications((prev) => [
-            { id: Date.now(), text: response?.data?.data?.message },
-            ...prev,
-          ]);
+          setAuthorize( true );
+          setAuthorizeDelete(false)
         } catch (error) {
-          console.error("Error verifying OTP:", error.message);
           setOtpVerified(false);
+          setOtpError(error?.response?.data?.message);
+          setOtp(Array(6).fill(""));
         }
       };
 
-      handleSubmit(); // Call the handleSubmit function directly
-
-      // If you want to set OTP error here, uncomment the line below
-      // setOtpError("❌ Wrong OTP Please Check Again");
-    } else {
-      setOtpError(null);
+      handleSubmit();
     }
-  }, [
-    otp,
-    setConfirmed,
-    setModal,
-    setNotifications,
-    setOtpVerified,
-    storedUserEmail,
-    userEmail,
-  ]);
+  }, [numberOfDigits, otp, setAuthorize, setAuthorizeDelete, setOtp, setOtpError, setOtpVerified, storedUserEmail, userEmail]);
+
+  useEffect(() => {
+    if (otpError) {
+      const timer = setTimeout(() => {
+        setOtpError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [otpError, setOtpError]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center mt-5">
+    <div className="w-full  flex flex-col items-center justify-center mt-5">
       <div
         style={{
           gridTemplateColumns: `repeat(${numberOfDigits}, minmax(0, 1fr))`,
         }}
-        className="grid justify-center items-center gap-4"
+        className={`grid justify-center   items-center gap-4`}
       >
+        {/* {otp.map((digit, index) => (
+          <input
+            key={index}
+            value={digit}
+            maxLength={1}
+            onChange={(e) => handleChange(e.target.value, index)}
+            onKeyUp={(e) => handleBackspaceAndEnter(e, index)}
+            onPaste={(e) => handlePaste(e)}
+            ref={(ref) => (otpBoxReference.current[index] = ref)}
+            placeholder="-"
+            className={` h-14 text-center text-[#757575] p-3 rounded-md bg-[#FAFAFA]  focus:border focus:border-primary focus:outline-none appearance-none`}
+          />
+        ))} */}
         {otp.map((digit, index) => (
           <input
             key={index}
@@ -124,18 +133,23 @@ function OtpInputWithValidation({
           />
         ))}
       </div>
-      {otpError && <p className="text-sm mt-4">{otpError}</p>}
+      {otpError && <ErrorBot error={otpError} />}
     </div>
   );
 }
 
 OtpInputWithValidation.propTypes = {
-  numberOfDigits: PropTypes.number.isRequired,
-  handleOtp: PropTypes.func.isRequired,
-  setOtpVerified: PropTypes.func,
-  setConfirmed: PropTypes.func,
-  setModal: PropTypes.func,
-  setNotifications: PropTypes.any,
+  numberOfDigits: Proptypes.number.isRequired,
+  handleOtp: Proptypes.func.isRequired,
+  setOtpVerified: Proptypes.func,
+  otpError: Proptypes.bool,
+  setOtpError: Proptypes.func,
+  title: Proptypes.any,
+  setAuthorize: Proptypes.any,
+  otp: Proptypes.any,
+  setOtp: Proptypes.any,
+  setAuthorizeDelete: Proptypes.any,
 };
 
 export default OtpInputWithValidation;
+

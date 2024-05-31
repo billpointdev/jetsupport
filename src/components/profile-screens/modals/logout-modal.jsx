@@ -12,6 +12,7 @@ const LogoutModal = () => {
   const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const removeNotif = (id) => {
     setNotifications((pv) => pv.filter((n) => n.id !== id));
@@ -19,6 +20,7 @@ const LogoutModal = () => {
 
   const handleLogout = async (data) => {
     try {
+      setLoading(true);
       const response = await dispatch(logOut(data)).unwrap();
       setNotifications((prev) => [
         { id: Date.now(), text: response?.data },
@@ -27,7 +29,7 @@ const LogoutModal = () => {
       setTimeout(() => {
         closeLogoutModal();
       }, 2000);
-
+      setLoading(false);
       console.log(response.data);
     } catch (error) {
       console.log("responseError", error.message);
@@ -74,7 +76,7 @@ const LogoutModal = () => {
               type="button"
               className={`block w-full whitespace-nowrap rounded-[16px] h-14  bg-[#FF3B3B] text-white text-sm md:text-md lg:text-lg px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
             >
-              Sign me Out
+            {loading ? "Signing out..." : "Sign me Out"}
             </button>
           </div>
         </div>

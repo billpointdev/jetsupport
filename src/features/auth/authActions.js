@@ -15,10 +15,9 @@ export const userLogin = createAsyncThunk(
       if (!response.data) {
         throw new Error("Failed to login");
       }
-      console.log(response)
+      console.log(response);
       localStorage.setItem("access_token", response.data.data.access_token);
       return response.data;
-
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -33,18 +32,17 @@ export const registerUser = createAsyncThunk(
         `${BASE_URL}/auth/register`,
         userDetails
       );
-      console.log(response)
+      console.log(response);
       if (!response.data) {
         throw new Error("Failed to register");
       }
+      localStorage.setItem("access_token", response.data.data.access_token);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
-
-
 
 export const validatePin = createAsyncThunk(
   "auth/validatePin",
@@ -88,12 +86,14 @@ export const updatePin = createAsyncThunk(
   }
 );
 
-
-export const logOut = createAsyncThunk("auth/logOut", async (pinData, thunkAPI) => {
-  try {
-    const response = await axiosInstance.post(`/auth/logout`, pinData);
-    return response.data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const logOut = createAsyncThunk(
+  "auth/logOut",
+  async (pinData, thunkAPI) => {
+    try {
+      const response = await axiosInstance.post(`/auth/logout`, pinData);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
