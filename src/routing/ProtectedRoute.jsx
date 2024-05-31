@@ -5,24 +5,21 @@ import { useState, useEffect } from "react";
 const ProtectedRoute = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [redirect, setRedirect] = useState(false);
-  
+  const isPinValidated = localStorage.getItem("isPinValidated")
 
-  // useEffect(() => {
-  //   if (!userInfo || !isPinValidated) {
-  //     const timer = setTimeout(() => {
-  //       setRedirect(true);
-  //     }, 1000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [userInfo, isPinValidated]);
+  useEffect(() => {
+    if (!userInfo || !isPinValidated) {
+        setRedirect(true);
+    }
+  }, [userInfo, isPinValidated]);
 
-  // if (redirect) {
-  //   return isPinValidated ? (
-  //     <Navigate to="/security-pin" state={{ fromLogin: true }} />
-  //   ) : (
-  //     <Navigate to="/login" />
-  //   );
-  // }
+  if (redirect) {
+    return isPinValidated ? (
+      <Navigate to="/security-pin" state={{ fromLogin: true }} />
+    ) : (
+      <Navigate to="/login" />
+    );
+  }
 console.log(userInfo)
   if (!userInfo ) {
     return (

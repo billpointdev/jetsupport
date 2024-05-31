@@ -4,10 +4,15 @@ import Input from "../reusables/customInput";
 import AuthHeader from "./shared/AuthHeader";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../api/config";
+import Notification from "../reusables/notifications";
+import { AnimatePresence } from "framer-motion";
+import ErrorBot from "../../error";
 
 const OtpPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(45);
+  const [ notifications, setNotifications ] = useState( [] );
+  const [error , setError] = useState(null)
   const navigate = useNavigate();
   const { userEmail } = useSelector((state) => state.auth);
   const location = useLocation();
@@ -45,24 +50,24 @@ const OtpPage = () => {
  
 
    const handleResend = async () => {
-     setTimer(60);
-     try {
-       const storedUserEmail = localStorage.getItem("userEmail") || userEmail;
-       const response = await axiosInstance.post("/auth/forget/password", {
-         email: storedUserEmail,
-       });
-       setNotifications((prev) => [
-         {
-           id: Date.now(),
-           text: response?.message || "OTP resent successfully",
-         },
-         ...prev,
-       ]);
-     } catch (error) {
-       console.error("Error resending OTP:", error?.response?.data?.message);
-       setError(error?.response?.data?.message);
-     }
-   };
+    setTimer(60);
+     if ( isFromForgotPassword )
+     {
+      try {
+      const storedUserEmail = localStorage.getItem("userEmail") || userEmail;
+      const response = await axiosInstance.post("/auth/forget/password", {
+        email: storedUserEmail,
+      });
+      setNotifications((prev) => [
+        { id: Date.now(), text: response?.message || "OTP resent successfully" },
+        ...prev,
+      ]);
+    } catch (error) {
+      console.error("Error resending OTP:", error?.response?.data?.message);
+      setError(error?.response?.data?.message);
+    }
+   }
+  };
 
   const storedUserEmail = localStorage.getItem( "userEmail" ) || null;
   
@@ -96,6 +101,9 @@ const OtpPage = () => {
     }
   }, [otp, storedUserEmail, userEmail, isFromForgotPassword, navigate]);
 
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
+  };
 
   return (
     <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
@@ -155,6 +163,14 @@ const OtpPage = () => {
           </p>
         )}
       </div>
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        <AnimatePresence>
+          {notifications.map((n) => (
+            <Notification removeNotif={removeNotif} {...n} key={n.id} />
+          ))}
+        </AnimatePresence>
+      </div>
+      {error && <ErrorBot error={error} />}
     </div>
   );
 };

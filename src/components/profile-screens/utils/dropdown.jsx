@@ -45,7 +45,7 @@ const StaggeredDropDown = () => {
         >
           <span className="font-medium text-sm  w-12 h-12 rounded-full">
             <img
-              src={userInfo?.user?.picture}
+              src={userInfo?.picture}
               className="object-cover w-full h-full"
               alt="avatar"
             />
@@ -63,15 +63,17 @@ const StaggeredDropDown = () => {
         >
           <div className="bg-white p-2 w-full  rounded-lg">
             <div className="flex items-center">
-              <div className="w-12 h-12 rounded-full border-2 border-gray-400 ">
-                <img src={userInfo?.user?.picture} alt="avatar" />
-              </div>
-              <div className="ml-2 text-start">
+                <img
+                  src={userInfo?.picture}
+                  alt="avatar"
+                  className="w-12 h-12 rounded-full border-2 border-gray-400 "
+                />
+              <div className="ml-1 text-start">
                 <p className="text-[#010E0E] text-[12px]">
-                  {userInfo?.user?.firstname} {userInfo?.user?.lastname}
+                  {userInfo?.firstname} {userInfo?.lastname}
                 </p>
                 <p className="text-[9px] text-[#616161] leading-1">
-                  {userInfo?.user?.email}
+                  {userInfo?.email.substring(0,23)}...
                 </p>
               </div>
             </div>

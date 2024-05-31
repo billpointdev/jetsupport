@@ -1,10 +1,51 @@
+import { useDispatch } from "react-redux";
 import MasterExitIcon from "../../../utils/MasterExitIcon";
 import useLogout from "../hooks/useLogout";
 import Modal from "../reusables/modal";
+import { useEffect, useState } from "react";
+import { logOut } from "../../../features/auth/authActions";
+import { AnimatePresence } from "framer-motion";
+import Notification from "../../reusables/notifications";
+import ErrorBot from "../../../error";
 
 const LogoutModal = () => {
-  
-    const {closeLogoutModal} = useLogout()
+  const dispatch = useDispatch();
+  const [notifications, setNotifications] = useState([]);
+  const [error, setError] = useState(null);
+
+  const removeNotif = (id) => {
+    setNotifications((pv) => pv.filter((n) => n.id !== id));
+  };
+
+  const handleLogout = async (data) => {
+    try {
+      const response = await dispatch(logOut(data)).unwrap();
+      setNotifications((prev) => [
+        { id: Date.now(), text: response?.data },
+        ...prev,
+      ]);
+      setTimeout(() => {
+        closeLogoutModal();
+      }, 2000);
+
+      console.log(response.data);
+    } catch (error) {
+      console.log("responseError", error.message);
+      setError(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
+  const { closeLogoutModal } = useLogout();
   return (
     <Modal handleClick={closeLogoutModal}>
       <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
@@ -29,7 +70,7 @@ const LogoutModal = () => {
               Close
             </button>
             <button
-              // onClick={handleLogout}
+              onClick={() => handleLogout()}
               type="button"
               className={`block w-full whitespace-nowrap rounded-[16px] h-14  bg-[#FF3B3B] text-white text-sm md:text-md lg:text-lg px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
             >
@@ -38,6 +79,14 @@ const LogoutModal = () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col gap-1 w-72 fixed top-2 right-2 z-50 pointer-events-none">
+        <AnimatePresence>
+          {notifications.map((n) => (
+            <Notification removeNotif={removeNotif} {...n} key={n.id} />
+          ))}
+        </AnimatePresence>
+      </div>
+      {error && <ErrorBot error={error} />}
     </Modal>
   );
 };

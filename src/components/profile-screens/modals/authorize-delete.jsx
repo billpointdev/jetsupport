@@ -2,32 +2,42 @@ import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import Proptypes from "prop-types";
 import OtpInputWithValidation from "../utils/reset-pin";
-import avatar from "../../../assets/frameimage.png"
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axiosInstance from "../../../api/config";
+import { logout } from "../../../features/auth/authSlice";
 
-const AuthorizeDelete = ( { setAuthorizeDelete } ) =>
-{
-    const [otpFilled, setOtpFilled] = useState(false);
+const AuthorizeDelete = ({ setAuthorizeDelete }) => {
+  // eslint-disable-next-line no-unused-vars
+  const [otpFilled, setOtpFilled] = useState(false);
+  const { userInfo } = useSelector((state) => state.auth);
+  // eslint-disable-next-line no-unused-vars
+  const [authorize, setAuthorize] = useState(false);
+  const handleChange = (otp) => {
+    const isFilled = otp.length === 4;
+    setOtpFilled(isFilled);
+  };
 
-  
-    const handleChange = (otp) => {
-      const isFilled = otp.length === 4;
-      setOtpFilled(isFilled);
-    };
-
-
+  const dispatch = useDispatch();
   const handleClick = () => {
     setAuthorizeDelete(false);
   };
-  const handleAuthorizeDelete = () => {
+  const handleAuthorizeDelete = async () => {
     // code to authorize delete
+    try {
+      const response = await axiosInstance.get(`/auth/accountdelete`);
+      dispatch(logout());
+      console.log("response", response);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <Modal handleClick={handleClick}>
-      <div className="bg-white w-full h-[400px] flex flex-col justify-between mt-14 rounded-[24px] p-2 py-3 ">
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
         <div className="flex flex-col items-center">
           <div className="w-16 h-16 rounded-full border border-[#DDE5E9] flex items-center justify-center">
-            <img src={avatar} alt="avatar" />
+            <img src={userInfo?.picture} alt="avatar" />
           </div>
           <p className="font-inter font-semibold text-lg">
             Authorize account deletion
@@ -35,15 +45,19 @@ const AuthorizeDelete = ( { setAuthorizeDelete } ) =>
           <p className="text-[#828282] text-md font-inter leading-5">
             Enter your BillPoint PIN to authorize account deletion{" "}
           </p>
-          <OtpInputWithValidation numberOfDigits={4} handleOtp={handleChange} />
+          <OtpInputWithValidation
+            authorize={authorize}
+            numberOfDigits={6}
+            handleOtp={handleChange}
+          />
         </div>
 
         <Button
           type="submit"
           onClick={handleAuthorizeDelete}
           title="Continue"
-          className="lg:mb-4"
-          disabled={!otpFilled}
+          className="mt-6"
+          // disabled={!otpFilled}
         />
       </div>
     </Modal>

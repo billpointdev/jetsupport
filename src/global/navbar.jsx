@@ -141,7 +141,7 @@ const { userInfo } = useSelector(
           <nav aria-label="Global" className="hidden md:flex items-center">
             <div className="hidden lg:block w-12 h-12 rounded-full border">
               <img
-                src={userInfo?.user?.picture}
+                src={userInfo?.picture}
                 alt=""
                 className="object-cover h-full w-full"
               />
@@ -150,7 +150,7 @@ const { userInfo } = useSelector(
               <h1 className="  dark:text-white sm:text-2xl font-inter">
                 {getGreeting()},{" "}
                 <span className=" text-[#010E0E] dark:text-white font-bold ">
-                  {userInfo?.user?.firstname}
+                  {userInfo?.firstname}
                 </span>{" "}
                 👋
               </h1>

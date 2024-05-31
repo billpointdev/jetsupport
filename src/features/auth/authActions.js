@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosInstance from "../../api/config";
 
 const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 
@@ -32,6 +33,7 @@ export const registerUser = createAsyncThunk(
         `${BASE_URL}/auth/register`,
         userDetails
       );
+      console.log(response)
       if (!response.data) {
         throw new Error("Failed to register");
       }
@@ -78,10 +80,20 @@ export const updatePin = createAsyncThunk(
   "auth/updatePin",
   async (pinData, thunkAPI) => {
     try {
-      const response = await axios.post(`/auth/update/pin`, pinData);
+      const response = await axiosInstance.post(`/auth/update/pin`, pinData);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
+
+
+export const logOut = createAsyncThunk("auth/logOut", async (pinData, thunkAPI) => {
+  try {
+    const response = await axiosInstance.post(`/auth/logout`, pinData);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+});
