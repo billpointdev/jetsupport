@@ -38,7 +38,7 @@ const Input = ({ label, id, type, placeholder, bgColor,className, value, onChang
 };
 
 Input.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   id: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "email", "tel", "password"]).isRequired,
   placeholder: PropTypes.string.isRequired,

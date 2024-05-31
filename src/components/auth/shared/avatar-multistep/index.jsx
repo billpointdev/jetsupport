@@ -6,7 +6,7 @@ import useMultiForm from "../hooks/useMultiStep";
 import DownloadButton from "../../../reusables/DownloadButton";
 import AuthHeader from "../AuthHeader";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../../../api/config";
 
 const INITIAL_DATA = {
   avatar: null,
@@ -47,7 +47,7 @@ const MultiStep = () => {
 
   const handleSetName = async () => {
     try {
-      const response = await axios.post("not determined yet", {
+      const response = await axiosInstance.post("not determined yet", {
         // name: data.userName,
       });
       console.log("Avatar set successfully:", response.data);
@@ -63,12 +63,12 @@ const MultiStep = () => {
    const handleSubmitAvatar = async () => {
      try {
        if (data.isCustom) {
-         const response = await axios.post("/update/user/picture", {
+         const response = await axiosInstance.post("/update/user/picture", {
            picture: data.avatar,
          });
          console.log("Custom image set successfully:", response.data);
        } else {
-         const response = await axios.post("/auth/update/avatar", {
+         const response = await axiosInstance.post("/auth/update/avatar", {
            avatar: data.avatar,
          });
          console.log("Avatar set successfully:", response.data);

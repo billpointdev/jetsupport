@@ -103,7 +103,7 @@ const LoginScreen = () => {
 
             <div className="mt-40">
               <DownloadButton
-                buttonText="Continue"
+                buttonText={loading ? "Logging in ..." : "Continue"}
                 padding={"px-20"}
                 width={"w-[100%]"}
                 bgColor={"bg-primary"}

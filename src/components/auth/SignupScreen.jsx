@@ -12,7 +12,7 @@ import Notification from "../reusables/notifications";
 import ErrorBot from "../../error";
 
 const SignupScreen = () => {
-  const { userInfo, success, userEmail } = useSelector((state) => state.auth);
+  const { userInfo, success, userEmail, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
@@ -154,7 +154,7 @@ const SignupScreen = () => {
           </div>
           <div className="mt-20">
             <DownloadButton
-              buttonText="Continue"
+              buttonText={loading ? "Signing up ..." :"Continue"}
               padding={"px-20"}
               width={"w-[100%]"}
               bgColor={"bg-primary"}
