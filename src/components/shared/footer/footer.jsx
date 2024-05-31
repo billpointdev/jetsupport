@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import JetSupportLogo from "../../../utils/JetSupportLogo";
 import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
 import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
+import HaveAQuestion from "./haveAQuestion.jsx";
 
 const CustomButton = ({ children, os }) => {
   return (
@@ -51,6 +51,7 @@ function Footer() {
   ];
   return (
     <div className="relative h-full w-full">
+      <HaveAQuestion/>
       <GetInTouch />
       <footer className=" w-full lg:h-[280px] items-center py-3 flex flex-col md:flex-row justify-center md:justify-between font-inter ">
         <div className="w-full  flex flex-col  justify-center items-center md:items-start">

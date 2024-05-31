@@ -6,7 +6,7 @@ import { Circle } from "../../../utils/constants";
 
 const GetInTouchForm = () => {
   return (
-    <form action="#" className="space-y-7 bg-[#fafafc]">
+    <form action="#" className="space-y-3 bg-[#fafafc]">
       <Input
         label="Full Name"
         id="name"
@@ -53,14 +53,14 @@ const GetInTouch = () => {
             <div className="lg:col-span-4 lg:py-12">
               <div className="text-start flex flex-col gap-y-5 lg:gap-y-24">
                 <div className="">
-                  <h1 className=" text-3xl whitespace-nowrap lg:text-[60px] max-w-xl font-semibold tracking-wide">
+                  <h1 className=" text-3xl whitespace-nowrap lg:text-[50px] max-w-xl font-semibold tracking-wide">
                     Get in touch
                   </h1>
-                  <p className="text-opacity-95 mt-5 text-[15px] font-inter">
+                  <p className="text-xs text-gray-500 mt-5 text-[13px] font-inter">
                     Have an enquiry? Fill out the form to contact our team
                   </p>
                 </div>
-                <div className="h-fit text-sm  gap-y-[19px] w-fit">
+                <div className="h-fit text-xs text-gray-500   gap-y-[19px] w-fit">
                   <p className="flex items-center text-[24px] ">
                     <IoCallOutline />{" "}
                     <span className="text-sm  ml-2">+ +234 906 421 9645</span>
