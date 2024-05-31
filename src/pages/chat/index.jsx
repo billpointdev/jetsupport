@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import {
-  // useCreateChatClient,
   Chat,
   Channel,
   MessageInput,
@@ -12,11 +11,8 @@ import {
   Streami18n,
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
-
 import { SearchIndex } from "emoji-mart";
-// import data from "@emoji-mart/data";
 import { AnimatePresence, motion } from "framer-motion";
-
 import "stream-chat-react/dist/css/v2/index.css";
 import Navbar from "../../global/navbar";
 import { CustomChannelPreview } from "../../components/chat/custom-channel-preview";
@@ -29,18 +25,11 @@ import { CustomChannelHeader } from "../../components/chat/channel-header";
 import ChatBody from "../../components/chat/chat-body";
 import { useLocation } from "react-router-dom";
 import { CustomDateSeparator } from "../../components/chat/date-separator";
+import Modal from "../../components/profile-screens/reusables/modal";
+import LoadingIcon from '../../assets/loading-icon.gif'
 
-const apiKey = "65p4bnpn4rhd";
-// const userId = "hidden-shadow-2";
-// const userName = "hidden-shadow-2";
-// const userToken =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiaGlkZGVuLXNoYWRvdy0yIn0.DauCebZ4c75mHfe_Cwe3FMKfVmTBJQrIbhOzpsfQOs4";
 
-// const user = {
-//   id: userId,
-//   name: userName,
-//   image: `https://getstream.io/random_png/?name=${userName}`,
-// };
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const getRandomUser = () => {
   const users = [USER1, USER2, USER3];
@@ -49,7 +38,6 @@ const getRandomUser = () => {
 };
 
 const JetChat = () => {
-  // eslint-disable-next-line no-unused-vars
   const [channel, setChannel] = useState();
   const [chatClient, setChatClient] = useState();
   const [open, setOpen] = useState(false);
@@ -57,9 +45,11 @@ const JetChat = () => {
   const [navCheck, setNavCheck] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
-  
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [channels, setChannels] = useState([]); // State to store channels
+
   const { setOpen: setDropdown } = useProviderContext();
-  
+
   const location = useLocation();
   useEffect(() => {
     if (modal) {
@@ -68,9 +58,7 @@ const JetChat = () => {
         setActiveIndex(modalIndex);
       }
     } else {
-      const pathIndex = items.findIndex(
-        (item) => item.href === location.pathname
-      );
+      const pathIndex = items.findIndex((item) => item.href === location.pathname);
       if (pathIndex !== -1) {
         setActiveIndex(pathIndex);
       }
@@ -89,11 +77,6 @@ const JetChat = () => {
     };
   }, []);
 
-  // const client = useCreateChatClient({
-  //   apiKey,
-  //   tokenOrProvider: userToken,
-  //   userData: user,
-  // });
   const ref = useRef(null);
 
   useEffect(() => {
@@ -136,35 +119,30 @@ const JetChat = () => {
   });
 
   useEffect(() => {
-    // if (!client) return;
-
     async function initChat() {
       const client = StreamChat.getInstance(apiKey);
       const user = getRandomUser();
-      client.connectUser(user, client.devToken(user.id));
+      await client.connectUser(user, client.devToken(user.id));
 
-      const channel = client.channel("team", "general", {
-        image: "https://getstream.io/random_png/?name=react",
-        name: "Slack Channel",
-        // members: [user.id],
-      });
+      const channels = await client.queryChannels({});
+      setChannels(channels); // Set channels to state
+      if (channels.length === 0) {
+        setShowWelcomeModal(true); // Show welcome modal if no channels exist
+      } else {
+        setChannel(channels[0]);
+      }
 
-      await channel.create();
-      channel.addMembers([user.id]);
-      setChannel(channel);
-
-      setChatClient( client );
+      setChatClient(client);
     }
 
     initChat();
 
-    // return () => {
-    //   if (chatClient) chatClient.disconnectUser();
-    // };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      if (chatClient) chatClient.disconnectUser();
+    };
   }, []);
 
-  if (!chatClient) return <div>Setting up client & connection...</div>;
+  if (!chatClient) return <div className="flex flex-col justify-center place-items-center h-[100vh]"> <img src={LoadingIcon} alt="Loading" /> </div>;
 
   const toggleSidebar = () => {
     setDropdown(false);
@@ -174,8 +152,7 @@ const JetChat = () => {
   const i18nInstance = new Streami18n({
     language: "en",
     translationsForLanguage: {
-      "Connection failure, reconnecting now...":
-        "Alert, connection issue happening",
+      "Connection failure, reconnecting now...": "Alert, connection issue happening",
     },
   });
 
@@ -190,35 +167,33 @@ const JetChat = () => {
     }
   };
 
-  
   const handleClick = (index, title) => {
     setDropdown(false);
     setActiveIndex(index);
     setModal(null);
     handleItemClick(title);
   };
+
+  const handleModalClose = () => {
+    setShowWelcomeModal(false);
+    setModal(null);
+  };
+
   return (
     <Chat client={chatClient} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
-      <div className="lg:pt-[66px] flex w-full h-screen  fixed top-0 left-0 ">
+      <div className="lg:pt-[66px] flex w-full h-screen fixed top-0 left-0">
         {windowWidth <= 768 && (
           <AnimatePresence>
             {open && (
-              <ChatBody
-                activeIndex={activeIndex}
-                setOpen={setOpen}
-                handleClick={handleClick}
-                open={open}
-              />
+              <ChatBody activeIndex={activeIndex} setOpen={setOpen} handleClick={handleClick} open={open} />
             )}
           </AnimatePresence>
         )}
 
         <motion.div
           {...framerSidebarPanel}
-          className={`flex flex-col w-full  overflow-y-auto ${
-            navCheck ? "" : "pt-[66px] lg:pt-0"
-          }  lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
+          className={`flex flex-col w-full overflow-y-auto ${navCheck ? "" : "pt-[66px] lg:pt-0"} lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
           ref={ref}
           aria-label="Sidebar"
           id="chatlist"
@@ -233,21 +208,43 @@ const JetChat = () => {
           />
         </motion.div>
         <div className="lg:flex-1 w-full" id="channel">
-          <Channel
-            DateSeparator={CustomDateSeparator}
-            EmojiPicker={EmojiPicker}
-            emojiSearchIndex={SearchIndex}
-          >
-            <Window>
-              <CustomChannelHeader />
-              <MessageList />
-              <MessageInput audioRecordingEnabled />
-            </Window>
-            <Thread />
-          </Channel>
+          {channels.length === 0 ? (
+            <div className="flex flex-col justify-center items-center h-full">
+              <h2 className="text-xl mb-4">Start a New Chat</h2>
+              <p>It looks like you don't have any conversations yet. Click the "New Chat" button to start your first conversation!</p>
+            </div>
+          ) : (
+            <Channel DateSeparator={CustomDateSeparator} EmojiPicker={EmojiPicker} emojiSearchIndex={SearchIndex}>
+              <Window>
+                <CustomChannelHeader />
+                <MessageList />
+                <MessageInput audioRecordingEnabled />
+              </Window>
+              <Thread />
+            </Channel>
+          )}
         </div>
       </div>
-      {modal === "New chat" && <p>hi there am a modal</p>}
+      {showWelcomeModal && (
+        <Modal handleClick={handleModalClose}>
+          <div className="p-4 bg-white rounded-lg">
+            <h2>Welcome to Jetpay!</h2>
+            <p>Your ultimate hub for seamless connections. With our streamlined and comprehensive app, effortlessly engage with others and enjoy convenient interactions, making every transaction a breeze.</p>
+            <button onClick={handleModalClose} className="bg-[orangered] text-white px-4 py-2 rounded">
+              Continue
+            </button>
+          </div>
+        </Modal>
+      )}
+      {modal === "New Chat" && (
+        <Modal handleClick={handleModalClose}>
+          <div className="p-4 bg-white rounded-lg w-full">
+            <h2 className="text-center">Start New Chat</h2>
+            <ChannelSearch />
+            {/* Additional content for starting a new chat */}
+          </div>
+        </Modal>
+      )}
     </Chat>
   );
 };
