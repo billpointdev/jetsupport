@@ -8,6 +8,7 @@ import ErrorBot from "../../error";
 import axiosInstance from "../../api/config";
 import { AnimatePresence } from "framer-motion";
 import Notification from "../reusables/notifications";
+import { useNavigate } from "react-router-dom";
 
 const INITIAL_DATA = {
   newPassword: "",
@@ -20,6 +21,8 @@ const ResetPinScreen = () => {
   const [data, setData] = useState(INITIAL_DATA);
   const [errorResponse, setErrorResponse] = useState();
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -30,56 +33,62 @@ const ResetPinScreen = () => {
     setNotifications((pv) => pv.filter((n) => n.id !== id));
   };
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/login");
+  };
   const handleReset = async (e) => {
-      e.preventDefault()
+    e.preventDefault();
     if (data.newPassword !== data.confirmNewPassword) {
       alert("Password mismatch");
       return;
     }
-
+setLoading(true)
     try {
-          const response = await axiosInstance.post( "/auth/change/password", {
-        new_password: data.newPassword,
-        new_password_confirmation: data.confirmNewPassword,
+      const response = await axiosInstance.post("/auth/reset/password/web", {
+        password: data.newPassword,
+        password_confirmation: data.confirmNewPassword,
+        email: storedUserEmail,
       });
 
       if (!response.data) {
         throw new Error("Update failed");
       }
-
       setNotifications((prev) => [
-        { id: Date.now(), text: response?.data?.data?.message },
+        { id: Date.now(), text: response?.data?.message },
         ...prev,
-      ] );
-          setModalContent(
-            <div className="text-center place-items-center bg-white w-full h-full flex flex-col gap-8  mt-14 rounded-[24px] p-4 pt-10 ">
-              <TickCircle />
-              <div>
-                <p className="font-inter font-semibold text-lg">
-                  Password Reset Successfully
-                </p>
-                <p className="text-[#828282] text-md font-inter leading-5">
-                  You have requested to reset your password. <br /> Click
-                  Continue to login to your account.
-                </p>
-              </div>
-              <div className="mt-8 w-full">
-                <DownloadButton
-                  buttonText="Continue"
-                  padding={"px-20"}
-                  width={"w-[100%]"}
-                  bgColor={"bg-primary"}
-                  textColor={"text-white"}
-                />
-              </div>
-            </div>
-          );
-          setIsModalOpen(true);
+      ]);
+      setLoading(false);
+
+      setModalContent(
+        <div className="text-center place-items-center bg-white  w-full h-full flex flex-col gap-8  mt-14 rounded-[24px] p-4 pt-10 ">
+          <TickCircle />
+          <div>
+            <p className="font-inter font-semibold text-lg">
+              Password Reset Successfully
+            </p>
+            <p className="text-[#828282] text-md font-inter leading-5">
+              You have requested to reset your password. <br /> Click Continue
+              to login to your account.
+            </p>
+          </div>
+          <div className="mt-8 w-full">
+            <DownloadButton
+              buttonText="Continue"
+              padding={"px-20"}
+              width={"w-[100%]"}
+              bgColor={"bg-primary"}
+              textColor={"text-white"}
+              onClick={handleClick}
+            />
+          </div>
+        </div>
+      );
+      setIsModalOpen(true);
     } catch (error) {
       setErrorResponse(error?.response?.data?.message);
     }
   };
- 
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -87,15 +96,14 @@ const ResetPinScreen = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
+    <div className="flex flex-col justify-start relative dark:bg-dark  pt-20 place-items-center gap-10 h-[100vh] px-4">
       <AuthHeader />
       <div className="text-center">
-        <h4 className="font-semibold text-[24px] font-helvetica">
+        <h4 className="font-semibold text-[24px] font-helvetica dark:text-[#FFCBAF]">
           Reset your password
         </h4>
-        <p className="text-[#828282]">
-          No problem. Enter the phone number associated with your <br />{" "}
-          account.
+        <p className="text-[#828282] dark:text-[#FFEBDF]">
+          No problem. Enter the email associated with your <br /> account.
         </p>
       </div>
 
@@ -104,7 +112,6 @@ const ResetPinScreen = () => {
         onSubmit={handleReset}
       >
         <div className="flex flex-col gap-2">
-       
           <Input
             label="New Password"
             id="password"
@@ -130,7 +137,7 @@ const ResetPinScreen = () => {
 
         <div className="mt-20">
           <DownloadButton
-            buttonText="Update password"
+            buttonText={loading ? "Updating ..." : "Update password"}
             padding={"px-20"}
             width={"w-[100%]"}
             bgColor={"bg-primary"}

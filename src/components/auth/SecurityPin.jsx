@@ -126,7 +126,7 @@ const SecurityPin = () => {
     setNotifications((pv) => pv.filter((n) => n.id !== id));
   };
   return (
-    <div className="flex flex-col  justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
+    <div className="flex flex-col dark:bg-dark justify-start dark:text-[#FFD9C5] pt-12 place-items-center gap-10 h-[100vh] px-4">
       {/* <AuthHeader /> */}
 
       <div className="text-center">

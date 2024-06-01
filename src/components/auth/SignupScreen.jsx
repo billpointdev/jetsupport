@@ -66,7 +66,7 @@ const SignupScreen = () => {
 
   return (
     <AuthLayout>
-      <div className="">
+      <div className="dark:text-[#FFD9C5]">
         <div>
           <h4 className=" font-semibold text-[24px] font-helvetica">
             Hello there 👋
@@ -79,7 +79,7 @@ const SignupScreen = () => {
         </div>
         <form
           onSubmit={handleSubmit(submitForm)}
-          className=" py-14 flex flex-col justify-between gap-[20px]"
+          className="dark:text-[#FFD9C5] py-14 flex flex-col justify-between gap-[20px]"
         >
           <div className="flex flex-col gap-2">
             <div className="grid grid-cols-2 gap-2 justify-between">
@@ -142,27 +142,32 @@ const SignupScreen = () => {
               }
             />
             <small>
-              I agree to JetPay{" "}
-              <a href="" className="text-[#1877F2] ">
+              I agree to Jet Support{" "}
+              <a href="" className="text-[#1877F2] dark:text-[#ABCFFF] ">
                 Terms of Service{" "}
               </a>
               and{" "}
-              <a href="" className="text-[#1877F2] ">
+              <a href="" className="text-[#1877F2] dark:text-[#ABCFFF]">
                 Privacy policy
               </a>
             </small>
           </div>
           <div className="mt-20">
             <DownloadButton
-              buttonText={loading ? "Signing up ..." :"Continue"}
+              buttonText={loading ? "Signing up ..." : "Continue"}
               padding={"px-20"}
               width={"w-[100%]"}
               bgColor={"bg-primary"}
               textColor={"text-white"}
             />
             <small className="text-center block mt-10">
-              Have a Jetpay account?{" "}
-              <span onClick={() => navigate("/login")} className="cursor-pointer">Login</span>
+              Have a Jet Support account?{" "}
+              <span
+                onClick={() => navigate("/login")}
+                className="cursor-pointer"
+              >
+                Login
+              </span>
             </small>
           </div>
         </form>

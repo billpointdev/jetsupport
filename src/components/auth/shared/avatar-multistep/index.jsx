@@ -62,17 +62,17 @@ const MultiStep = () => {
 
    const handleSubmitAvatar = async () => {
      try {
-       if (data.isCustom) {
-         const response = await axiosInstance.post("/update/user/picture", {
-           picture: data.avatar,
-         });
-         console.log("Custom image set successfully:", response.data);
-       } else {
-         const response = await axiosInstance.post("/auth/update/avatar", {
-           avatar: data.avatar,
-         });
-         console.log("Avatar set successfully:", response.data);
-       }
+      //  if (data.isCustom) {
+      //    const response = await axiosInstance.post("/update/user/picture", {
+      //      picture: data.avatar,
+      //    });
+      //    console.log("Custom image set successfully:", response.data);
+      //  } else {
+      //    const response = await axiosInstance.post("/auth/update/avatar", {
+      //      avatar: data.avatar,
+      //    });
+      //    console.log("Avatar set successfully:", response.data);
+      //  }
        next();
      } catch (error) {
        console.error("Error setting avatar:", error);
@@ -103,14 +103,14 @@ const MultiStep = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: isLastStep ? 100 : -100 }}
               transition={{ type: "tween" }}
-              className="flex flex-col   justify-center h-screen items-center gap-10 px-4"
+              className="flex flex-col dark:bg-dark dark:text-[#FFD9C5] justify-center h-screen items-center gap-10 px-4"
             >
-              <p className="self-end" onClick={handleSkip}>
+              <p className="self-end cursor-pointer" onClick={handleSkip}>
                 Skip
               </p>
-              <div className="flex flex-col max-w-lg  w-full justify-center items-center gap-10 px-4">
+              <div className="flex flex-col max-w-lg dark:bg-dark w-full justify-center items-center gap-10 px-4">
                 <AuthHeader />
-                <div className="text-center h-full w-full">
+                <div className="text-center h-full w-full dark:bg-dark">
                   {step}
                   <div className="flex justify-center">
                     <div className="w-[448px] ">

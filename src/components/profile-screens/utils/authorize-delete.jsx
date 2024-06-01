@@ -7,17 +7,16 @@ import ErrorBot from "../../../error";
 // const correctOTP = "123456";
 
 function OtpInputWithValidation({
-  setAuthorize,
-  handleOtp,
-  setOtpVerified,
   otpError,
   setOtpError,
+  title,
+  setConfirmed,
+  numberOfDigits,
+  handleOtp,
+  setOtpVerified,
+  setAuthorizeDelete,
   otp,
   setOtp,
-  setAuthorizeDelete,
-  numberOfDigits,
-  setConfirmed,
-  setModal,
 }) {
   const otpBoxReference = useRef([]);
   const { userEmail } = useSelector((state) => state.auth);
@@ -64,19 +63,17 @@ function OtpInputWithValidation({
     if (otp.every((digit) => digit !== "")) {
       const handleSubmit = async () => {
         try {
-          const response = await axiosInstance.post(`/auth/update/pin`, {
-            pin: otp.join(""),
-            pin_confirmation: otp.join(""),
+          const response = await axiosInstance.post(`/auth/login/pin`, {
+            email: storedUserEmail ? storedUserEmail : userEmail,
+            security_pin: otp.join(""),
           });
 
           if (!response.data) {
             throw new Error("OTP verification failed");
           }
-          console.log("OTP verified:", response);
-          setModal(null);
-          setConfirmed(false);
-          setAuthorize(true);
+          localStorage.setItem("access_token", response.data.access_token);
           setAuthorizeDelete(false);
+          setOtpVerified(true);
         } catch (error) {
           setOtpVerified(false);
           setOtpError(error?.response?.data?.message);
@@ -89,14 +86,13 @@ function OtpInputWithValidation({
   }, [
     numberOfDigits,
     otp,
-    setAuthorize,
     setAuthorizeDelete,
     setConfirmed,
-    setModal,
     setOtp,
     setOtpError,
     setOtpVerified,
     storedUserEmail,
+    title,
     userEmail,
   ]);
 
@@ -146,12 +142,11 @@ OtpInputWithValidation.propTypes = {
   otpError: Proptypes.bool,
   setOtpError: Proptypes.func,
   title: Proptypes.any,
-  setAuthorize: Proptypes.any,
+  setConfirmed: Proptypes.any,
+  setModal: Proptypes.any,
   otp: Proptypes.any,
   setOtp: Proptypes.any,
   setAuthorizeDelete: Proptypes.any,
-  setConfirmed: Proptypes.any,
-  setModal: Proptypes.any,
 };
 
 export default OtpInputWithValidation;

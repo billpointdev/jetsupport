@@ -7,7 +7,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { FaEye } from "react-icons/fa";
 import { RiSettingsFill } from "react-icons/ri";
 import { GoBellFill } from "react-icons/go";
-import SupportIcon from "../../utils/SupportIcon";
+import { MdSupportAgent } from "react-icons/md";
 import Delete from "../../utils/Delete";
 import { useLocation } from "react-router-dom";
 import OtpModal from "../../components/profile-screens/modals/otp-modal";
@@ -26,10 +26,14 @@ const ProfilePage = ({ children }) => {
   const [modal, setModal] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [notifications, setNotifications] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
   const { userEmail } = useSelector((state) => state.auth);
   const [title, setTitle] = useState("")
-  const { showLogoutModal, setOpen: setDropdown } = useProviderContext();
+  const {
+    showLogoutModal,
+    setOpen: setDropdown,
+    darkMode,
+    setDarkMode,
+  } = useProviderContext();
 
   const removeNotif = (id) => {
     setNotifications((pv) => pv.filter((n) => n.id !== id));
@@ -123,7 +127,7 @@ const ProfilePage = ({ children }) => {
       { title: "Notifications", Icon: GoBellFill, href: "/notifications" },
       { title: "Reset security PIN", Icon: HiUser },
       { title: "Reset password", Icon: RiSettingsFill },
-      { title: "Help & Support", Icon: SupportIcon, href: "/help-support" },
+      { title: "Help & Support", Icon: MdSupportAgent, href: "/help-support" },
       { title: "Privacy Policy", Icon: FiShoppingCart, href: "#" },
       { title: "Dark Mode", Icon: FaEye, href: "#" },
       { title: "Delete account", Icon: Delete, href: "/delete-account" },
@@ -147,23 +151,10 @@ const ProfilePage = ({ children }) => {
     }
   }, [location, items, modal]);
 
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedDarkMode);
-    document.body.classList.toggle("dark", savedDarkMode);
 
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    if (
-      prefersDarkScheme.matches &&
-      localStorage.getItem("darkMode") === null
-    ) {
-      setDarkMode(true);
-      document.body.classList.add("dark");
-    }
-  }, []);
 
   return (
-    <div className="fixed dark:bg-gray-800 bottom-0 z-50 left-0 right-0 top-0 w-full flex lg:h-screen overflow-hidden">
+    <div className="fixed dark:bg-dark bottom-0 z-50 left-0 right-0 top-0 w-full flex lg:h-screen overflow-hidden">
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
       <div className="  w-full flex lg:h-screen  ">
         <SidebarLg
@@ -186,7 +177,7 @@ const ProfilePage = ({ children }) => {
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />
-        <div className=" dark:bg-gray-800 flex-1 mt-[66px] overflow-y-auto ">
+        <div className=" dark:bg-dark flex-1 mt-[66px] overflow-y-auto ">
           {children}
         </div>
       </div>

@@ -15,6 +15,8 @@ import ResetPinScreen from "./components/auth/ResetPinScreen";
 import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
 import JetChat from "./pages/chat/index.jsx";
 import ProtectedRoute from "./routing/ProtectedRoute.jsx";
+import { useEffect } from "react";
+import useProviderContext from "./components/profile-screens/hooks/useProvideContext.jsx";
 
 function App() {
   // const dispatch = useDispatch();
@@ -22,7 +24,27 @@ function App() {
   // useEffect(() => {
   //   initAxios({ token, logoutCallback: () => dispatch(logout()) });
   // }, [token, dispatch]);
- 
+   const {
+     setDarkMode,
+   } = useProviderContext();
+
+  
+   useEffect(() => {
+     const savedDarkMode = localStorage.getItem("darkMode") === "true";
+     setDarkMode(savedDarkMode);
+     document.body.classList.toggle("dark", savedDarkMode);
+
+     const prefersDarkScheme = window.matchMedia(
+       "(prefers-color-scheme: dark)"
+     );
+     if (
+       prefersDarkScheme.matches &&
+       localStorage.getItem("darkMode") === null
+     ) {
+       setDarkMode(true);
+       document.body.classList.add("dark");
+     }
+   }, [setDarkMode]);
 
   return (
     <BrowserRouter>

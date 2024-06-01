@@ -29,19 +29,19 @@ const { userInfo } = useSelector(
       id: 1,
       img: JetSupportLogo,
       message:
-        "Time to trade! Don't miss out on the latest crypto prices on JetPay app. Start trading now",
+        "Time to trade! Don't miss out on the latest crypto prices on Jet Support web app. Start trading now",
     },
     {
       id: 2,
       img: JetSupportLogo,
       message:
-        "Crypto prices are on the rise! Open your JetPay app and make a move now to maximize your profit.",
+        "Crypto prices are on the rise! Open your Jet Support web app and make a move now to maximize your profit.",
     },
     {
       id: 3,
       img: JetSupportLogo,
       message:
-        "JetPay app is here to offer you the best crypto trading experience. Buy and sell crypto with ease and get real-time notifications for market updates.",
+        "Jet Support web app is here to offer you the best crypto trading experience. Buy and sell crypto with ease and get real-time notifications for market updates.",
     },
   ];
 
@@ -108,7 +108,7 @@ const { userInfo } = useSelector(
 
   return (
     <header
-      className=" fixed dark:bg-gray-800 dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b"
+      className=" fixed dark:bg-dark dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b"
       id="navbar"
     >
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">

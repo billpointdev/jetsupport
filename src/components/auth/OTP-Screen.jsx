@@ -106,28 +106,25 @@ const OtpPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
+    <div className="flex flex-col dark:text-[#FFD9C5] justify-start relative top-20 place-items-center gap-10 h-[100vh] px-4">
       <AuthHeader />
-      <div className="text-center">
+      <div className="text-center ">
         {isFromForgotPassword ? (
           <>
             <h4 className="font-semibold text-[24px] text-center font-helvetica">
               OTP code verification 👋
             </h4>
             <p>
-              We’ve sent a unique code to your mobile number. Enter the code
-              below to verify. <br /> (+234) 9035017863
+              We’ve sent a unique code to your email. Enter the code below to
+              verify.
             </p>
           </>
         ) : (
           <>
-            <h4 className="font-semibold text-[24px] text-center font-helvetica">
+            <h4 className="font-semibold text-[24px] dark:text-[#FFD9C5] text-center font-helvetica">
               Account Verification 👋
             </h4>
-            <p>
-              We’ve sent a unique code to your mobile number <br /> (+234)
-              9035017863
-            </p>
+            <p>We’ve sent a unique code to your email</p>
           </>
         )}
       </div>

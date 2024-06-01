@@ -31,7 +31,7 @@ const InputComponent = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`w-full h-16 rounded-xl px-4 py-2 text-[#757575] bg-[#FAFAFA] ${
+          className={`w-full h-16 rounded-xl px-4 py-2 text-[#757575] dark:text-dark bg-[#FAFAFA] dark:bg-[#FFD9C5] ${
             disabled ? "cursor-not-allowed" : ""
           }`}
           disabled={disabled}
@@ -59,7 +59,8 @@ const INITIAL_DATA = {
 };
 
 const MyAccount = () => {
-  const [data, setData] = useState(INITIAL_DATA);
+  const [ data, setData ] = useState( INITIAL_DATA );
+  const [loading , setLoading] = useState(false)
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const userToken = localStorage.getItem( "access_token" );
@@ -84,13 +85,16 @@ const MyAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    try
+    {
+      setLoading(true)
       console.log("User Token:", userToken);
       const response = await axiosInstance.post(`/auth/update/user`, {
         firstname: data?.firstName,
         lastname: data?.lastName,
       });
 
+      setLoading(false)
       if (!response.data) {
         throw new Error("Update failed");
       }
@@ -98,7 +102,7 @@ const MyAccount = () => {
         "userInfo",
         JSON.stringify(response?.data?.data?.user)
       );
-      dispatch(setUserInfo(response?.data?.data?.user));
+      dispatch( setUserInfo( response?.data?.data?.user ) );
     } catch (error) {
       console.error("Error updating user:", error.message);
     }
@@ -179,7 +183,7 @@ const MyAccount = () => {
               type="submit"
               className="block w-full rounded-[16px] bg-primary px-6 py-4 font-medium text-white transform scale-95 hover:scale-100 transition-transform duration-300"
             >
-              Update
+             {loading ? "Updating ..." :  "Update"}
             </button>
           </div>
         </form>
