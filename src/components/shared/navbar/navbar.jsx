@@ -1,6 +1,8 @@
 import React from "react";
 import JetSupportLogo from "../../../utils/JetSupportLogo.jsx";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { CustomButton } from "../footer/footer.jsx";
+import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon.jsx";
 
 function Navbar() {
 
@@ -14,7 +16,7 @@ function Navbar() {
                 {/* Logo */}
                 <div className="flex items-center">
                     <a href="https://jetpayng.co">
-                        <JetSupportLogo/>
+                        <JetSupportLogo />
                     </a>
                 </div>
                 {/* Navigation Links */}
@@ -36,6 +38,7 @@ function Navbar() {
                     </a>
                 </div>
                 {/* Download Buttons */}
+                
                 <div className="flex space-x-4">
                     <div
                         className="cursor-pointer border border-gray-300 text-orange-500 py-2 px-4 hover:bg-orange-600 rounded-md flex hover:text-white items-center"

@@ -4,11 +4,11 @@ import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
 import HaveAQuestion from "./haveAQuestion.jsx";
 
-export const CustomButton = ({ children, os }) => {
+export const CustomButton = ({ children, os, textColor, bgColor }) => {
   return (
       <button className="border flex items-center gap-2 px-4 py-1 rounded-full">
         {children}
-        <p className=" text-start text-primary text-xs ml-3">
+        <p className={` ${textColor} text-start  text-xs ml-3`}>
           Download on <br /> <span className="font-bold text-md">{os}</span>
         </p>
       </button>
