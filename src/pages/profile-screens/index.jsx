@@ -184,12 +184,12 @@ const ProfilePage = ({ children }) => {
             {" "}
             <motion.div
               animate={{
-                x: [-10, 10, -10], // Animate left, then right, then left again
+                x: [-10, 10, -10], 
               }}
               transition={{
-                repeat: Infinity, // Repeat infinitely
-                duration: 1, // Duration of each animation cycle
-                ease: "linear", // Linear easing
+                repeat: Infinity, 
+                duration: 1, 
+                ease: "linear",
               }}
             >
               <FaArrowLeft />
