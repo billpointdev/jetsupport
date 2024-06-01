@@ -4,12 +4,12 @@ import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
 import HaveAQuestion from "./haveAQuestion.jsx";
 
-const CustomButton = ({ children, os }) => {
+export const CustomButton = ({ children, os }) => {
   return (
-      <button className="border flex items-center gap-2 px-7 py-3 rounded-full">
+      <button className="border flex items-center gap-2 px-4 py-1 rounded-full">
         {children}
         <p className=" text-start text-primary text-xs ml-3">
-          Download on <br /> <span className="font-bold text-xl">{os}</span>
+          Download on <br /> <span className="font-bold text-md">{os}</span>
         </p>
       </button>
   );
@@ -71,7 +71,7 @@ function Footer() {
           </ul>
         </div>
         {/* get the app div */}
-        <div className="flex flex-col mt-3 py-8 md:py-0  md:mt-0 lg:w-[585px] w-full md:items-start">
+        <div className="flex flex-col mt-3 py-8 md:py-0  md:mt-0 lg:w-[430px] w-full md:items-start">
           <p className="font-medium">Get the App</p>
           <div className="flex flex-col md:flex-row mt-3 md:mt-5 w-full gap-[9px] items-center justify-end">
             <CustomButton os="Android">
