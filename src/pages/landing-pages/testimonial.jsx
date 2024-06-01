@@ -7,11 +7,11 @@
 // import Avatar6 from '../../assets/avatar-images/Avatar-6.svg';
 
 // const testimonials = [
-//   { id: 1, text: "I have been using Jetpay for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpful.", rating: 5, avatar: Avatar2, name: 'John Doe', role: 'user experience' },
-//   { id: 2, text: "I used to find trading cryptocurrencies quite daunting, but Jetpay has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend Jetpay to anyone looking to get started in crypto trading.", rating: 4, avatar: Avatar3, name: 'Jane Smith', role: 'user experience' },
-//   { id: 3, text: "As a seasoned crypto trader, I have tried many different platforms over the years. However, Jetpay stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.", rating: 3, avatar: Avatar4, name: 'Alex Johnson', role: 'user experience' },
-//   { id: 4, text: "I have been using Jetpay for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpful.", rating: 5, avatar: Avatar5, name: 'Chris Lee', role: 'user experience' },
-//   { id: 5, text: "I used to find trading cryptocurrencies quite daunting, but Jetpay has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend Jetpay to anyone looking to get started in crypto trading.", rating: 4, avatar: Avatar6, name: 'Pat Taylor', role: 'user experience' },
+//   { id: 1, text: "I have been using JetSupport for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpful.", rating: 5, avatar: Avatar2, name: 'John Doe', role: 'user experience' },
+//   { id: 2, text: "I used to find trading cryptocurrencies quite daunting, but JetSupport has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend JetSupport to anyone looking to get started in crypto trading.", rating: 4, avatar: Avatar3, name: 'Jane Smith', role: 'user experience' },
+//   { id: 3, text: "As a seasoned crypto trader, I have tried many different platforms over the years. However, JetSupport stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.", rating: 3, avatar: Avatar4, name: 'Alex Johnson', role: 'user experience' },
+//   { id: 4, text: "I have been using JetSupport for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpful.", rating: 5, avatar: Avatar5, name: 'Chris Lee', role: 'user experience' },
+//   { id: 5, text: "I used to find trading cryptocurrencies quite daunting, but JetSupport has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend JetSupport to anyone looking to get started in crypto trading.", rating: 4, avatar: Avatar6, name: 'Pat Taylor', role: 'user experience' },
 // ];
 
 // const Testimonial = () => {
@@ -92,42 +92,42 @@ import Avatar6 from "../../assets/avatar-images/Avatar-6.svg";
 const testimonials = [
   {
     paragraph:
-      "I used to find trading cryptocurrencies quite daunting, but Jetpay has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend Jetpay to anyone looking to get started in crypto trading.",
+      "I used to find trading cryptocurrencies quite daunting, but JetSupport has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend JetSupport to anyone looking to get started in crypto trading.",
     name: "Alex Johnson",
     rating: 5,
     avatar: Avatar2,
   },
   {
     paragraph:
-      "I used to find trading cryptocurrencies quite daunting, but Jetpay has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend Jetpay to anyone looking to get started in crypto trading..",
+      "I used to find trading cryptocurrencies quite daunting, but JetSupport has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend JetSupport to anyone looking to get started in crypto trading..",
     name: "Nathan Knorr",
     rating: 4,
     avatar: Avatar3,
   },
   {
     paragraph:
-      "As a seasoned crypto trader, I have tried many different platforms over the years. However, Jetpay stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.",
+      "As a seasoned crypto trader, I have tried many different platforms over the years. However, JetSupport stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.",
     name: "John Doe",
     rating: 3,
     avatar: Avatar4,
   },
   {
     paragraph:
-      "I used to find trading cryptocurrencies quite daunting, but Jetpay has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend Jetpay to anyone looking to get started in crypto trading.",
+      "I used to find trading cryptocurrencies quite daunting, but JetSupport has completely changed that for me. The app is straightforward and easy to navigate, which has made trading a seamless and enjoyable experience. I highly recommend JetSupport to anyone looking to get started in crypto trading.",
     name: "Jane Smith",
     rating: 5,
     avatar: Avatar5,
   },
   {
     paragraph:
-      "As a seasoned crypto trader, I have tried many different platforms over the years. However, Jetpay stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.",
+      "As a seasoned crypto trader, I have tried many different platforms over the years. However, JetSupport stands out as one of the best I have used. It offers a wide range of features and tools that have helped me maximize my profits. The security measures are also top-notch, which gives me peace of mind when trading.",
     name: "Alex Johnson",
     rating: 4,
     avatar: Avatar6,
   },
   {
     paragraph:
-      "I have been using Jetpay for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpfu",
+      "I have been using JetSupport for over a year now and I can confidently say that it has revolutionized the way I trade cryptocurrencies. The app is user-friendly and provides detailed insights into my trading activities. The support team is also incredibly responsive and helpfu",
     name: "Chris Lee",
     rating: 4,
     avatar: Avatar2,
