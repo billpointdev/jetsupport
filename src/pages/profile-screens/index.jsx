@@ -3,7 +3,7 @@ import Navbar from "../../global/navbar";
 import Sidebar, { SidebarLg } from "../../global/sidebar";
 import Proptypes from "prop-types";
 import { HiUser } from "react-icons/hi2";
-import { FiShoppingCart } from "react-icons/fi";
+// import { FiShoppingCart } from "react-icons/fi";
 import { FaEye } from "react-icons/fa";
 import { RiSettingsFill } from "react-icons/ri";
 import { GoBellFill } from "react-icons/go";
