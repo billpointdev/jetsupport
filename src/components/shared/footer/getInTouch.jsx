@@ -1,32 +1,32 @@
 import { IoCallOutline } from "react-icons/io5";
 import InboxIcon from "../../../utils/InboxIcon";
 import { socialLinks } from "../../../utils";
-import Input from "../../reusables/customInput";
+import { LandingPageInput } from "../../reusables/customInput";
 import { Circle } from "../../../utils/constants";
 
 const GetInTouchForm = () => {
   return (
     <form action="#" className="space-y-3 bg-[#fafafc]">
-      <Input
+      <LandingPageInput
         label="Full Name"
         id="name"
         type="text"
         placeholder="Enter your full name"
       />
 
-      <Input
+      <LandingPageInput
         label="Email"
         id="email"
         type="email"
         placeholder="Enter your email address"
       />
-      <Input
+      <LandingPageInput
         label="Phone"
         id="phone"
         type="tel"
         placeholder="Enter your phone number"
       />
-      <Input
+      <LandingPageInput
         label="Message"
         id="message"
         type="tel"
@@ -35,7 +35,7 @@ const GetInTouchForm = () => {
       <div className="mt-4 w-full">
         <button
           type="submit"
-          className="block w-full rounded-lg bg-primary px-5 py-3 font-medium text-white transform scale-95 hover:scale-100 transition-transform duration-300"
+          className="block w-full rounded-xl bg-primary px-5 py-3 font-medium text-white transform scale-95 hover:scale-100 transition-transform duration-300"
         >
           Send Message
         </button>
@@ -94,7 +94,7 @@ const GetInTouch = () => {
                 />
               </div>
             </div>
-            <div className="rounded-lg  bg-[#fafafc] p-8 shadow-sm border border-[#DDE5E9] lg:col-span-4 lg:p-12">
+            <div className="rounded-xl  bg-[#fafafc] p-8 shadow-sm border border-[#DDE5E9] lg:col-span-4 lg:p-6">
               <GetInTouchForm />
             </div>
           </div>

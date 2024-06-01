@@ -1,5 +1,5 @@
 
-export const AndroidTop = () => {
+export const AndroidTop = (textColor) => {
   return (
     <svg
       width="30"

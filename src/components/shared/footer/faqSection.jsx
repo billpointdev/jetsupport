@@ -1,4 +1,29 @@
 import React, { useState } from "react";
+import { FaPlus, FaTimes } from "react-icons/fa";
+
+const AccordionItem = ({ title, content }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleAccordion = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <div>
+            <div
+                onClick={toggleAccordion}
+                className="flex justify-between items-center cursor-pointer py-2"
+            >
+                <h3 className="text-lg font-bold">{title}</h3>
+                <div className="text-xl">
+                    {isOpen ? <FaTimes /> : <FaPlus />}
+                </div>
+            </div>
+            {isOpen && <p className="text-xs text-gray-500 mt-2">{content}</p>}
+            <hr className="my-3" />
+        </div>
+    );
+};
 
 function FAQSection() {
     const [activeSection, setActiveSection] = useState("General");
@@ -12,7 +37,7 @@ function FAQSection() {
     ];
 
     return (
-        <div className="flex border my-10">
+        <div className="flex justify-between my-10">
             {/* Sidebar */}
             <div className="w-1/4 space-y-2">
                 {sections.map((section) => (
@@ -20,7 +45,7 @@ function FAQSection() {
                         key={section.name}
                         className={`w-full text-left p-4 rounded ${
                             activeSection === section.name
-                                ? "bg-orange-500 text-white"
+                                ? "bg-primary text-white"
                                 : "bg-gray-100 text-gray-500"
                         }`}
                         onClick={() => setActiveSection(section.name)}
@@ -34,21 +59,30 @@ function FAQSection() {
             <div className="w-3/4 p-4">
                 {activeSection === "General" && (
                     <div>
-                        <h3 className="text-lg font-bold">How do I get started with JetSupport?</h3>
-                        <p className="text-xs text-gray-500 mt-2">
-                            To get started with JetSupport, simply download the app, create an account, link your bank account, and start trading your favorite cryptocurrencies and gift cards.
-                        </p>
-                        <hr className="my-3" />
-                        <h3 className="text-lg font-bold">How secure is JetSupport?</h3>
-                        <hr className="my-3" />
-                        <h3 className="text-lg font-bold">What types of cryptocurrencies can I trade on JetSupport?</h3>
-                        <hr className="my-3" />
-                        <h3 className="text-lg font-bold">What types of gift cards can I trade on JetSupport?</h3>
-                        <hr className="my-3" />
-                        <h3 className="text-lg font-bold">How long does it take to process a transaction on JetSupport?</h3>
-                        <hr className="my-3" />
-                        <h3 className="text-lg font-bold">What if I have issues with my JetSupport account or transactions?</h3>
-                        <hr className="my-3" />
+                        <AccordionItem
+                            title="How do I get started with JetSupport?"
+                            content="To get started with JetSupport, simply download the app, create an account, link your bank account, and start trading your favorite cryptocurrencies and gift cards."
+                        />
+                        <AccordionItem
+                            title="How secure is JetSupport?"
+                            content="JetSupport uses industry-standard security measures to ensure the safety of your funds and personal information."
+                        />
+                        <AccordionItem
+                            title="What types of cryptocurrencies can I trade on JetSupport?"
+                            content="You can trade a variety of cryptocurrencies including Bitcoin, Ethereum, Litecoin, and more."
+                        />
+                        <AccordionItem
+                            title="What types of gift cards can I trade on JetSupport?"
+                            content="You can trade popular gift cards such as Amazon, iTunes, Google Play, and more."
+                        />
+                        <AccordionItem
+                            title="How long does it take to process a transaction on JetSupport?"
+                            content="Most transactions are processed within a few minutes. However, it may take longer depending on network congestion."
+                        />
+                        <AccordionItem
+                            title="What if I have issues with my JetSupport account or transactions?"
+                            content="If you encounter any issues, please contact our support team for assistance."
+                        />
                     </div>
                 )}
                 {activeSection === "Transactions" && (
