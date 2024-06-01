@@ -3,22 +3,43 @@ import { motion } from "framer-motion";
 import Proptypes from "prop-types";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { HiOutlineUser } from "react-icons/hi2";
-import { IoSettingsOutline } from "react-icons/io5";
-import { TbMessage2 } from "react-icons/tb";
+// import { IoSettingsOutline } from "react-icons/io5";
+// import { TbMessage2 } from "react-icons/tb";
 import { IoExit } from "react-icons/io5";
-import useLogout from "../hooks/useLogout";
 import useProviderContext from "../hooks/useProvideContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../../features/auth/authActions";
+import ErrorBot from "../../../error";
 const StaggeredDropDown = () => {
   const { open, setOpen } = useProviderContext();
+  const dispatch = useDispatch();
+  const [error, setError] = useState(null);
   const { userInfo } = useSelector((state) => state.auth);
-  const { triggerLogoutModal } = useLogout();
-  const handleSignOut = () => {
+  // const { triggerLogoutModal } = useLogout();
+  const handleSignOut = async (data) => {
     setOpen(false);
-    triggerLogoutModal();
+    // setShowLogoutModal(true);
+    try {
+      const response = await dispatch(logOut(data)).unwrap();
+      console.log(response.data);
+    } catch (error) {
+      console.log("responseError", error.message);
+      setError(error?.message);
+    }
   };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -63,17 +84,17 @@ const StaggeredDropDown = () => {
         >
           <div className="bg-white p-2 w-full  rounded-lg">
             <div className="flex items-center">
-                <img
-                  src={userInfo?.picture}
-                  alt="avatar"
-                  className="w-12 h-12 rounded-full border-2 border-gray-400 "
-                />
+              <img
+                src={userInfo?.picture}
+                alt="avatar"
+                className="w-12 h-12 rounded-full border-2 border-gray-400 "
+              />
               <div className="ml-1 text-start">
                 <p className="text-[#010E0E] text-[12px]">
                   {userInfo?.firstname} {userInfo?.lastname}
                 </p>
                 <p className="text-[9px] text-[#616161] leading-1">
-                  {userInfo?.email.substring(0,23)}...
+                  {userInfo?.email.substring(0, 18)}...
                 </p>
               </div>
             </div>
@@ -84,7 +105,7 @@ const StaggeredDropDown = () => {
                 text="Your Profile"
                 route="/profile"
               />
-              <Option
+              {/* <Option
                 setOpen={setOpen}
                 Icon={IoSettingsOutline}
                 text="Acccount Settings"
@@ -93,11 +114,11 @@ const StaggeredDropDown = () => {
                 setOpen={setOpen}
                 Icon={TbMessage2}
                 text="Contact Support"
-              />
+              /> */}
             </div>
           </div>
           <div
-            onClick={handleSignOut}
+            onClick={() => handleSignOut()}
             className="flex justify-between w-full pr-1 cursor-pointer focus:bg-[#f5f5f5]"
           >
             <div className="flex items-center text-[#FF3B3B] font-medium whitespace-nowrap  gap-5 ">
@@ -112,6 +133,7 @@ const StaggeredDropDown = () => {
           </div>
         </motion.ul>
       </motion.div>
+      {error && <ErrorBot error={error} />}
     </div>
   );
 };

@@ -24,27 +24,22 @@ function App() {
   // useEffect(() => {
   //   initAxios({ token, logoutCallback: () => dispatch(logout()) });
   // }, [token, dispatch]);
-   const {
-     setDarkMode,
-   } = useProviderContext();
+  const { setDarkMode } = useProviderContext();
 
-  
-   useEffect(() => {
-     const savedDarkMode = localStorage.getItem("darkMode") === "true";
-     setDarkMode(savedDarkMode);
-     document.body.classList.toggle("dark", savedDarkMode);
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem("darkMode") === "true";
+    setDarkMode(savedDarkMode);
+    document.body.classList.toggle("dark", savedDarkMode);
 
-     const prefersDarkScheme = window.matchMedia(
-       "(prefers-color-scheme: dark)"
-     );
-     if (
-       prefersDarkScheme.matches &&
-       localStorage.getItem("darkMode") === null
-     ) {
-       setDarkMode(true);
-       document.body.classList.add("dark");
-     }
-   }, [setDarkMode]);
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (
+      prefersDarkScheme.matches &&
+      localStorage.getItem("darkMode") === null
+    ) {
+      setDarkMode(true);
+      document.body.classList.add("dark");
+    }
+  }, [setDarkMode]);
 
   return (
     <BrowserRouter>

@@ -9,7 +9,7 @@ import { RiSettingsFill } from "react-icons/ri";
 import { GoBellFill } from "react-icons/go";
 import { MdSupportAgent } from "react-icons/md";
 import Delete from "../../utils/Delete";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import OtpModal from "../../components/profile-screens/modals/otp-modal";
 import SecurityPin from "../../components/profile-screens/modals/security-pin";
 import ResetPassword from "../../components/profile-screens/modals/reset-password";
@@ -19,6 +19,8 @@ import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
 import Notification from "../../components/reusables/notifications";
 import axiosInstance from "../../api/config";
+import { FaArrowLeft } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +29,7 @@ const ProfilePage = ({ children }) => {
   const [confirmed, setConfirmed] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { userEmail } = useSelector((state) => state.auth);
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
   const {
     showLogoutModal,
     setOpen: setDropdown,
@@ -83,16 +85,16 @@ const ProfilePage = ({ children }) => {
       case "Reset security PIN":
         await handleResendOtp();
         setModal(title);
-        setTitle(title)
+        setTitle(title);
         break;
       case "Reset password":
         await handleResendOtp();
         setModal(title);
-        setTitle(title)
+        setTitle(title);
         break;
       case "Help & Support":
         setModal(title);
-        setTitle(title)
+        setTitle(title);
         break;
       default:
         // Handle other cases here if needed
@@ -128,7 +130,7 @@ const ProfilePage = ({ children }) => {
       { title: "Reset security PIN", Icon: HiUser },
       { title: "Reset password", Icon: RiSettingsFill },
       { title: "Help & Support", Icon: MdSupportAgent, href: "/help-support" },
-      { title: "Privacy Policy", Icon: FiShoppingCart, href: "#" },
+      // { title: "Privacy Policy", Icon: FiShoppingCart, href: "#" },
       { title: "Dark Mode", Icon: FaEye, href: "#" },
       { title: "Delete account", Icon: Delete, href: "/delete-account" },
     ],
@@ -151,7 +153,7 @@ const ProfilePage = ({ children }) => {
     }
   }, [location, items, modal]);
 
-
+  const navigate = useNavigate()
 
   return (
     <div className="fixed dark:bg-dark bottom-0 z-50 left-0 right-0 top-0 w-full flex lg:h-screen overflow-hidden">
@@ -178,6 +180,22 @@ const ProfilePage = ({ children }) => {
           setDarkMode={setDarkMode}
         />
         <div className=" dark:bg-dark flex-1 mt-[66px] overflow-y-auto ">
+          <div onClick={() => navigate("/chat")} className="flex ml-3 mt-4 items-center cursor-pointer gap-3">
+            {" "}
+            <motion.div
+              animate={{
+                x: [-10, 10, -10], // Animate left, then right, then left again
+              }}
+              transition={{
+                repeat: Infinity, // Repeat infinitely
+                duration: 1, // Duration of each animation cycle
+                ease: "linear", // Linear easing
+              }}
+            >
+              <FaArrowLeft />
+            </motion.div>{" "}
+            Click to view chats
+          </div>
           {children}
         </div>
       </div>

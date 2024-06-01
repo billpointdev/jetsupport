@@ -10,13 +10,6 @@ const ChannelSearchResultPreview = ({ channel }) => {
   const channelColor = getChannelColor(channelName);
 
   return (
-    // <li
-    //   className="search-results__item"
-    //   onClick={() => setActiveChannel(channel)}
-    // >
-    //   <div className="search-results__icon">#️⃣</div>
-    //   {channel.data?.name}
-    //   </li>
     <>
       <li
         onClick={() => setActiveChannel(channel)}
@@ -24,7 +17,7 @@ const ChannelSearchResultPreview = ({ channel }) => {
         className={`items-center mt-4 px-1  rounded-md py-2 overflow-y-auto hover:bg-primarylight bg-[#fff] cursor-pointer `}
       >
         {/* <div className="search-results__icon">👤</div> */}
-        {!channel?.image ? (
+        {channel?.image ? (
           <div className="w-10 h-10 rounded-full overflow-hidden border">
             <img
               src={channel?.image}
@@ -42,18 +35,6 @@ const ChannelSearchResultPreview = ({ channel }) => {
         )}
         <p className="capitalize">{channel.name ?? channel.id}</p>
       </li>
-      {/* {channel.length !== 0 ? (
-        <li
-          className="search-results__item"
-          onClick={() => setActiveChannel(channel)}
-        >
-          <div className="search-results__icon">#️⃣</div>
-          {channel.data?.name}
-        </li>
-      ) : (
-        <p className="text-gray-700">No results</p>
-      )}
-      <p>class</p> */}
     </>
   );
 };
@@ -64,27 +45,15 @@ ChannelSearchResultPreview.propTypes = {
 const UserSearchResultPreview = ({ user }) => {
   const { client, setActiveChannel } = useChatContext();
 
-  //   const handleClick = async () => {
-  //     const channel = client.channel("messaging", {
-  //       members: ["userId", user.id],
-  //     });
-  //     await channel.watch();
-  //     setActiveChannel(channel);
-  //   };
   const handleClick = async () => {
     try {
-      const currentUser = client.userID; // assuming client is already connected with a user ID
-      const users = [currentUser, user.id];
-
-      for (const userId of users) {
-        await client.upsertUser({ id: userId });
-      }
-
-      const channelId = `dm_${currentUser}_${user.id}`;
-      const channel = client.channel("messaging", channelId, {
-        members: [currentUser, user.id],
+      const currentUser = client.userID;
+      const members = [currentUser, user.id];
+      const channel = client.channel("messaging", {
+        name: user?.name,
+        image: user?.image,
+        members,
       });
-
       await channel.watch();
       setActiveChannel(channel);
     } catch (error) {
@@ -102,7 +71,6 @@ const UserSearchResultPreview = ({ user }) => {
         style={{ margin: "", display: "flex", gap: "5px" }}
         className={`items-center mt-4 px-1  rounded-md py-2 overflow-y-auto hover:bg-primarylight bg-[#fff] cursor-pointer `}
       >
-        {/* <div className="search-results__icon">👤</div> */}
         {!user?.image ? (
           <div className="w-10 h-10 rounded-full overflow-hidden border">
             <img
@@ -191,12 +159,11 @@ export const AllSearchResultsPreview = ({ results }) => {
     return <div className="search-results">No results</div>;
   }
 
-  console.log("results", results)
+  
   return (
     <div className="search-results flex flex-col gap-8">
       {Object.entries(results).map(([entity, items]) => {
         if (items.length === 0) {
-          console.log("No items for entity:", entity);
           return; // or you can render a message indicating no items
         }
         return (

@@ -9,7 +9,7 @@ import { CiSearch } from "react-icons/ci";
 import useProviderContext from "../profile-screens/hooks/useProvideContext";
 
 export const CustomSearch = () => {
-  const { client, channel } = useChatContext();
+  const { client } = useChatContext();
   const [query, setQuery] = useState("");
   const [selectedTab, setSelectedTab] = useState("all");
   const [allResults, setAllResults] = useState(null);
@@ -19,7 +19,8 @@ export const CustomSearch = () => {
   const [pending, setPending] = useState(false);
   const { setIsSearching } = useProviderContext();
 
-  console.log("client", channel);
+ 
+
   useEffect(() => {
     const childrenElement = document.querySelector("#children");
     const chatDisplay = document.querySelector("#chatDisplay");
@@ -101,32 +102,9 @@ export const CustomSearch = () => {
     }
   }, [channelsResults, usersResults, messagesResults]);
 
-
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
-
-  //  const handleInputChange = (event) => {
-  //    const newQuery = event.target.value;
-  //    setQuery(newQuery);
-
-  //    // Clear previous timeout
-  //    clearTimeout(searchTimeout);
-
-  //    // Set a new timeout to reset isSearching after 500ms
-  //    searchTimeout = setTimeout(() => {
-  //      if (newQuery === "") {
-  //        setIsSearching(false);
-  //      }
-  //    }, 500);
-  //  };
-
-  //  useEffect(() => {
-  //    // Cleanup function to clear the timeout if component unmounts or query changes
-  //    return () => {
-  //      clearTimeout(searchTimeout);
-  //    };
-  //  }, [query]);
 
   return (
     <div className="search mt-8 relative h-full  px-2 ">

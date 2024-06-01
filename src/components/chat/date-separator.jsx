@@ -18,5 +18,5 @@ export const CustomDateSeparator = (props) => {
 };
 
 CustomDateSeparator.propTypes = {
-    date: Proptypes.string,
+    date: Proptypes.any,
 }

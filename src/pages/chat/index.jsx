@@ -9,6 +9,7 @@ import {
   ChannelList,
   ChannelSearch,
   Streami18n,
+  useCreateChatClient,
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
 import { SearchIndex } from "emoji-mart";
@@ -17,39 +18,34 @@ import "stream-chat-react/dist/css/v2/index.css";
 import Navbar from "../../global/navbar";
 import { CustomChannelPreview } from "../../components/chat/custom-channel-preview";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
-import { USER1, USER2, USER3, framerSidebarPanel, items } from "../../utils";
+import {  framerSidebarPanel, items } from "../../utils";
 import { CustomSearch } from "../../components/chat/custom-search-bar";
 import { CustomChannelList } from "../../components/chat/search/custom-channel-list";
-import { StreamChat } from "stream-chat";
 import { CustomChannelHeader } from "../../components/chat/channel-header";
 import ChatBody from "../../components/chat/chat-body";
 import { useLocation } from "react-router-dom";
 import { CustomDateSeparator } from "../../components/chat/date-separator";
 import Modal from "../../components/profile-screens/reusables/modal";
 import LoadingIcon from '../../assets/loading-icon.gif'
+import Button from "../../components/profile-screens/reusables/button";
+import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
 
 
 const apiKey = import.meta.env.VITE_API_KEY;
 
-const getRandomUser = () => {
-  const users = [USER1, USER2, USER3];
-  const randomIndex = Math.floor(Math.random() * users.length);
-  return users[randomIndex];
-};
+
 
 const JetChat = () => {
-  const [channel, setChannel] = useState();
-  const [chatClient, setChatClient] = useState();
+  // const [chatClient, setChatClient] = useState();
   const [open, setOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [navCheck, setNavCheck] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  const [channels, setChannels] = useState([]); // State to store channels
-
+  // const [channels, setChannels] = useState([]); // State to store channels
   const { setOpen: setDropdown } = useProviderContext();
-
+const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const location = useLocation();
   useEffect(() => {
     if (modal) {
@@ -109,40 +105,40 @@ const JetChat = () => {
 
   useEffect(() => {
     const chatDisplay = document.querySelector("#channel");
+
     if (chatDisplay) {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= 425) {
         chatDisplay.classList.add("open");
       } else {
         chatDisplay.classList.remove("open");
       }
     }
-  });
+  }, [window.innerWidth]);
 
-  useEffect(() => {
-    async function initChat() {
-      const client = StreamChat.getInstance(apiKey);
-      const user = getRandomUser();
-      await client.connectUser(user, client.devToken(user.id));
+  
+  const userId = userInfo?.user?.chat_id;
+  const token = userInfo?.chat_token;
 
-      const channels = await client.queryChannels({});
-      setChannels(channels); // Set channels to state
-      if (channels.length === 0) {
-        setShowWelcomeModal(true); // Show welcome modal if no channels exist
-      } else {
-        setChannel(channels[0]);
-      }
+  const filters = { members: { $in: [userId] }, type: "messaging" };
+  const options = { presence: true, state: true };
+  const sort = { last_message_at: -1 };
 
-      setChatClient(client);
-    }
+   const client = useCreateChatClient({
+     apiKey,
+     tokenOrProvider: token,
+     userData: { id: userId },
+   });
 
-    initChat();
 
-    return () => {
-      if (chatClient) chatClient.disconnectUser();
-    };
-  }, []);
+  console.log("useriNFO", userInfo.user);
 
-  if (!chatClient) return <div className="flex flex-col justify-center place-items-center h-[100vh]"> <img src={LoadingIcon} alt="Loading" /> </div>;
+  if (!client)
+    return (
+      <div className="flex flex-col justify-center place-items-center h-[100vh]">
+        {" "}
+        <img src={LoadingIcon} alt="Loading" />{" "}
+      </div>
+    );
 
   const toggleSidebar = () => {
     setDropdown(false);
@@ -180,20 +176,27 @@ const JetChat = () => {
   };
 
   return (
-    <Chat client={chatClient} i18nInstance={i18nInstance}>
+    <Chat client={client} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
-      <div className="lg:pt-[66px] flex w-full h-screen fixed top-0 left-0">
+      <div className="lg:pt-[66px] flex w-full  h-screen fixed top-0 left-0">
         {windowWidth <= 768 && (
           <AnimatePresence>
             {open && (
-              <ChatBody activeIndex={activeIndex} setOpen={setOpen} handleClick={handleClick} open={open} />
+              <ChatBody
+                activeIndex={activeIndex}
+                setOpen={setOpen}
+                handleClick={handleClick}
+                open={open}
+              />
             )}
           </AnimatePresence>
         )}
 
         <motion.div
           {...framerSidebarPanel}
-          className={`flex flex-col w-full overflow-y-auto ${navCheck ? "" : "pt-[66px] lg:pt-0"} lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
+          className={`flex flex-col w-full overflow-y-auto ${
+            navCheck ? "" : "pt-[66px] lg:pt-0"
+          } lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
           ref={ref}
           aria-label="Sidebar"
           id="chatlist"
@@ -205,34 +208,60 @@ const JetChat = () => {
             Preview={CustomChannelPreview}
             showChannelSearch={false}
             additionalChannelSearchProps={{ searchForChannels: true }}
+            sort={sort}
+            filters={filters}
+            options={options}
           />
         </motion.div>
         <div className="lg:flex-1 w-full" id="channel">
+          {/*
           {channels.length === 0 ? (
             <div className="flex flex-col justify-center items-center h-full">
               <h2 className="text-xl mb-4">Start a New Chat</h2>
-              <p>It looks like you don't have any conversations yet. Click the "New Chat" button to start your first conversation!</p>
+              <p>
+                It looks like you don't have any conversations yet. Click the
+                &quot;New Chat&quot; button to start your first conversation!
+              </p>
             </div>
-          ) : (
-            <Channel DateSeparator={CustomDateSeparator} EmojiPicker={EmojiPicker} emojiSearchIndex={SearchIndex}>
-              <Window>
-                <CustomChannelHeader />
-                <MessageList />
-                <MessageInput audioRecordingEnabled />
-              </Window>
-              <Thread />
-            </Channel>
-          )}
+          ) : ( */}
+          <Channel
+            DateSeparator={CustomDateSeparator}
+            EmojiPicker={EmojiPicker}
+            emojiSearchIndex={SearchIndex}
+          >
+            <Window>
+              <CustomChannelHeader />
+              <MessageList />
+              <MessageInput audioRecordingEnabled />
+            </Window>
+            <Thread />
+          </Channel>
         </div>
+        {/* )}
+        </div> */}
       </div>
       {showWelcomeModal && (
         <Modal handleClick={handleModalClose}>
-          <div className="p-4 bg-white rounded-lg">
-            <h2>Welcome to Jet Support!</h2>
-            <p>Your ultimate hub for seamless connections. With our streamlined and comprehensive app, effortlessly engage with others and enjoy convenient interactions, making every transaction a breeze.</p>
-            <button onClick={handleModalClose} className="bg-[orangered] text-white px-4 py-2 rounded">
-              Continue
-            </button>
+
+          <div className="bg-white sm:w-[348px] md:w-96 text-center h-[345px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
+            <div className="flex flex-col items-center">
+            <img src={JetSupportLogo} alt="jet-logo" className="w-20 h-20"/>
+              <h2 className="font-inter font-semibold text-lg mt-2">
+                Welcome to Jet Support!
+              </h2>
+              <p className="text-[#828282] text-md font-inter leading-5">
+                Your ultimate hub for seamless connections. With our streamlined
+                and comprehensive app, effortlessly engage with others and enjoy
+                convenient interactions, making every transaction a breeze.
+              </p>
+            </div>
+
+            <Button
+              type="submit"
+              onClick={handleModalClose}
+              title="Continue"
+              className="mt-10"
+            />
           </div>
         </Modal>
       )}

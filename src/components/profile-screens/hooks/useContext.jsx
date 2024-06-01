@@ -13,11 +13,12 @@ const MyProvider = ({ children }) => {
   const [ showLogoutModal, setShowLogoutModal ] = useState( false );
   const [ isSearching, setIsSearching ] = useState( false );
   const [darkMode , setDarkMode] = useState(false)
-  
+  const [isChannelsModalOpen, setIsChannelsModalOpen] = useState(false);
+
 
   return (
     <MyContext.Provider
-      value={{ showLogoutModal, darkMode, setDarkMode, setShowLogoutModal, open, setOpen ,isSearching, setIsSearching }}
+      value={{ showLogoutModal, isChannelsModalOpen, setIsChannelsModalOpen, darkMode, setDarkMode, setShowLogoutModal, open, setOpen ,isSearching, setIsSearching }}
     >
       {children}
     </MyContext.Provider>

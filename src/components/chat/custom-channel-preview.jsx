@@ -1,7 +1,7 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../utils";
 import { useTranslationContext } from "stream-chat-react";
-import { useEffect, useMemo } from "react";
+import {  useMemo } from "react";
 
 export const CustomChannelPreview = (props) => {
   const {
@@ -67,11 +67,7 @@ export const CustomChannelPreview = (props) => {
     }
   };
 
-  useEffect( () =>
-  {
-    
-    console.log("istYPING" , channel?.isTyping)
-  },[channel?.isTyping])
+
   return (
     <>
       <div
@@ -130,7 +126,7 @@ CustomChannelPreview.propTypes = {
   channel: Proptypes.object,
   setActiveChannel: Proptypes.func,
   activeChannel: Proptypes.object,
-  latestMessage: Proptypes.object,
+  latestMessage: Proptypes.any,
   displayTitle: Proptypes.string,
   displayImage: Proptypes.string,
   unread: Proptypes.number,

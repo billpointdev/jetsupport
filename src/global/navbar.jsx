@@ -1,114 +1,154 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JetSupportLogo from "../assets/jetsupportcropped.jpg";
 import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
 import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
-import { useNavigate } from "react-router-dom";
 import Modal from "../components/profile-screens/reusables/modal";
-import InfoCircleIcon from "../utils/InfoCircle";
 import NothingHereImg from "../assets/nothing-here-image-notification.gif";
 import { useSelector } from "react-redux";
+import { useChatContext } from "stream-chat-react";
+import { CiSearch } from "react-icons/ci";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import useProviderContext from "../components/profile-screens/hooks/useProvideContext";
+import { getChannelColor, getInitials } from "../utils";
+import ErrorBot from "../error";
 
 const Navbar = ({ toggleSidebar }) => {
-  const navigate = useNavigate();
-const { userInfo } = useSelector(
-  (state) => state.auth
-);
+  const { client, setActiveChannel } = useChatContext();
+  const { userInfo } = useSelector((state) => state.auth);
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
+  const { isChannelsModalOpen, setIsChannelsModalOpen } = useProviderContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [users, setUsers] = useState(null);
 
   const toggleNotificationDropdown = () => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
   };
 
-  const notifications = [
-    {
-      id: 1,
-      img: JetSupportLogo,
-      message:
-        "Time to trade! Don't miss out on the latest crypto prices on Jet Support web app. Start trading now",
-    },
-    {
-      id: 2,
-      img: JetSupportLogo,
-      message:
-        "Crypto prices are on the rise! Open your Jet Support web app and make a move now to maximize your profit.",
-    },
-    {
-      id: 3,
-      img: JetSupportLogo,
-      message:
-        "Jet Support web app is here to offer you the best crypto trading experience. Buy and sell crypto with ease and get real-time notifications for market updates.",
-    },
-  ];
+  // const channelName = channel?.name ? channel?.name : "Unnamed Channel";
+  // const channelColor = getChannelColor( channelName );
 
-  const openClearNotificationsModal = () => {
-    setModalContent(
-
-      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 " >
-        <div className="flex items-center justify-center">
-          <div className="flex justify-center items-center bg-[#f5f5f5] h-16 w-16 rounded-full p-0.5">
-            <InfoCircleIcon />
-          </div>
-        </div>
-        <div className="mt-7">
-          <p> Clear All Notifications</p>
-          <p className="text-[#757575]">
-            By clearing your account notifications you loose all your Jetsupport
-            notifications.
-          </p>
-        </div>
-        <div className="mt-8">
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={clearNotifications}
-              className={`block w-full rounded-[16px] text-sm md:text-md  bg-[#F5F5F5] px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              onClick={clearNotifications}
-              className={`block w-full rounded-[16px] text-white whitespace-nowrap text-md  bg-primary px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
-            >
-              Clear Notifications
-            </button>
-            
-          </div>
-        </div>
-      </div>
-    );
-    setIsModalOpen(true);
+  const fetchAllUsers = async () => {
+    try {
+      const response = await client.queryUsers({});
+      return response.users;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      return [];
+    }
   };
+
+  const fetchAllAdmins = async () => {
+    try {
+      const response = await client.queryUsers({ role: "staff" }, { id: -1 });
+      return response.users;
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allUsers = await fetchAllUsers();
+      const allAdmins = await fetchAllAdmins();
+      // Merge the arrays of users and admins
+      const mergedUsers = [...allUsers, ...allAdmins];
+      // Set the state variable with the merged array
+      setUsers(mergedUsers);
+    };
+
+    fetchData();
+  }, []);
+
+
+
+  const userId = userInfo?.chat_id;
+  //  console.log(userInfo.chat_id);
+  // Function to handle starting a new chat with a selected user
+  const startNewChat = async (selectedUser) => {
+    try {
+      const members = [userId, selectedUser.id];
+      const channel = client.channel("messaging", {
+        name: selectedUser?.name,
+        image: selectedUser.image,
+        members,
+      });
+
+      setActiveChannel(channel);
+
+      // Close the modal
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error starting new chat:", error);
+    }
+  };
+
+  const openChannelsModal = () => {
+    if ( window.location.pathname === "/chat" )
+    {
+      setIsChannelsModalOpen( true );
+    } else
+    {
+      setError( "Oops! Please go to the chat page to create new chats." );
+      // navigate("/chat")
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, setError]);
+
+  const filteredUsers = users?.filter((user) =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setIsChannelsModalOpen(false);
   };
 
-  const clearNotifications = () => {
-    // will implement logic to clear notifications here
-    console.log("Notifications cleared");
-    setIsModalOpen(false);
+  const notifications = [
+    // ... your notifications here ...
+  ];
+
+  const openClearNotificationsModal = () => {
+    setModalContent();
+    // ... your modal content here ...
+    setIsModalOpen(true);
   };
 
-    const getGreeting = () => {
-      const currentHour = new Date().getHours();
-      if (currentHour < 12) {
-        return "Good Morning";
-      } else if (currentHour < 18) {
-        return "Good Afternoon";
-      } else {
-        return "Good Evening";
-      }
-    };
+  // const clearNotifications = () => {
+  //   // will implement logic to clear notifications here
+  //   console.log("Notifications cleared");
+  //   setIsModalOpen(false);
+  // };
+
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good Morning";
+    } else if (currentHour < 18) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  };
 
   return (
     <header
-      className=" fixed dark:bg-dark dark:text-white bg-white left-0 top-0 z-50  w-full h-[66px] border-b"
+      className="fixed dark:bg-dark dark:text-white bg-white left-0 top-0 z-50 w-full h-[66px] border-b"
       id="navbar"
     >
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
@@ -117,7 +157,7 @@ const { userInfo } = useSelector(
           <img src={JetSupportLogo} alt="" className="w-[52px] h-[49px]" />
         </a>
         <button
-          className="block rounded  p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"
+          className="block rounded p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"
           onClick={toggleSidebar}
         >
           <span className="sr-only">Toggle menu</span>
@@ -147,16 +187,15 @@ const { userInfo } = useSelector(
               />
             </div>
             <div className="hidden lg:block text-center sm:text-left ml-1">
-              <h1 className="  dark:text-white sm:text-2xl font-inter">
+              <h1 className="dark:text-white sm:text-2xl font-inter">
                 {getGreeting()},{" "}
-                <span className=" text-[#010E0E] dark:text-white font-bold ">
+                <span className="text-[#010E0E] dark:text-white font-bold">
                   {userInfo?.firstname}
                 </span>{" "}
                 👋
               </h1>
-
-              <p className=" text-xs text-[#616161] dark:text-white">
-                What would you live to buy or sell today?
+              <p className="text-xs text-[#616161] dark:text-white">
+                What would you like to buy or sell today?
               </p>
             </div>
           </nav>
@@ -164,14 +203,14 @@ const { userInfo } = useSelector(
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
               <div
-                className="flex rounded-full gap-2  bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary/75 cursor-pointer"
-                onClick={() => navigate("/chat")}
+                className="flex rounded-full gap-2 bg-primary px-5 py-2.5 text-sm font-medium text-white transition hover:bg-primary/75 cursor-pointer"
+                onClick={openChannelsModal}
               >
-                <NewChatIcon /> New Chat{" "}
+                <NewChatIcon /> New Chat
               </div>
               <div className="relative">
                 <button
-                  className="hidden rounded-full bg-gray-100 px-2.5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-gray-200  sm:block"
+                  className="hidden rounded-full bg-gray-100 px-2.5 py-2.5 text-sm font-medium text-teal-600 transition hover:bg-gray-200 sm:block"
                   onClick={toggleNotificationDropdown}
                 >
                   <NotificationIcon />
@@ -182,20 +221,20 @@ const { userInfo } = useSelector(
                       Notifications
                     </h4>
                     <div className="">
-                      {!notifications.length > 0 ? (
+                      {notifications.length > 0 ? (
                         notifications.map((notification) => (
                           <div
                             key={notification.id}
-                            className="flex items-center gap-2  py-2 px-4 cursor-pointer hover:bg-gray-100"
+                            className="flex items-center gap-2 py-2 px-4 cursor-pointer hover:bg-gray-100"
                           >
                             <div className="w-10 h-10 border-2 overflow-hidden border-primary rounded-full">
                               <img
-                                className="w-full h-full object-cover "
+                                className="w-full h-full object-cover"
                                 src={notification.img}
                                 alt="notification-image"
                               />
                             </div>
-                            <span className="text-sm w-[220px]  line-clamp-2 ">
+                            <span className="text-sm w-[220px] line-clamp-2">
                               {notification.message}
                             </span>
                           </div>
@@ -213,7 +252,7 @@ const { userInfo } = useSelector(
                           </h4>
                           <p className="font-inter text-base max-w-[350px]">
                             Looks like there&apos;s no recent activity to show
-                            here.{" "}
+                            here.
                           </p>
                         </div>
                       )}
@@ -238,14 +277,122 @@ const { userInfo } = useSelector(
         {isModalOpen && (
           <Modal handleClick={handleCloseModal}>{modalContent}</Modal>
         )}
+        {isChannelsModalOpen && (
+          <Modal handleClick={handleCloseModal}>
+            <div className="bg-white sm:w-[348px] md:w-96 text-center h-[515px] flex flex-col mt-14 rounded-[24px] p-4 py-3 ">
+              <div className="flex flex-col  ">
+                <p className="font-inter mt-3 font-semibold text-lg">
+                  Start New Chat
+                </p>
+                {/* // searchbar */}
+                <div className="border-none w-full bg-[#fafafa] flex rounded-md items-center px-2.5 my-3">
+                  <CiSearch />
+                  <input
+                    type="search"
+                    className="w-full border-0 bg-transparent h-full outline-none text-[#757575] text-sm py-3 px-2.5"
+                    value={searchQuery}
+                    placeholder="Search conversations"
+                    onChange={(event) => setSearchQuery(event.target.value)}
+                    // onKeyDown={(event) => {
+                    //   if (event.key === "Enter") {
+                    //     event.preventDefault();
+                    //     handleSearch(event);
+                    //   }
+                    // }}
+                  />
+                </div>
+                <div className="overflow-y-auto  h-[376px] w-full mt-1">
+                  {searchQuery
+                    ? filteredUsers.map((user) => {
+                        const channelName = user?.name
+                          ? user?.name
+                          : "Unnamed Channel";
+                        const channelColor = getChannelColor(channelName);
+                        return (
+                          <div
+                            key={user.id}
+                            onClick={() => startNewChat(user)}
+                            className="flex items-center justify-between cursor-pointer px-2 my-2"
+                          >
+                            {/* Display user profile */}
+                            <div className="flex items-center">
+                              {user?.image ? (
+                                <div className="w-10 h-10 rounded-full overflow-hidden border">
+                                  <img
+                                    src={user?.image}
+                                    alt="user-image"
+                                    className="w-full h-full object-fit"
+                                  />
+                                </div>
+                              ) : (
+                                <div
+                                  className={`w-10 h-10 rounded-full overflow-hidden border flex items-center justify-center`}
+                                  style={{ backgroundColor: channelColor }}
+                                >
+                                  {getInitials(
+                                    user?.name ? user?.name : "Anonymous"
+                                  )}
+                                </div>
+                              )}
+                              <p className="ml-4 capitalize">{user?.name}</p>
+                            </div>
+                            <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
+                              <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />
+                            </div>
+                          </div>
+                        );
+                      })
+                    : users.map((user) => {
+                        const channelName = user?.name
+                          ? user?.name
+                          : "Unnamed Channel";
+                        const channelColor = getChannelColor(channelName);
+                        return (
+                          <div
+                            key={user.id}
+                            onClick={() => startNewChat(user)}
+                            className="flex items-center justify-between cursor-pointer px-2 my-2"
+                          >
+                            {/* Display user profile */}
+                            <div className="flex items-center">
+                              {user?.image ? (
+                                <div className="w-10 h-10 rounded-full overflow-hidden border">
+                                  <img
+                                    src={user?.image}
+                                    alt="user-image"
+                                    className="w-full h-full object-fit"
+                                  />
+                                </div>
+                              ) : (
+                                <div
+                                  className={`w-10 h-10 rounded-full overflow-hidden border flex items-center justify-center`}
+                                  style={{ backgroundColor: channelColor }}
+                                >
+                                  {getInitials(
+                                    user?.name ? user?.name : "Anonymous"
+                                  )}
+                                </div>
+                              )}
+                              <p className="ml-4 capitalize">{user?.name}</p>
+                            </div>
+                            <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
+                              <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />
+                            </div>
+                          </div>
+                        );
+                      })}
+                </div>
+              </div>
+            </div>
+          </Modal>
+        )}
       </div>
+      {error && <ErrorBot error={error} />}
     </header>
   );
 };
 
 Navbar.propTypes = {
-  open: Proptypes.bool.isRequired,
-  setOpen: Proptypes.func.isRequired,
   toggleSidebar: Proptypes.func.isRequired,
 };
 

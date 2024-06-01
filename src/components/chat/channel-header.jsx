@@ -14,17 +14,16 @@ export const CustomChannelHeader = ({ title }) => {
       setName(channel?.data?.name);
       setImage(channel?.data?.image);
     } else {
-      setName(channel?.data?.created_by?.name);
-      setImage(channel?.data?.created_by?.image);
+      setName(channel?.data?.name);
+      setImage(channel?.data?.image);
     }
   }, [channel]);
-
   const handleClick = () => {
     setActiveChannel?.(null);
     const chatDisplay = document.querySelector("#channel");
     const chatList = document.querySelector("#chatlist");
     const navbar = document.querySelector("#navbar");
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 425) {
       chatDisplay.classList.add("open");
       chatList.classList.remove("open");
       navbar.classList.remove("open");
