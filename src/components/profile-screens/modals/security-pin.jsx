@@ -7,8 +7,10 @@ import Proptypes from "prop-types";
 const SecurityPin = ({ setModal, setConfirmed, setNotifications }) => {
   const [otpFilled, setOtpFilled] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
-
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [timer, setTimer] = useState(60);
+    const [otpError, setOtpError] = useState(null);
+
 
   // Timer logic using useEffect
   useEffect(() => {
@@ -57,9 +59,13 @@ const SecurityPin = ({ setModal, setConfirmed, setNotifications }) => {
           setOtpVerified={setOtpVerified}
           numberOfDigits={6}
           handleOtp={handleChange}
-          setConfirmed={ setConfirmed }
+          setConfirmed={setConfirmed}
           setNotifications={setNotifications}
           setModal={setModal}
+          otp={otp}
+          setOtp={setOtp}
+          otpError={otpError}
+          setOtpError={setOtpError}
         />
         <div>
           <p className="text-[#757575] mt-7">

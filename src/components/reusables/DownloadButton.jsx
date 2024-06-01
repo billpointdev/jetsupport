@@ -16,7 +16,7 @@ const DownloadButton = ({
   return (
     <button
       type={type}
-      className={`${bgColor} ${textColor} ${height} ${padding} ${width} border border-lightGray flex items-center py-4 w-full  font-inter justify-center px-3 rounded-[16px]`}
+      className={`${bgColor} border-none outline-none ${textColor} ${height} ${padding} ${width} border border-lightGray flex items-center py-4 w-full  font-inter justify-center px-3 rounded-[16px]`}
       onClick={onClick}
     >
       {children} {buttonText}

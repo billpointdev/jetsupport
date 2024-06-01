@@ -65,11 +65,8 @@ const OtpModal = ({ setModal, handleContinue, title, setConfirmed }) => {
             OTP code verification
           </p>
           <p className="text-[#828282] text-md font-inter leading-5">
-            We’ve sent a unique code to your mobile number. Enter the code below
+            We’ve sent a unique code to your email. Enter the code below
             to verify.
-          </p>
-          <p className="text-[14px] text-[#828282]  font-inter">
-            (+234) 9035017863
           </p>
         </div>
         <OtpInputWithValidation

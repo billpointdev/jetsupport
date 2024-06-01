@@ -13,20 +13,23 @@ const ForgotPassword = () => {
   // eslint-disable-next-line no-unused-vars
   const { register, handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState([]);
+  const [ notifications, setNotifications ] = useState( [] );
+  const [loading , setLoading] = useState(false)
   const [error, setError] = useState(null);
 
   const onSubmit = async (data) => {
     try {
+      setLoading(true)
       // eslint-disable-next-line no-unused-vars
       localStorage.setItem("userEmail", data.email);
       const response = await axiosInstance.post("/auth/forget/password", {
         email: data.email,
       });
+      setLoading(false)
       setNotifications((prev) => [
         { id: Date.now(), text: response?.message },
         ...prev,
-      ]);
+      ] );
       navigate("/otp", { state: { fromForgotPassword: true } });
     } catch (error) {
       console.error("Error:", error?.response?.data?.message);
@@ -50,7 +53,7 @@ const ForgotPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="">
+      <div className="dark:text-[#FFD9C5]">
         <div>
           <h4 className="font-semibold text-[24px] font-helvetica">
             Hello there 👋
@@ -78,7 +81,7 @@ const ForgotPassword = () => {
 
           <div className="mt-20">
             <DownloadButton
-              buttonText="Send reset password"
+              buttonText={loading ? "Sending ..." : "Send reset password"}
               padding={"px-20"}
               width={"w-[100%]"}
               bgColor={"bg-primary"}

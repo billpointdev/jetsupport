@@ -50,7 +50,7 @@ const LogoutModal = () => {
   const { closeLogoutModal } = useLogout();
   return (
     <Modal handleClick={closeLogoutModal}>
-      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
+      <div className="bg-white  sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
         <div className="flex items-center justify-center">
           <MasterExitIcon />
           {/* <div className="flex justify-center items-center bg-[#f5f5f5] h-16 w-16 rounded-full p-0.5"></div> */}
@@ -76,7 +76,7 @@ const LogoutModal = () => {
               type="button"
               className={`block w-full whitespace-nowrap rounded-[16px] h-14  bg-[#FF3B3B] text-white text-sm md:text-md lg:text-lg px-6 py-4 font-medium transform  hover:scale-95 transition-transform duration-300`}
             >
-            {loading ? "Signing out..." : "Sign me Out"}
+              {loading ? "Signing out..." : "Sign me Out"}
             </button>
           </div>
         </div>

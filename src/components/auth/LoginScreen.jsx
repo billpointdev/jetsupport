@@ -62,7 +62,7 @@ const LoginScreen = () => {
   return (
     <AnimatePresence>
       <AuthLayout>
-        <div className="mt-20">
+        <div className="mt-20 dark:text-[#FFD9C5]">
           <div>
             <h4 className=" font-semibold text-[24px] font-helvetica">
               Welcome back 👋
@@ -110,7 +110,7 @@ const LoginScreen = () => {
                 textColor={"text-white"}
               />
               <small className="text-center block mt-10">
-                New to Jetpay?{" "}
+                New to Jet Support?{" "}
                 <span
                   className="cursor-pointer"
                   onClick={() => navigate("/signup")}

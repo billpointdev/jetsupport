@@ -65,6 +65,8 @@ InputComponent.propTypes = {
 const ResetPassword = ({ setModal, setConfirmed, setNotifications }) => {
   const [data, setData] = useState(INITIAL_DATA);
   const [errorResponse, setErrorResponse] = useState();
+  const storedUserEmail = localStorage.getItem("userEmail") || null;
+  const [loading, setLoading] = useState(false);
 
   const updateFields = (fields) => {
     setData((prev) => {
@@ -83,40 +85,41 @@ const ResetPassword = ({ setModal, setConfirmed, setNotifications }) => {
       alert("Password mismatch");
       return;
     }
-
+    setLoading(true);
     try {
-      const response = await axiosInstance.post("/auth/change/password", {
-        password: data.oldPassword,
-        new_password: data.newPassword,
-        new_password_confirmation: data.confirmNewPassword,
+      const response = await axiosInstance.post("/auth/reset/password/web", {
+        password: data.newPassword,
+        password_confirmation: data.confirmNewPassword,
+        email: storedUserEmail,
       });
 
       if (!response.data) {
         throw new Error("Update failed");
       }
-
+      setModal(null);
       setNotifications((prev) => [
-        { id: Date.now(), text: response?.data?.data?.message },
+        { id: Date.now(), text: response?.data?.message },
         ...prev,
       ]);
+      setLoading(false);
     } catch (error) {
       setErrorResponse(error?.response?.data?.message);
     }
   };
 
-    useEffect(() => {
-      if (errorResponse) {
-        const timer = setTimeout(() => {
-          setErrorResponse(null);
-        }, 5000);
+  useEffect(() => {
+    if (errorResponse) {
+      const timer = setTimeout(() => {
+        setErrorResponse(null);
+      }, 5000);
 
-        return () => clearTimeout(timer);
-      }
-    }, [errorResponse, setErrorResponse]);
+      return () => clearTimeout(timer);
+    }
+  }, [errorResponse, setErrorResponse]);
 
   return (
     <Modal handleClick={handleClick}>
-      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[420px] flex flex-col  mt-14 rounded-[24px] p-4 py-3 ">
+      <div className="bg-white sm:w-[348px] md:w-96 text-center h-[335px] flex flex-col  mt-14 rounded-[24px] p-4 py-3 ">
         <div>
           <p className="font-inter font-semibold text-lg">
             Reset your security pin
@@ -129,14 +132,14 @@ const ResetPassword = ({ setModal, setConfirmed, setNotifications }) => {
           onSubmit={handleSubmit}
           className="text-start flex flex-col gap-3"
         >
-          <InputComponent
+          {/* <InputComponent
             label="Old Password"
             id="name"
             type="password"
             placeholder="Enter old password"
             value={data.oldPassword}
             onChange={(e) => updateFields({ oldPassword: e.target.value })}
-          />
+          /> */}
           <InputComponent
             label="New Password"
             id="name"
@@ -155,7 +158,11 @@ const ResetPassword = ({ setModal, setConfirmed, setNotifications }) => {
               updateFields({ confirmNewPassword: e.target.value })
             }
           />
-          <Button type="submit" title="Continue" className="mt-3" />
+          <Button
+            type="submit"
+            title={loading ? "Resetting ..." : "Continue"}
+            className="mt-3"
+          />
         </form>
       </div>
       {errorResponse && <ErrorBot error={errorResponse} />}

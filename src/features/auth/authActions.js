@@ -59,7 +59,6 @@ export const validatePin = createAsyncThunk(
         }),
       });
 
-      // Check if the response is not OK (status code not in the range 200-299)
       if (!response.ok) {
         const errorData = await response.json();
         return thunkAPI.rejectWithValue(errorData);

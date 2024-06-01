@@ -1,11 +1,11 @@
 import Button from "../reusables/button";
 import Modal from "../reusables/modal";
 import Proptypes from "prop-types";
-import OtpInputWithValidation from "../utils/reset-pin";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../../api/config";
 import { logout } from "../../../features/auth/authSlice";
+import OtpInputWithValidation from "../utils/authorize-delete";
 
 const AuthorizeDelete = ({ setAuthorizeDelete }) => {
   // eslint-disable-next-line no-unused-vars
@@ -36,7 +36,6 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
     }
   };
 
-  console.log("setAuthorize" , authorize)
   return (
     <Modal handleClick={handleClick}>
       <div className="bg-white sm:w-[348px] md:w-96 text-center h-[315px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
@@ -48,7 +47,7 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
             Authorize account deletion
           </p>
           <p className="text-[#828282] text-md font-inter leading-5">
-            Enter your BillPoint PIN to authorize account deletion{" "}
+            Enter your Jet Support PIN to authorize account deletion{" "}
           </p>
           <OtpInputWithValidation
             handleOtp={handleChange}

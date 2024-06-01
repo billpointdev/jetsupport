@@ -228,7 +228,7 @@ const JetChat = () => {
       {showWelcomeModal && (
         <Modal handleClick={handleModalClose}>
           <div className="p-4 bg-white rounded-lg">
-            <h2>Welcome to Jetpay!</h2>
+            <h2>Welcome to Jet Support!</h2>
             <p>Your ultimate hub for seamless connections. With our streamlined and comprehensive app, effortlessly engage with others and enjoy convenient interactions, making every transaction a breeze.</p>
             <button onClick={handleModalClose} className="bg-[orangered] text-white px-4 py-2 rounded">
               Continue

@@ -12,11 +12,13 @@ const Input = ({ label, id, type, placeholder, bgColor,className, value, onChang
   };
 
   return (
-    <div className="text-start w-full">
-      <label htmlFor={id} className="block mb-2">{label}</label>
+    <div className="text-start w-full dark:text-dark">
+      <label htmlFor={id} className="block mb-2 dark:text-[#FFD9C5]">
+        {label}
+      </label>
       <div className="relative">
         <input
-          className={`${bgColor} ${className} ${width} w-full rounded-[16px] border-gray-200 p-[20px] text-sm`}
+          className={`${bgColor} ${className} outline-none dark:text-dark dark:placeholder:text-dark dark:bg-[#FFD9C5] ${width} w-full rounded-[16px] border-gray-200 p-[20px] text-sm`}
           placeholder={placeholder}
           type={inputType}
           id={id}
