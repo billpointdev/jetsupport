@@ -19,16 +19,21 @@ function WhyJetsupport() {
     ];
 
     return (
-      <div className="py-6">
+      <div className="py-6 mt-4">
         <div className="text-center">
-          <h3 className="font-bold text-[30px]">Why Choose JetSupport?</h3>
-          <p className=" text-light text-[10px]">
+          {/* <h3 className="font-bold text-2xl lg:text-[30px]">
+            Why Choose JetSupport?
+          </h3> */}
+          <h2 className="w-full text-4xl font-bold tracking-tight mt-14 text-center  text-gray-900 sm:text-5xl">
+            Why Choose JetSupport?
+          </h2>{" "}
+          <p className="mt-4 leading-relaxed text-gray-700">
             Choose JetSupport for a seamless crypto trading experience with
             detailed and simplified transactions. We <br />
             offer hassle-free gift card trading and a commitment to your maximum
             satisfaction.
           </p>
-          <div className="grid md:grid-cols-2 gap-7 py-3 px-24 mt-8 ">
+          <div className="grid lg:grid-cols-2 gap-7 mt-10 lg:px-24 ">
             {items.map((item, index) => (
               <div
                 className={` p-[20px] py-6 rounded-[24px] text-center ${
@@ -40,7 +45,7 @@ function WhyJetsupport() {
               >
                 <h4 className="font-bold py-2 text-[20px]">{item.title}</h4>
                 <p
-                  className="  text-md"
+                  className=" mt-3 text-md"
                   dangerouslySetInnerHTML={{ __html: item.description }}
                 ></p>
               </div>

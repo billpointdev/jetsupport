@@ -281,7 +281,7 @@ const Navbar = ({ toggleSidebar }) => {
           <Modal handleClick={handleCloseModal}>
             <div className="bg-white sm:w-[348px] md:w-96 text-center h-[515px] flex flex-col mt-14 rounded-[24px] p-4 py-3 ">
               <div className="flex flex-col  ">
-                <p className="font-inter mt-3 font-semibold text-lg">
+                <p className="font-inter mt-3 font-semibold dark:text-dark text-lg">
                   Start New Chat
                 </p>
                 {/* // searchbar */}
@@ -334,7 +334,7 @@ const Navbar = ({ toggleSidebar }) => {
                                   )}
                                 </div>
                               )}
-                              <p className="ml-4 capitalize">{user?.name}</p>
+                              <p className="ml-4 capitalize dark:text-dark">{user?.name}</p>
                             </div>
                             <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
                               <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />
@@ -373,7 +373,7 @@ const Navbar = ({ toggleSidebar }) => {
                                   )}
                                 </div>
                               )}
-                              <p className="ml-4 capitalize">{user?.name}</p>
+                              <p className="ml-4 capitalize dark:text-dark">{user?.name}</p>
                             </div>
                             <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
                               <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />

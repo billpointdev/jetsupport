@@ -18,7 +18,7 @@ import "stream-chat-react/dist/css/v2/index.css";
 import Navbar from "../../global/navbar";
 import { CustomChannelPreview } from "../../components/chat/custom-channel-preview";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
-import {  framerSidebarPanel, items } from "../../utils";
+import { framerSidebarPanel, items } from "../../utils";
 import { CustomSearch } from "../../components/chat/custom-search-bar";
 import { CustomChannelList } from "../../components/chat/search/custom-channel-list";
 import { CustomChannelHeader } from "../../components/chat/channel-header";
@@ -26,14 +26,11 @@ import ChatBody from "../../components/chat/chat-body";
 import { useLocation } from "react-router-dom";
 import { CustomDateSeparator } from "../../components/chat/date-separator";
 import Modal from "../../components/profile-screens/reusables/modal";
-import LoadingIcon from '../../assets/loading-icon.gif'
+import LoadingIcon from "../../assets/loading-icon.gif";
 import Button from "../../components/profile-screens/reusables/button";
 import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
 
-
 const apiKey = import.meta.env.VITE_API_KEY;
-
-
 
 const JetChat = () => {
   // const [chatClient, setChatClient] = useState();
@@ -44,8 +41,8 @@ const JetChat = () => {
   const [modal, setModal] = useState(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   // const [channels, setChannels] = useState([]); // State to store channels
-  const { setOpen: setDropdown } = useProviderContext();
-const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const { setOpen: setDropdown, setIsChannelsModalOpen } = useProviderContext();
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const location = useLocation();
   useEffect(() => {
     if (modal) {
@@ -54,7 +51,9 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setActiveIndex(modalIndex);
       }
     } else {
-      const pathIndex = items.findIndex((item) => item.href === location.pathname);
+      const pathIndex = items.findIndex(
+        (item) => item.href === location.pathname
+      );
       if (pathIndex !== -1) {
         setActiveIndex(pathIndex);
       }
@@ -103,6 +102,20 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     };
   }, []);
 
+   useEffect(() => {
+     const chatDisplay = document.querySelector("#channel");
+
+       if (chatDisplay) {
+         if (window.innerWidth <= 425) {
+           chatDisplay.classList.add("open");
+         } else {
+           chatDisplay.classList.remove("open");
+         }
+       }
+
+
+   }, []);
+
   useEffect(() => {
     const chatDisplay = document.querySelector("#channel");
 
@@ -115,7 +128,6 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     }
   }, [window.innerWidth]);
 
-  
   const userId = userInfo?.user?.chat_id;
   const token = userInfo?.chat_token;
 
@@ -123,12 +135,11 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const options = { presence: true, state: true };
   const sort = { last_message_at: -1 };
 
-   const client = useCreateChatClient({
-     apiKey,
-     tokenOrProvider: token,
-     userData: { id: userId },
-   });
-
+  const client = useCreateChatClient({
+    apiKey,
+    tokenOrProvider: token,
+    userData: { id: userId },
+  });
 
   console.log("useriNFO", userInfo.user);
 
@@ -148,14 +159,16 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const i18nInstance = new Streami18n({
     language: "en",
     translationsForLanguage: {
-      "Connection failure, reconnecting now...": "Alert, connection issue happening",
+      "Connection failure, reconnecting now...":
+        "Alert, connection issue happening",
     },
   });
 
   const handleItemClick = (title) => {
     switch (title) {
       case "New Chat":
-        setModal(title);
+        setOpen( false );
+        setIsChannelsModalOpen( true );
         break;
       default:
         // Handle other cases here if needed
@@ -166,7 +179,8 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const handleClick = (index, title) => {
     setDropdown(false);
     setActiveIndex(index);
-    setModal(null);
+    setModal( null );
+  
     handleItemClick(title);
   };
 
@@ -194,9 +208,9 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
         <motion.div
           {...framerSidebarPanel}
-          className={`flex flex-col w-full overflow-y-auto ${
+          className={`flex flex-col w-full h-full overflow-y-auto ${
             navCheck ? "" : "pt-[66px] lg:pt-0"
-          } lg:max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
+          } lg:max-w-xs border-r border-lightGray  bg-white`}
           ref={ref}
           aria-label="Sidebar"
           id="chatlist"
@@ -213,7 +227,12 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
             options={options}
           />
         </motion.div>
-        <div className="lg:flex-1 w-full" id="channel">
+        <div
+          className={`lg:flex-1 w-full ${
+            window.innerWidth <= 425 ? "open" : ""
+          } `}
+          id="channel"
+        >
           {/*
           {channels.length === 0 ? (
             <div className="flex flex-col justify-center items-center h-full">
@@ -242,10 +261,9 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       </div>
       {showWelcomeModal && (
         <Modal handleClick={handleModalClose}>
-
           <div className="bg-white sm:w-[348px] md:w-96 text-center h-[345px] flex flex-col justify-center mt-14 rounded-[24px] p-4 py-3 ">
             <div className="flex flex-col items-center">
-            <img src={JetSupportLogo} alt="jet-logo" className="w-20 h-20"/>
+              <img src={JetSupportLogo} alt="jet-logo" className="w-20 h-20" />
               <h2 className="font-inter font-semibold text-lg mt-2">
                 Welcome to Jet Support!
               </h2>

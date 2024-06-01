@@ -12,7 +12,7 @@ const RightReserved = () => {
               © {currentYear} Jetsupport. All rights reserved
           </p>
 
-          <ul className="flex gap-3 my-1  lg:mt-0">
+          <ul className="flex gap-3 my-4 lg:my-1 lg:mt-0">
               {socialLinks.map((link, index) => (
                   <li
                       key={index}

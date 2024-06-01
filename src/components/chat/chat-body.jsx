@@ -32,7 +32,7 @@ const ChatBody = ({ handleClick, setOpen, activeIndex,open }) => {
         <motion.div
           key="sidebar"
           {...framerSidebarPanel}
-          className={`fixed left-0 top-0 flex z-10 flex-col w-full  justify-between overflow-y-auto h-screen pt-[66px] max-w-xs border-r border-lightGray dark:bg-gray-800 bg-white`}
+          className={`fixed left-0 top-0 flex z-10 flex-col w-full  justify-between overflow-y-auto h-screen pt-[66px] max-w-xs border-r border-lightGray dark:bg-dark bg-white`}
           ref={ref}
           aria-label="Sidebar"
           drag="x" // Allow dragging only along the X-axis
@@ -51,7 +51,7 @@ const ChatBody = ({ handleClick, setOpen, activeIndex,open }) => {
                     to={href}
                     className={`flex items-center mt-4 justify-between gap-5 py-5 pl-5 w-[300px] pr-1 transition-all  rounded-full h-[50px]  ${
                       idx === activeIndex
-                        ? "bg-[#F5F5F5] border "
+                        ? "bg-[#F5F5F5] border dark:bg-[#FFCBAF] dark:border-[#F66B03] dark:text-dark"
                         : "dark:text-white"
                     }`}
                   >

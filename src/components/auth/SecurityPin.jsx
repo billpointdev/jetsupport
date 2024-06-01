@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Input from "../reusables/customInput";
 // import AuthHeader from "./shared/AuthHeader";
 import DownloadButton from "../../components/reusables/DownloadButton";
-import { updatePin, validatePin } from "../../features/auth/authActions";
+import { logOut, updatePin, validatePin } from "../../features/auth/authActions";
 import ErrorBot from "../../error";
 import { AnimatePresence } from "framer-motion";
 import Notification from "../reusables/notifications";
@@ -77,7 +77,8 @@ const SecurityPin = () => {
           } else {
             console.log(result.payload.message);
             setError(result?.payload?.message);
-            setNotifications([]);
+            setNotifications( [] );
+            dispatch(logOut())
           }
         })
         .catch((error) => {

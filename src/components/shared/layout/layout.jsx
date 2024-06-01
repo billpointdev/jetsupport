@@ -1,7 +1,6 @@
 import Navbar from "../navbar/navbar";
 import Footer from "../footer/footer";
 import PropTypes from "prop-types";
-import React from "react";
 
 const Layout = ({ children }) => {
   return (
@@ -17,7 +16,7 @@ const Layout = ({ children }) => {
           <div className="container mx-auto px-4">
               <section className="flex relative flex-col justify-between max-w-[1280px]">
                   <Navbar/>
-                  <div className="py-8 mt-20">
+                  <div className="py-8 ">
                       <div className="bg-[white] rounded-[9px]">{children}</div>
                   </div>
                   <Footer/>

@@ -112,7 +112,7 @@ export const CustomSearch = () => {
         <CiSearch />
         <input
           type="search"
-          className="w-full border-0 bg-transparent h-full outline-none text-[#757575] text-sm py-3 px-2.5"
+          className="w-full border-0 bg-transparent h-full outline-none text-[#757575]  text-sm py-3 px-2.5"
           value={query}
           placeholder="Search conversations"
           onChange={(event) => setQuery(event.target.value)}

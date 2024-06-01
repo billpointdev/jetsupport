@@ -3,20 +3,28 @@ import { AndroidBottom, AndroidTop, AppleIcon } from "../../../utils/OsICon";
 import GetInTouch from "./getInTouch";
 import RightReserved from "./rightReserved";
 import HaveAQuestion from "./haveAQuestion.jsx";
+import Proptypes from "prop-types";
 
 export const CustomButton = ({ children, os, textColor, bgColor }) => {
   return (
-      <button className="border flex items-center gap-2 px-4 py-1 rounded-full">
-        {children}
-        <p className={` ${textColor} text-start  text-xs ml-3`}>
-          Download on <br /> <span className="font-bold text-md">{os}</span>
-        </p>
-      </button>
+    <button className="border flex items-center gap-2 px-4 py-1 rounded-full">
+      {children}
+      <p className={` ${bgColor} ${textColor} text-start  text-xs ml-3`}>
+        Download on <br /> <span className="font-bold text-md">{os}</span>
+      </p>
+    </button>
   );
 };
 
-function Footer() {
+CustomButton.propTypes = {
+  onClick: Proptypes.func,
+  children: Proptypes.node,
+  os: Proptypes.string,
+  bgColor: Proptypes.string,
+  textColor: Proptypes.string,
+};
 
+function Footer() {
   // const [isChatVisible, setIsChatVisible] = useState(false);
   //
   // const handleChatIconClick = () => {
@@ -51,13 +59,13 @@ function Footer() {
   ];
   return (
     <div className="relative h-full w-full">
-      <HaveAQuestion/>
+      <HaveAQuestion />
       <GetInTouch />
       <footer className=" w-full lg:h-[280px] items-center py-3 flex flex-col md:flex-row justify-center md:justify-between font-inter ">
-        <div className="w-full  flex flex-col  justify-center items-center md:items-start">
+        <div className="w-full  mt-8 flex flex-col  justify-center items-center md:items-start">
           <JetSupportLogo />
           {/* links */}
-          <ul className="flex w-full  lg:gap-4 leading-3 lg:leading-5 gap-x-5 mt-2 gap-y-2 flex-wrap justify-center md:justify-start">
+          <ul className="flex w-full  lg:gap-4 leading-3 lg:leading-5 gap-x-5 mt-12 lg:mt-2 gap-y-2 flex-wrap justify-center md:justify-start">
             {links.map((link, index) => (
               <li key={index} className="cursor-pointer ">
                 <a
@@ -73,7 +81,7 @@ function Footer() {
         {/* get the app div */}
         <div className="flex flex-col mt-3 py-8 md:py-0  md:mt-0 lg:w-[430px] w-full md:items-start">
           <p className="font-medium">Get the App</p>
-          <div className="flex flex-col md:flex-row mt-3 md:mt-5 w-full gap-[9px] items-center justify-end">
+          <div className="flex flex-row mt-3 md:mt-5 w-full gap-[9px] items-center justify-start lg:justify-end">
             <CustomButton os="Android">
               <div className="flex flex-col gap-[1px]">
                 <AndroidTop />
@@ -89,8 +97,7 @@ function Footer() {
         </div>
       </footer>
       <RightReserved />
-      <div>
-    </div>
+      <div></div>
     </div>
   );
 }

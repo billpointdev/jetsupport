@@ -10,7 +10,7 @@ const ErrorBot = ({ error }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       whileInView={{ y: [0, -10, 10, 0] }}
-      className="fixed bottom-3 flex flex-col items-start leading-4 justify-center p-3 left-3 text-white text-md font-[501] bg-red-600 rounded-md  max-w-md min-h-[90px]"
+      className="fixed bottom-3 flex flex-col items-start leading-4 justify-center p-3 left-1 lg:left-3 text-white text-md font-[501] bg-red-600 rounded-md  max-w-md min-h-[90px]"
     >
       <p className="text-lg font-[501] flex items-center gap-2">
         <MdOutlineErrorOutline />

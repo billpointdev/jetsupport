@@ -76,7 +76,7 @@ const GetInTouch = () => {
                     {socialLinks.map((link, index) => (
                       <li
                         key={index}
-                        className="bg-primarylight h-[40px] w-[40px] text-2xl rounded-full flex items-center justify-center"
+                        className="bg-primarylight cursor-pointer h-[40px] w-[40px] text-2xl rounded-full flex items-center justify-center"
                       >
                         <a className="text-primary" href={link?.link}>
                           {link?.icon}
@@ -90,7 +90,7 @@ const GetInTouch = () => {
                   top=""
                   left=""
                   zIndex="-10"
-                  className="left-[-10%] -z-10 lg:left-[-12%] -bottom-8 md:-bottom-0 lg:bottom-8  w-24 h-24"
+                  className="left-[-10%] -z-10 lg:left-[-12%] hidden lg:block -bottom-8 md:-bottom-0 lg:bottom-8  w-24 h-24"
                 />
               </div>
             </div>

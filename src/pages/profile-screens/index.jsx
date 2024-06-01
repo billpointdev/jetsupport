@@ -179,7 +179,7 @@ const ProfilePage = ({ children }) => {
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />
-        <div className=" dark:bg-dark flex-1 mt-[66px] overflow-y-auto ">
+        <div className=" dark:bg-dark dark:text-white flex-1 mt-[66px] overflow-y-auto ">
           <div onClick={() => navigate("/chat")} className="flex ml-3 mt-4 items-center cursor-pointer gap-3">
             {" "}
             <motion.div
