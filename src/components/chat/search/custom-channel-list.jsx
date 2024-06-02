@@ -66,6 +66,10 @@ export const CustomChannelList = ( { loadedChannels, children, loading } ) =>
     );
   }
 
+    if (!children) {
+      return null; 
+    }
+
   return (
     <div className="h-full overflow-scroll pb-24" id="children">
       {/* {loadedChannels?.length === 0 || loadedChannels?.length != 0 && (
