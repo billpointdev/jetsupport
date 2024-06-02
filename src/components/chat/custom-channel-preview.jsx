@@ -112,7 +112,7 @@ export const CustomChannelPreview = (props) => {
                 {channel?.isTyping
                   ? `typing`
                   : latestMessage != "Nothing yet..."
-                  ? latestMessage.props.children + "..."
+                  ? latestMessage?.props?.children + "..."
                   : latestMessage}
               </p>
               {unread > 0 && (
