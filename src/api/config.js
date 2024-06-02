@@ -26,6 +26,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       console.log("Session expired. Redirecting to login page...");
+       localStorage.removeItem("userInfo");
       // Handle the session expiry case
       window.location.href = "/login";
     }
