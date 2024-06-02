@@ -69,7 +69,7 @@ const SecurityPin = () => {
       dispatch(validatePin({ email: userEmail, security_pin: pin.join("") }))
         .then((result) => {
           if (validatePin.fulfilled.match(result)) {
-            navigate("/profile");
+            navigate("/chat");
             setNotifications((prev) => [
               { id: Date.now(), text: "Login successful" },
               ...prev,
