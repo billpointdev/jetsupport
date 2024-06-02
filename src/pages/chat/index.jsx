@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import {
   Chat,
   Channel,
-  MessageInput,
   MessageList,
+  MessageInput,
   Thread,
   Window,
   ChannelList,
@@ -12,7 +12,6 @@ import {
   useCreateChatClient,
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
-import { SearchIndex } from "emoji-mart";
 import { AnimatePresence, motion } from "framer-motion";
 import "stream-chat-react/dist/css/v2/index.css";
 import Navbar from "../../global/navbar";
@@ -39,7 +38,8 @@ const JetChat = () => {
   const [navCheck, setNavCheck] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [ showWelcomeModal, setShowWelcomeModal ] = useState( false );
+  // const [windowWidth , setWindowWidth] = useState(null)
   // const [channels, setChannels] = useState([]); // State to store channels
   const { setOpen: setDropdown, setIsChannelsModalOpen } = useProviderContext();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -102,19 +102,17 @@ const JetChat = () => {
     };
   }, []);
 
-   useEffect(() => {
-     const chatDisplay = document.querySelector("#channel");
+  useEffect(() => {
+    const chatDisplay = document.querySelector("#channel");
 
-       if (chatDisplay) {
-         if (window.innerWidth <= 425) {
-           chatDisplay.classList.add("open");
-         } else {
-           chatDisplay.classList.remove("open");
-         }
-       }
-
-
-   }, []);
+    if (chatDisplay) {
+      if (window.innerWidth <= 425) {
+        chatDisplay.classList.add("open");
+      } else {
+        chatDisplay.classList.remove("open");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const chatDisplay = document.querySelector("#channel");
@@ -126,7 +124,8 @@ const JetChat = () => {
         chatDisplay.classList.remove("open");
       }
     }
-  }, [window.innerWidth]);
+    // setWindowWidth(window.innerWidth)
+  }, []);
 
   const userId = userInfo?.user?.chat_id;
   const token = userInfo?.chat_token;
@@ -140,6 +139,26 @@ const JetChat = () => {
     tokenOrProvider: token,
     userData: { id: userId },
   });
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        console.log("Fetching messages...");
+        if (client) {
+          const channels = await client.queryChannels(filters, sort, options);
+          for (const channel of channels) {
+            await channel.query();
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 30000);
+    return () => clearInterval(interval);
+  }, [client]);
 
   console.log("useriNFO", userInfo.user);
 
@@ -167,8 +186,8 @@ const JetChat = () => {
   const handleItemClick = (title) => {
     switch (title) {
       case "New Chat":
-        setOpen( false );
-        setIsChannelsModalOpen( true );
+        setOpen(false);
+        setIsChannelsModalOpen(true);
         break;
       default:
         // Handle other cases here if needed
@@ -179,8 +198,8 @@ const JetChat = () => {
   const handleClick = (index, title) => {
     setDropdown(false);
     setActiveIndex(index);
-    setModal( null );
-  
+    setModal(null);
+
     handleItemClick(title);
   };
 
@@ -192,7 +211,7 @@ const JetChat = () => {
   return (
     <Chat client={client} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
-      <div className="lg:pt-[66px] flex w-full  h-screen fixed top-0 left-0">
+      <div className="lg:pt-[66px] flex w-full  h-screen  top-0 left-0">
         {windowWidth <= 768 && (
           <AnimatePresence>
             {open && (
@@ -228,9 +247,7 @@ const JetChat = () => {
           />
         </motion.div>
         <div
-          className={`lg:flex-1 w-full ${
-            window.innerWidth <= 425 ? "open" : ""
-          } `}
+          className={`lg:flex-1 w-full ${windowWidth <= 425 ? "open" : ""} `}
           id="channel"
         >
           {/*
@@ -246,7 +263,6 @@ const JetChat = () => {
           <Channel
             DateSeparator={CustomDateSeparator}
             EmojiPicker={EmojiPicker}
-            emojiSearchIndex={SearchIndex}
           >
             <Window>
               <CustomChannelHeader />
@@ -283,15 +299,15 @@ const JetChat = () => {
           </div>
         </Modal>
       )}
-      {modal === "New Chat" && (
+      {/* {modal === "New Chat" && (
         <Modal handleClick={handleModalClose}>
           <div className="p-4 bg-white rounded-lg w-full">
             <h2 className="text-center">Start New Chat</h2>
             <ChannelSearch />
-            {/* Additional content for starting a new chat */}
+            {/* Additional content for starting a new chat 
           </div>
         </Modal>
-      )}
+      )} */}
     </Chat>
   );
 };

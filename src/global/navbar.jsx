@@ -30,18 +30,16 @@ const Navbar = ({ toggleSidebar }) => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
   };
 
-  // const channelName = channel?.name ? channel?.name : "Unnamed Channel";
-  // const channelColor = getChannelColor( channelName );
-
-  const fetchAllUsers = async () => {
-    try {
-      const response = await client.queryUsers({});
-      return response.users;
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      return [];
-    }
-  };
+  //just incase we later want to get all users
+  // const fetchAllUsers = async () => {
+  //   try {
+  //     const response = await client.queryUsers({});
+  //     return response.users;
+  //   } catch (error) {
+  //     console.error("Error fetching users:", error);
+  //     return [];
+  //   }
+  // };
 
   const fetchAllAdmins = async () => {
     try {
@@ -55,18 +53,29 @@ const Navbar = ({ toggleSidebar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const allUsers = await fetchAllUsers();
+      // const allUsers = await fetchAllUsers();
       const allAdmins = await fetchAllAdmins();
-      // Merge the arrays of users and admins
-      const mergedUsers = [...allUsers, ...allAdmins];
-      // Set the state variable with the merged array
-      setUsers(mergedUsers);
+      const mergedUsers = [...allAdmins];
+      const excludeNames = [
+        "Billpoint Dev",
+        "Deep Foxf",
+        "Francis John",
+        "Deepp Fox",
+        "Reall John",
+      ];
+      const filteredUsers = mergedUsers.filter(
+        (user) => !excludeNames.includes(user.name)
+      );
+
+      const sortedUsers = filteredUsers.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+
+      setUsers(sortedUsers);
     };
 
     fetchData();
   }, []);
-
-
 
   const userId = userInfo?.chat_id;
   //  console.log(userInfo.chat_id);
@@ -90,12 +99,10 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   const openChannelsModal = () => {
-    if ( window.location.pathname === "/chat" )
-    {
-      setIsChannelsModalOpen( true );
-    } else
-    {
-      setError( "Oops! Please go to the chat page to create new chats." );
+    if (window.location.pathname === "/chat") {
+      setIsChannelsModalOpen(true);
+    } else {
+      setError("Oops! Please go to the chat page to create new chats.");
       // navigate("/chat")
     }
   };
@@ -247,10 +254,10 @@ const Navbar = ({ toggleSidebar }) => {
                               alt="nothing here notification"
                             />
                           </div>
-                          <h4 className="font-inter font-semibold text-lg my-1">
+                          <h4 className="font-inter dark:text-[#000] font-semibold text-lg my-1">
                             No Notifications yet
                           </h4>
-                          <p className="font-inter text-base max-w-[350px]">
+                          <p className="font-inter dark:text-[#000] text-base max-w-[350px]">
                             Looks like there&apos;s no recent activity to show
                             here.
                           </p>
@@ -334,7 +341,9 @@ const Navbar = ({ toggleSidebar }) => {
                                   )}
                                 </div>
                               )}
-                              <p className="ml-4 capitalize dark:text-dark">{user?.name}</p>
+                              <p className="ml-4 capitalize dark:text-dark whitespace-nowrap">
+                                {user?.name}
+                              </p>
                             </div>
                             <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
                               <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />
@@ -373,7 +382,9 @@ const Navbar = ({ toggleSidebar }) => {
                                   )}
                                 </div>
                               )}
-                              <p className="ml-4 capitalize dark:text-dark">{user?.name}</p>
+                              <p className="ml-4 capitalize dark:text-dark whitespace-nowrap">
+                                {user?.name}
+                              </p>
                             </div>
                             <div className="h-8 w-8 rounded-full border   flex items-center justify-center">
                               <MdOutlineKeyboardArrowRight className="text-sm text-gray-700" />
