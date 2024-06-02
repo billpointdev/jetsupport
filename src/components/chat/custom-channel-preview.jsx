@@ -111,8 +111,8 @@ export const CustomChannelPreview = (props) => {
               <p className="truncate w-[170px] ">
                 {channel?.isTyping
                   ? `typing`
-                  : latestMessage != "Nothing yet..."
-                  ? latestMessage?.props?.children + "..."
+                  : latestMessage != "Nothing yet..." && latestMessage?.props?.children != undefined
+                  ? latestMessage?.props?.children + "...
                   : latestMessage}
               </p>
               {unread > 0 && (
