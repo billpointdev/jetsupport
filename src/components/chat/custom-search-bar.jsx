@@ -59,19 +59,41 @@ export const CustomSearch = () => {
 
       setChannelsResults({ entity: "channel", items: channels });
 
-      const { users } = await client.queryUsers(
-        {
-          $or: [
-            { id: { $autocomplete: query } },
-            { name: { $autocomplete: query } },
-          ],
-          id: { $ne: client.userID },
-        },
-        {}, // No sorting options here
-        { limit: 5 }
-      );
+   const excludeNames = [
+     "Billpoint Dev",
+     "Deep Foxf",
+     "Francis John",
+     "Deepp Fox",
+     "Reall John",
+   ];
 
-      setUsersResults({ entity: "user", items: users });
+   const { users } = await client.queryUsers(
+     {
+       $and: [
+         {
+           $or: [
+             { id: { $autocomplete: query } },
+             { name: { $autocomplete: query } },
+           ],
+         },
+         { role: "staff" }, 
+         { id: { $ne: client.userID } }, 
+       ],
+     },
+     {}, // No sorting options here
+     { limit: 5 }
+   );
+
+   const filteredUsers = users.filter(
+     (user) => !excludeNames.includes(user.name)
+   );
+
+   const sortedUsers = filteredUsers.sort((a, b) =>
+     a.name.localeCompare(b.name)
+   );
+
+   setUsersResults({ entity: "user", items: sortedUsers });
+
 
       const { results } = await client.search(
         { type: "messaging", members: { $in: [client.userID] } },

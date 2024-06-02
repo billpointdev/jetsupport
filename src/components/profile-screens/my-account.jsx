@@ -127,7 +127,7 @@ const MyAccount = () => {
               alt="avatar"
               className="object-cover h-full w-full"
             />
-            <div className="bg-[#EBEBF0] w-8 h-8 rounded-full flex items-center justify-center absolute -bottom-2 right-0">
+            <div className="bg-[#EBEBF0] dark:text-[#000] w-8 h-8 rounded-full flex items-center justify-center absolute -bottom-2 right-0">
               <AiTwotoneEdit />
             </div>
           </div>
