@@ -28,8 +28,10 @@ import Modal from "../../components/profile-screens/reusables/modal";
 import LoadingIcon from "../../assets/loading-icon.gif";
 import Button from "../../components/profile-screens/reusables/button";
 import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
+import  axios  from "axios";
 
 const apiKey = import.meta.env.VITE_API_KEY;
+axios.defaults.timeout = 10000;
 
 const JetChat = () => {
   // const [chatClient, setChatClient] = useState();
@@ -136,29 +138,30 @@ const JetChat = () => {
 
   const client = useCreateChatClient({
     apiKey,
+     timeout: 10000,
     tokenOrProvider: token,
     userData: { id: userId },
   });
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        console.log("Fetching messages...");
-        if (client) {
-          const channels = await client.queryChannels(filters, sort, options);
-          for (const channel of channels) {
-            await channel.query();
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching messages:", error);
+useEffect(() => {
+  axios.defaults.timeout = 10000;
+  const fetchChannels = async () => {
+    try {
+      console.log("Fetching channels...");
+      if (client) {
+        await client.queryChannels(filters, sort, options);
+        // Do something with the channels data here
       }
-    };
+    } catch (error) {
+      console.error("Error fetching channels:", error);
+    }
+  };
 
-    fetchMessages();
-    const interval = setInterval(fetchMessages, 30000);
-    return () => clearInterval(interval);
-  }, [client]);
+  fetchChannels();
+  const interval = setInterval(fetchChannels, 30000);
+  return () => clearInterval(interval);
+}, [client]);
+
 
   console.log("useriNFO", userInfo.user);
 
