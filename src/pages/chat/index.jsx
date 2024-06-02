@@ -28,21 +28,23 @@ import Modal from "../../components/profile-screens/reusables/modal";
 import LoadingIcon from "../../assets/loading-icon.gif";
 import Button from "../../components/profile-screens/reusables/button";
 import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
-import  axios  from "axios";
+import axios from "axios";
+import { StreamChat } from "stream-chat";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 axios.defaults.timeout = 10000;
 
 const JetChat = () => {
-  // const [chatClient, setChatClient] = useState();
+  const [chatClient, setChatClient] = useState();
   const [open, setOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [navCheck, setNavCheck] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
-  const [ showWelcomeModal, setShowWelcomeModal ] = useState( false );
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   // const [windowWidth , setWindowWidth] = useState(null)
-  // const [channels, setChannels] = useState([]); // State to store channels
+  const [clientReady, setClientReady] = useState(false);
+  const [channels, setChannels] = useState([]); // State to store channels
   const { setOpen: setDropdown, setIsChannelsModalOpen } = useProviderContext();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const location = useLocation();
@@ -136,36 +138,71 @@ const JetChat = () => {
   const options = { presence: true, state: true };
   const sort = { last_message_at: -1 };
 
-  const client = useCreateChatClient({
-    apiKey,
-     timeout: 10000,
-    tokenOrProvider: token,
-    userData: { id: userId },
-  });
+  // const client = useCreateChatClient({
+  //   apiKey,
+  //    timeout: 10000,
+  //   tokenOrProvider: token,
+  //   userData: { id: userId },
+  // });
 
-useEffect(() => {
-  axios.defaults.timeout = 10000;
-  const fetchChannels = async () => {
-    try {
-      console.log("Fetching channels...");
-      if (client) {
-        await client.queryChannels(filters, sort, options);
-        // Do something with the channels data here
-      }
-    } catch (error) {
-      console.error("Error fetching channels:", error);
+  useEffect(() => {
+    async function init() {
+      const client = StreamChat.getInstance(apiKey);
+
+      await client.connectUser({ id: userId }, token);
+      const channel = await client.queryChannels(filters, sort, options);
+      // await channel.watch();
+      setChatClient(client);
     }
-  };
+    init();
+    if (chatClient) return () => chatClient.disconnectUser();
+  }, []);
 
-  fetchChannels();
-  const interval = setInterval(fetchChannels, 30000);
-  return () => clearInterval(interval);
-}, [client]);
+  // useEffect(() => {
+  //   const fetchMessages = async () => {
+  //     try {
+  //       console.log("Fetching messages...");
+  //       if (client) {
+  //         const channels = await client.queryChannels(filters, sort, options);
+  //         for (const channel of channels) {
+  //           await channel.query();
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching messages:", error);
+  //     }
+  //   };
 
+  //   fetchMessages();
+  //   const interval = setInterval(fetchMessages, 30000);
+  //   return () => clearInterval(interval);
+  // }, [client]);
+  // useEffect(() => {
+  //   const setupClient = async () => {
+  //     await client.connectUser(
+  //       {
+  //         id: userId
+  //       },
+  //       token
+  //     );
 
-  console.log("useriNFO", userInfo.user);
+  //     const channels = await client.queryChannels(filters, sort, options);
+  //     setChannels(channels);
+  //     setClientReady(true);
+  //   };
 
-  if (!client)
+  //   setupClient();
+
+  //   return () => {
+  //     client.disconnectUser();
+  //   };
+  // }, []);
+
+  // if (!clientReady) {
+  //   return <div>Loading...</div>;
+  // }
+
+  if (!chatClient)
     return (
       <div className="flex flex-col justify-center place-items-center h-[100vh]">
         {" "}
@@ -212,7 +249,7 @@ useEffect(() => {
   };
 
   return (
-    <Chat client={client} i18nInstance={i18nInstance}>
+    <Chat client={chatClient} i18nInstance={i18nInstance}>
       <Navbar open={open} setOpen={setOpen} toggleSidebar={toggleSidebar} />
       <div className="lg:pt-[66px] flex w-full  h-screen  top-0 left-0">
         {windowWidth <= 768 && (
