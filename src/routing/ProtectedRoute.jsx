@@ -22,16 +22,7 @@ const ProtectedRoute = () => {
   //   // );
   // }
 
-  if (!userInfo) {
-    return (
-      <div className="unauthorized">
-        <h1>Unauthorized :(</h1>
-        <span>
-          <NavLink to="/login">Login</NavLink> to gain access
-        </span>
-      </div>
-    );
-  }
+  if ( !userInfo ) return;
 
   return <Outlet />;
 };
