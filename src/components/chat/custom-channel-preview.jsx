@@ -108,7 +108,13 @@ export const CustomChannelPreview = (props) => {
               className="text-[#616161] text-sm flex justify-between "
               style={{ fontSize: "14px" }}
             >
-              {channel?.isTyping ? `typing` : latestMessage}
+              {channel?.isTyping
+                ? "typing"
+                : typeof latestMessage === "string"
+                ? latestMessage.length > 18
+                  ? latestMessage.substring(0, 20) + "..."
+                  : latestMessage
+                : ""}
               {unread > 0 && (
                 <p className="w-5 text-xs h-5 bg-[#06C270] text-white rounded-full flex items-center justify-center">
                   {unread}
