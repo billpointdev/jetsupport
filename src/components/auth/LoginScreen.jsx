@@ -26,8 +26,8 @@ const LoginScreen = () => {
   // redirect authenticated user to profile screen
   useEffect(() => {
     if (userInfo) {
-      navigate("/security-pin", { state: { fromLogin: true } });
-      // navigate("/profile")
+      // navigate("/security-pin", { state: { fromLogin: true } });
+      navigate("/chat")
     }
   }, [navigate, userInfo]);
 
