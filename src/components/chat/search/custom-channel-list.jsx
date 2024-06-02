@@ -93,7 +93,7 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
           {/* <p>{loadedChannels.length} channels:</p> */}
         </div>
       )}
-      <div className="h-full overflow-hidden">{children}</div>
+      <div className="h-full ">{children}</div>
     </div>
   );
 };
