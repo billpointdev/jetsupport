@@ -1,7 +1,10 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../../utils";
 import emptyChannelImg from "../../../assets/image.gif";
-export const CustomChannelList = ({ loadedChannels, children, loading }) => {
+import useProviderContext from "../../profile-screens/hooks/useProvideContext";
+export const CustomChannelList = ( { loadedChannels, children, loading } ) =>
+{
+  const { setIsChannelsModalOpen} = useProviderContext()
   if (loading) {
     const items = Array.from({ length: 10 }, (_, index) => (
       <div
@@ -29,25 +32,17 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
 
     return <div>{items}</div>;
   }
-
-  // return <div className="channel-list__placeholder">⏳ Loading...</div>;
-
-  // if (error) {
-  //   return (
-  //     <div className="channel-list__placeholder">
-  //       💣 Error loading channels
-  //       <br />
-  //       <button
-  //         className="outline-none border border-[#00000014] background-[#fafafa] rounded-[4px] m-[8px] p-[8px] cursor-pointer focus:border-[#005fff] "
-  //         onClick={() => window.location.reload()}
-  //       >
-  //         Reload page
-  //       </button>
-  //     </div>
-  //   );
-  // }
-
-  if (loadedChannels?.length === 0) {
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      return "Good Morning";
+    } else if (currentHour < 18) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  };
+  if (loadedChannels?.length == 0) {
     return (
       <div className="justify-center h-full mb-24 flex flex-col items-center px-5 text-center">
         {/* 🤷 You have no channels... yet */}
@@ -61,6 +56,7 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
         <div className="mt-4">
           <button
             type="button"
+            onClick={() => setIsChannelsModalOpen(true)}
             className={`block w-full rounded-[16px]  bg-primary px-6 py-4 font-medium text-white transform  hover:scale-95 transition-transform duration-300`}
           >
             Start new Chat{" "}
@@ -72,10 +68,10 @@ export const CustomChannelList = ({ loadedChannels, children, loading }) => {
 
   return (
     <div className="h-full overflow-scroll pb-24" id="children">
-      {loadedChannels?.length === 0 && (
+      {loadedChannels?.length === 0 || loadedChannels?.length != 0 && (
         <div>
-          <h1 className="  dark:text-white sm:text-2xl font-inter">
-            Good Morning,{" "}
+          <h1 className=" hidden dark:text-white sm:text-2xl font-inter">
+            {getGreeting()}
             <span className=" text-[#010E0E] dark:text-white font-bold ">
               Quine
             </span>{" "}
