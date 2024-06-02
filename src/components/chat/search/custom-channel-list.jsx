@@ -68,7 +68,7 @@ export const CustomChannelList = ( { loadedChannels, children, loading } ) =>
 
   return (
     <div className="h-full overflow-scroll pb-24" id="children">
-      {loadedChannels?.length === 0 || loadedChannels?.length != 0 && (
+      {/* {loadedChannels?.length === 0 || loadedChannels?.length != 0 && (
         <div>
           <h1 className=" hidden dark:text-white sm:text-2xl font-inter">
             {getGreeting()}
@@ -82,7 +82,7 @@ export const CustomChannelList = ( { loadedChannels, children, loading } ) =>
             What would you live to buy or sell today?
           </p>
         </div>
-      )}
+      )} */}
       {loadedChannels && (
         <div style={{ margin: " 0 10px 8px" }} className="text-[#858688]  mt-5">
           <p className="text-sm text-[#616161] mt-5 ml-1">Conversations</p>
