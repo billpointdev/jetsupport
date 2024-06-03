@@ -76,12 +76,12 @@ export const CustomSearch = () => {
              { name: { $autocomplete: query } },
            ],
          },
-         { role: "staff" }, 
+         { role: "user" }, 
          { id: { $ne: client.userID } }, 
        ],
      },
      {}, // No sorting options here
-     { limit: 5 }
+    //  { limit: 5 }
    );
 
    const filteredUsers = users.filter(

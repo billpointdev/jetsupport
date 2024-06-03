@@ -31,15 +31,15 @@ const Navbar = ({ toggleSidebar }) => {
   };
 
   //just incase we later want to get all users
-  // const fetchAllUsers = async () => {
-  //   try {
-  //     const response = await client.queryUsers({});
-  //     return response.users;
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //     return [];
-  //   }
-  // };
+  const fetchAllUsers = async () => {
+    try {
+      const response = await client.queryUsers({});
+      return response.users;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      return [];
+    }
+  };
 
   const fetchAllAdmins = async () => {
     try {
@@ -53,9 +53,9 @@ const Navbar = ({ toggleSidebar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const allUsers = await fetchAllUsers();
+      const allUsers = await fetchAllUsers();
       const allAdmins = await fetchAllAdmins();
-      const mergedUsers = [...allAdmins];
+      const mergedUsers = [...allUsers,...allAdmins];
       const excludeNames = [
         "Billpoint Dev",
         "Deep Foxf",
@@ -71,7 +71,7 @@ const Navbar = ({ toggleSidebar }) => {
         a.name.localeCompare(b.name)
       );
 
-      setUsers(sortedUsers);
+      setUsers(mergedUsers);
     };
 
     fetchData();

@@ -1,7 +1,9 @@
 import Proptypes from "prop-types";
 import { getInitials } from "../../utils";
-import { useTranslationContext } from "stream-chat-react";
-import {  useMemo } from "react";
+import { useChatContext, useTranslationContext } from "stream-chat-react";
+import { useEffect, useMemo } from "react";
+import sound from "../../assets/notification.mp3"
+import { playSoundFromUrl } from "./play-sound";
 
 export const CustomChannelPreview = (props) => {
   const {
@@ -12,7 +14,9 @@ export const CustomChannelPreview = (props) => {
     displayTitle,
     displayImage,
     unread,
+    lastMessage,
   } = props;
+  const {client} = useChatContext()
 
   // console.log("props ==>" , props)
   const isSelected = channel.id === activeChannel?.id;
@@ -66,7 +70,33 @@ export const CustomChannelPreview = (props) => {
       navbar.classList.add("open");
     }
   };
+ const chat_id = JSON.parse(localStorage.getItem("userInfo"));
+const currentUserId = chat_id.user.chat_id;
+const lastMessageId = lastMessage?.user?.id;
+const userIds = Object.keys(activeChannel?.state?.members);
 
+useEffect(() => {
+  // Filter out the sender ID from the list of user IDs
+  const senderIds = userIds.filter((id) => id !== lastMessageId);
+
+  // Get the first sender ID (assuming there's only one sender)
+  const senderId = senderIds[0];
+
+  if (client) {
+    const handleNewMessage = async (event) => {
+      // Check if the current user is not the sender
+      if (currentUserId === senderId) {
+        await playSoundFromUrl(sound);
+      }
+    };
+
+    client.on("message.new", handleNewMessage);
+
+    return () => {
+      client.off("message.new", handleNewMessage);
+    };
+  }
+}, [client, currentUserId, lastMessageId, userIds]);
 
   return (
     <>

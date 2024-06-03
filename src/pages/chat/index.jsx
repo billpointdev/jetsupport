@@ -30,6 +30,8 @@ import Button from "../../components/profile-screens/reusables/button";
 import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
 import axios from "axios";
 import { StreamChat } from "stream-chat";
+import { playSoundFromUrl } from "../../components/chat/play-sound";
+import sound from "../../assets/notification.mp3"
 
 const apiKey = import.meta.env.VITE_API_KEY;
 axios.defaults.timeout = 10000;
@@ -157,6 +159,38 @@ const JetChat = () => {
     init();
     if (chatClient) return () => chatClient.disconnectUser();
   }, []);
+
+
+  // console.log("client", chatClient)
+
+  //  useEffect(() => {
+  //    if (chatClient) {
+  //      const handleNewMessage = async (event) => {
+  //        await playSoundFromUrl(sound);
+  //      };
+
+  //      chatClient.on("message.new", handleNewMessage);
+
+  //      return () => {
+  //        chatClient.off("message.new", handleNewMessage);
+  //      };
+  //    }
+  //  }, [ chatClient ] );
+  
+
+  // useEffect(() => {
+  //   if (chatClient) {
+  //     const handleChannelUpdated = async (event) => {
+  //       await playSoundFromUrl(sound);
+  //     };
+
+  //     chatClient.on("channel.updated", handleChannelUpdated);
+
+  //     return () => {
+  //       chatClient.off("channel.updated", handleChannelUpdated);
+  //     };
+  //   }
+  // }, [chatClient]);
 
   // useEffect(() => {
   //   const fetchMessages = async () => {
