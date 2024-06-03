@@ -98,10 +98,14 @@ const MyAccount = () => {
       if (!response.data) {
         throw new Error("Update failed");
       }
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify(response?.data?.data?.user)
-      );
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        localStorage.setItem(
+          "userInfo",
+          JSON.stringify({
+            ...userInfo,
+            user: response?.data?.data?.user,
+          })
+        );
       dispatch( setUserInfo( response?.data?.data?.user ) );
     } catch (error) {
       console.error("Error updating user:", error.message);
