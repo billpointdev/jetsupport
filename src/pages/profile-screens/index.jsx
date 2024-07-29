@@ -3,7 +3,6 @@ import Navbar from "../../global/navbar";
 import Sidebar, { SidebarLg } from "../../global/sidebar";
 import Proptypes from "prop-types";
 import { HiUser } from "react-icons/hi2";
-// import { FiShoppingCart } from "react-icons/fi";
 import { FaEye } from "react-icons/fa";
 import { RiSettingsFill } from "react-icons/ri";
 import { GoBellFill } from "react-icons/go";
@@ -21,6 +20,7 @@ import Notification from "../../components/reusables/notifications";
 import axiosInstance from "../../api/config";
 import { FaArrowLeft } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import useMetaTagUpdater, { useTitleUpdater } from "../../utils/meta";
 
 const ProfilePage = ({ children }) => {
   const [open, setOpen] = useState(false);
@@ -137,6 +137,18 @@ const ProfilePage = ({ children }) => {
     []
   );
 
+  // SEO MANAGEMENT
+  useTitleUpdater({ "/profile": "JetSupport | Profile-Screen" });
+  useMetaTagUpdater({
+    "/chat": [
+      {
+        name: "description",
+        content: "This is the JetSupport user profile page.",
+      },
+      { name: "keywords", content: "JetSupport user profile page" },
+    ],
+  });
+
   useEffect(() => {
     if (modal) {
       const modalIndex = items.findIndex((item) => item.title === modal);
@@ -153,7 +165,7 @@ const ProfilePage = ({ children }) => {
     }
   }, [location, items, modal]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="fixed dark:bg-dark bottom-0 z-50 left-0 right-0 top-0 w-full flex lg:h-screen overflow-hidden">
@@ -180,15 +192,18 @@ const ProfilePage = ({ children }) => {
           setDarkMode={setDarkMode}
         />
         <div className=" dark:bg-dark dark:text-white flex-1 mt-[66px] overflow-y-auto ">
-          <div onClick={() => navigate("/chat")} className="flex ml-3 mt-4 items-center cursor-pointer gap-3">
+          <div
+            onClick={() => navigate("/chat")}
+            className="flex ml-3 mt-4 items-center cursor-pointer gap-3"
+          >
             {" "}
             <motion.div
               animate={{
-                x: [-10, 10, -10], 
+                x: [-10, 10, -10],
               }}
               transition={{
-                repeat: Infinity, 
-                duration: 1, 
+                repeat: Infinity,
+                duration: 1,
                 ease: "linear",
               }}
             >

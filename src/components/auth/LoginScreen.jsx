@@ -9,6 +9,7 @@ import AuthLayout from "./shared/AuthLayout";
 import { AnimatePresence } from "framer-motion";
 import Notification from "../reusables/notifications";
 import ErrorBot from "../../error";
+import useMetaTagUpdater, { useTitleUpdater } from "../../utils/meta";
 // import Error from '../reusables/Error'
 // import Spinner from '../reusables/Spinner'
 
@@ -27,7 +28,7 @@ const LoginScreen = () => {
   useEffect(() => {
     if (userInfo) {
       // navigate("/security-pin", { state: { fromLogin: true } });
-      navigate("/chat")
+      navigate("/chat");
     }
   }, [navigate, userInfo]);
 
@@ -58,6 +59,15 @@ const LoginScreen = () => {
   const removeNotif = (id) => {
     setNotifications((pv) => pv.filter((n) => n.id !== id));
   };
+
+  // SEO MANAGEMENT
+  useTitleUpdater({ "/login": "JetSupport | Login" });
+  useMetaTagUpdater({
+    "/login": [
+      { name: "description", content: "This is the login page description." },
+      { name: "keywords", content: "login, authentication, user" },
+    ],
+  });
 
   return (
     <AnimatePresence>

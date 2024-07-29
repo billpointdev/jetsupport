@@ -30,6 +30,7 @@ import Button from "../../components/profile-screens/reusables/button";
 import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
 import axios from "axios";
 import { StreamChat } from "stream-chat";
+import useMetaTagUpdater, { useTitleUpdater } from "../../utils/meta";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 axios.defaults.timeout = 10000;
@@ -138,12 +139,6 @@ const JetChat = () => {
   const options = { presence: true, state: true };
   const sort = { last_message_at: -1 };
 
-  // const client = useCreateChatClient({
-  //   apiKey,
-  //    timeout: 10000,
-  //   tokenOrProvider: token,
-  //   userData: { id: userId },
-  // });
 
   useEffect(() => {
     async function init() {
@@ -157,51 +152,16 @@ const JetChat = () => {
     init();
     if (chatClient) return () => chatClient.disconnectUser();
   }, []);
-
-  // useEffect(() => {
-  //   const fetchMessages = async () => {
-  //     try {
-  //       console.log("Fetching messages...");
-  //       if (client) {
-  //         const channels = await client.queryChannels(filters, sort, options);
-  //         for (const channel of channels) {
-  //           await channel.query();
-  //         }
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching messages:", error);
-  //     }
-  //   };
-
-  //   fetchMessages();
-  //   const interval = setInterval(fetchMessages, 30000);
-  //   return () => clearInterval(interval);
-  // }, [client]);
-  // useEffect(() => {
-  //   const setupClient = async () => {
-  //     await client.connectUser(
-  //       {
-  //         id: userId
-  //       },
-  //       token
-  //     );
-
-  //     const channels = await client.queryChannels(filters, sort, options);
-  //     setChannels(channels);
-  //     setClientReady(true);
-  //   };
-
-  //   setupClient();
-
-  //   return () => {
-  //     client.disconnectUser();
-  //   };
-  // }, []);
-
-  // if (!clientReady) {
-  //   return <div>Loading...</div>;
-  // }
-
+  
+  // SEO MANAGEMENT
+  useTitleUpdater({ "/chat": "JetSupport | Chats" });
+  useMetaTagUpdater({
+    "/chat": [
+      { name: "description", content: "This is the JetSupport chats page." },
+      { name: "keywords", content: "Jetsupport chats page" },
+    ],
+  });
+ 
   if (!chatClient)
     return (
       <div className="flex flex-col justify-center place-items-center h-[100vh]">
@@ -247,6 +207,7 @@ const JetChat = () => {
     setShowWelcomeModal(false);
     setModal(null);
   };
+
 
   return (
     <Chat client={chatClient} i18nInstance={i18nInstance}>
