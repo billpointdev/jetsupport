@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { getInitials } from "../../utils";
 import { useTranslationContext } from "stream-chat-react";
 import { useEffect, useMemo, useState } from "react";
+import { truncateText } from "../../utils/text";
 
 export const CustomChannelPreview = (props) => {
   const {
@@ -79,7 +80,7 @@ export const CustomChannelPreview = (props) => {
     if (channel?.isTyping) return "typing";
     if (latestMessage === "Nothing yet...") return latestMessage;
     return latestMessage?.props?.children !== undefined
-      ? `${latestMessage?.props?.children}...`
+      ? truncateText(latestMessage?.props?.children, 26)
       : latestMessage;
   };
 
@@ -109,7 +110,8 @@ export const CustomChannelPreview = (props) => {
       )}
       <div style={{ flex: 1 }}>
         <div className="flex justify-between">
-          {userInfo?.user?.name || "Unnamed Channel"}
+          {truncateText(userInfo?.user?.name ?? "Unnamed Channel" , 20)}
+          {/* { || "Unnamed Channel"} */}
           <time
             dateTime={latestMessageAt?.toISOString()}
             className="text-[#858688] text-xs"
