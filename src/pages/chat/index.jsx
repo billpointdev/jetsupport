@@ -7,9 +7,8 @@ import {
   Thread,
   Window,
   ChannelList,
-  ChannelSearch,
+  // ChannelSearch,
   Streami18n,
-  useCreateChatClient,
 } from "stream-chat-react";
 import { EmojiPicker } from "stream-chat-react/emojis";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,7 +17,6 @@ import Navbar from "../../global/navbar";
 import { CustomChannelPreview } from "../../components/chat/custom-channel-preview";
 import useProviderContext from "../../components/profile-screens/hooks/useProvideContext";
 import { framerSidebarPanel, items } from "../../utils";
-import { CustomSearch } from "../../components/chat/custom-search-bar";
 import { CustomChannelList } from "../../components/chat/search/custom-channel-list";
 import { CustomChannelHeader } from "../../components/chat/channel-header";
 import ChatBody from "../../components/chat/chat-body";
@@ -43,9 +41,6 @@ const JetChat = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [modal, setModal] = useState(null);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
-  // const [windowWidth , setWindowWidth] = useState(null)
-  const [clientReady, setClientReady] = useState(false);
-  const [channels, setChannels] = useState([]); // State to store channels
   const { setOpen: setDropdown, setIsChannelsModalOpen } = useProviderContext();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const location = useLocation();
@@ -145,12 +140,12 @@ const JetChat = () => {
       const client = StreamChat.getInstance(apiKey);
 
       await client.connectUser({ id: userId }, token);
-      const channel = await client.queryChannels(filters, sort, options);
-      // await channel.watch();
+      await client.queryChannels(filters, sort, options);
       setChatClient(client);
     }
     init();
     if (chatClient) return () => chatClient.disconnectUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   // SEO MANAGEMENT
@@ -235,13 +230,13 @@ const JetChat = () => {
           aria-label="Sidebar"
           id="chatlist"
         >
-          <ChannelSearch SearchBar={() => <CustomSearch />} />
+          {/* <ChannelSearch SearchBar={() => <CustomSearch />} /> */}
           <ChannelList
             List={CustomChannelList}
             sendChannelsToList
             Preview={CustomChannelPreview}
-            showChannelSearch={false}
-            additionalChannelSearchProps={{ searchForChannels: true }}
+            showChannelSearch
+            // additionalChannelSearchProps={{ searchForChannels: true }}
             sort={sort}
             filters={filters}
             options={options}
@@ -251,16 +246,6 @@ const JetChat = () => {
           className={`lg:flex-1 w-full ${windowWidth <= 425 ? "open" : ""} `}
           id="channel"
         >
-          {/*
-          {channels.length === 0 ? (
-            <div className="flex flex-col justify-center items-center h-full">
-              <h2 className="text-xl mb-4">Start a New Chat</h2>
-              <p>
-                It looks like you don't have any conversations yet. Click the
-                &quot;New Chat&quot; button to start your first conversation!
-              </p>
-            </div>
-          ) : ( */}
           <Channel
             DateSeparator={CustomDateSeparator}
             EmojiPicker={EmojiPicker}
@@ -273,8 +258,6 @@ const JetChat = () => {
             <Thread />
           </Channel>
         </div>
-        {/* )}
-        </div> */}
       </div>
       {showWelcomeModal && (
         <Modal handleClick={handleModalClose}>
@@ -300,15 +283,6 @@ const JetChat = () => {
           </div>
         </Modal>
       )}
-      {/* {modal === "New Chat" && (
-        <Modal handleClick={handleModalClose}>
-          <div className="p-4 bg-white rounded-lg w-full">
-            <h2 className="text-center">Start New Chat</h2>
-            <ChannelSearch />
-            {/* Additional content for starting a new chat 
-          </div>
-        </Modal>
-      )} */}
     </Chat>
   );
 };
