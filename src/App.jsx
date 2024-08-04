@@ -15,31 +15,28 @@ import ResetPinScreen from "./components/auth/ResetPinScreen";
 import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
 import JetChat from "./pages/chat/index.jsx";
 import ProtectedRoute from "./routing/ProtectedRoute.jsx";
-import { useEffect } from "react";
-import useProviderContext from "./components/profile-screens/hooks/useProvideContext.jsx";
+// import { useEffect } from "react";
+// import useProviderContext from "./components/profile-screens/hooks/useProvideContext.jsx";
+
+// DARK MODE NOT NECESSARY FOR NOW [COLOR NOT APPEALING]
 
 function App() {
-  // const dispatch = useDispatch();
-  // const token = useSelector( selectAuthToken );
+  // const { setDarkMode } = useProviderContext();
+
   // useEffect(() => {
-  //   initAxios({ token, logoutCallback: () => dispatch(logout()) });
-  // }, [token, dispatch]);
-  const { setDarkMode } = useProviderContext();
+  //   const savedDarkMode = localStorage.getItem("darkMode") === "true";
+  //   setDarkMode(savedDarkMode);
+  //   document.body.classList.toggle("dark", savedDarkMode);
 
-  useEffect(() => {
-    const savedDarkMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedDarkMode);
-    document.body.classList.toggle("dark", savedDarkMode);
-
-    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-    if (
-      prefersDarkScheme.matches &&
-      localStorage.getItem("darkMode") === null
-    ) {
-      setDarkMode(true);
-      document.body.classList.add("dark");
-    }
-  }, [setDarkMode]);
+  //   const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+  //   if (
+  //     prefersDarkScheme.matches &&
+  //     localStorage.getItem("darkMode") === null
+  //   ) {
+  //     setDarkMode(true);
+  //     document.body.classList.add("dark");
+  //   }
+  // }, [setDarkMode]);
 
   return (
     <BrowserRouter>
