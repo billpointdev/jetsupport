@@ -6,17 +6,19 @@ import Proptypes from "prop-types";
 import StaggeredDropDown from "../components/profile-screens/utils/dropdown";
 import Modal from "../components/profile-screens/reusables/modal";
 import NothingHereImg from "../assets/nothing-here-image-notification.gif";
-import { useSelector } from "react-redux";
 import { useChatContext } from "stream-chat-react";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import useProviderContext from "../components/profile-screens/hooks/useProvideContext";
 import { getChannelColor, getInitials } from "../utils";
 import ErrorBot from "../error";
+import { FaUser } from "react-icons/fa";
+import { truncateText } from "../utils/text";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ toggleSidebar }) => {
   const { client, setActiveChannel } = useChatContext();
-  const { userInfo } = useSelector((state) => state.auth);
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
     useState(false);
   const { isChannelsModalOpen, setIsChannelsModalOpen } = useProviderContext();
@@ -30,17 +32,6 @@ const Navbar = ({ toggleSidebar }) => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
   };
 
-  //just incase we later want to get all users
-  // const fetchAllUsers = async () => {
-  //   try {
-  //     const response = await client.queryUsers({});
-  //     return response.users;
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //     return [];
-  //   }
-  // };
-
   const fetchAllAdmins = async () => {
     try {
       const response = await client.queryUsers({ role: "staff" }, { id: -1 });
@@ -53,7 +44,6 @@ const Navbar = ({ toggleSidebar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const allUsers = await fetchAllUsers();
       const allAdmins = await fetchAllAdmins();
       const mergedUsers = [...allAdmins];
       const excludeNames = [
@@ -62,6 +52,8 @@ const Navbar = ({ toggleSidebar }) => {
         "Francis John",
         "Deepp Fox",
         "Reall John",
+        "Abasifreke Essien",
+        "Staff Essien"
       ];
       const filteredUsers = mergedUsers.filter(
         (user) => !excludeNames.includes(user.name)
@@ -75,9 +67,10 @@ const Navbar = ({ toggleSidebar }) => {
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const userId = userInfo?.chat_id;
+  const userId = userInfo?.user?.chat_id;
   //  console.log(userInfo.chat_id);
   // Function to handle starting a new chat with a selected user
   const startNewChat = async (selectedUser) => {
@@ -136,12 +129,6 @@ const Navbar = ({ toggleSidebar }) => {
     setIsModalOpen(true);
   };
 
-  // const clearNotifications = () => {
-  //   // will implement logic to clear notifications here
-  //   console.log("Notifications cleared");
-  //   setIsModalOpen(false);
-  // };
-
   const getGreeting = () => {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
@@ -159,10 +146,10 @@ const Navbar = ({ toggleSidebar }) => {
       id="navbar"
     >
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <a className="hidden lg:block text-teal-600" href="#">
+        <Link className="hidden lg:block text-teal-600" to="/">
           <span className="sr-only">Home</span>
           <img src={JetSupportLogo} alt="" className="w-[52px] h-[49px]" />
-        </a>
+        </Link>
         <button
           className="block rounded p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"
           onClick={toggleSidebar}
@@ -186,18 +173,22 @@ const Navbar = ({ toggleSidebar }) => {
 
         <div className="flex flex-1 items-center justify-end md:justify-between">
           <nav aria-label="Global" className="hidden md:flex items-center">
-            <div className="hidden lg:block w-12 h-12 rounded-full border">
-              <img
-                src={userInfo?.picture}
-                alt=""
-                className="object-cover h-full w-full"
-              />
+            <div className="w-12 h-12 flex rounded-full border-2 border-gray-300  items-center justify-center overflow-hidden">
+              {userInfo?.user?.picture ? (
+                <img
+                  src={userInfo?.user?.picture}
+                  alt="avatar"
+                  className="w-full h-full object-cover" // Ensure the image covers the div area
+                />
+              ) : (
+                <FaUser className="text-gray-300 w-full h-full" /> // Center icon if no image
+              )}
             </div>
             <div className="hidden lg:block text-center sm:text-left ml-1">
               <h1 className="dark:text-white sm:text-2xl font-inter">
-                {getGreeting()},{" "}
+                {getGreeting()},
                 <span className="text-[#010E0E] dark:text-white font-bold">
-                  {userInfo?.firstname}
+                  {truncateText(userInfo?.user?.firstname,5)}
                 </span>{" "}
                 👋
               </h1>
@@ -238,7 +229,7 @@ const Navbar = ({ toggleSidebar }) => {
                               <img
                                 className="w-full h-full object-cover"
                                 src={notification.img}
-                                alt="notification-image"
+                                alt="notification_image"
                               />
                             </div>
                             <span className="text-sm w-[220px] line-clamp-2">
@@ -292,7 +283,7 @@ const Navbar = ({ toggleSidebar }) => {
                   Start New Chat
                 </p>
                 {/* // searchbar */}
-                <div className="border-none w-full bg-[#fafafa] flex rounded-md items-center px-2.5 my-3">
+                <div className="border-none sm:w-[320px] min-w-[320px] bg-[#fafafa] flex rounded-md items-center px-2.5 my-3">
                   <CiSearch />
                   <input
                     type="search"
@@ -327,7 +318,7 @@ const Navbar = ({ toggleSidebar }) => {
                                 <div className="w-10 h-10 rounded-full overflow-hidden border">
                                   <img
                                     src={user?.image}
-                                    alt="user-image"
+                                    alt="user_image"
                                     className="w-full h-full object-fit"
                                   />
                                 </div>
@@ -352,38 +343,27 @@ const Navbar = ({ toggleSidebar }) => {
                         );
                       })
                     : users.map((user) => {
-                        const channelName = user?.name
-                          ? user?.name
-                          : "Unnamed Channel";
-                        const channelColor = getChannelColor(channelName);
                         return (
                           <div
-                            key={user.id}
+                            key={user?.id}
                             onClick={() => startNewChat(user)}
                             className="flex items-center justify-between cursor-pointer px-2 my-2"
                           >
                             {/* Display user profile */}
                             <div className="flex items-center">
-                              {user?.image ? (
-                                <div className="w-10 h-10 rounded-full overflow-hidden border">
+                              <div className="w-10 h-10 flex rounded-full border-2 border-gray-300  items-center justify-center overflow-hidden">
+                                {user?.image ? (
                                   <img
                                     src={user?.image}
-                                    alt="user-image"
-                                    className="w-full h-full object-fit"
+                                    alt="avatar"
+                                    className="w-full h-full object-cover" // Ensure the image covers the div area
                                   />
-                                </div>
-                              ) : (
-                                <div
-                                  className={`w-10 h-10 rounded-full overflow-hidden border flex items-center justify-center`}
-                                  style={{ backgroundColor: channelColor }}
-                                >
-                                  {getInitials(
-                                    user?.name ? user?.name : "Anonymous"
-                                  )}
-                                </div>
-                              )}
+                                ) : (
+                                  <FaUser className="text-gray-300 w-full h-full" /> // Center icon if no image
+                                )}
+                              </div>
                               <p className="ml-4 capitalize dark:text-dark whitespace-nowrap">
-                                {user?.name}
+                                {truncateText(user?.name, 28)}
                               </p>
                             </div>
                             <div className="h-8 w-8 rounded-full border   flex items-center justify-center">

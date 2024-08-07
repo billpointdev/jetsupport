@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import Proptypes from "prop-types";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { HiOutlineUser } from "react-icons/hi2";
-// import { IoSettingsOutline } from "react-icons/io5";
-// import { TbMessage2 } from "react-icons/tb";
 import { IoExit } from "react-icons/io5";
 import useProviderContext from "../hooks/useProvideContext";
 import { useEffect, useState } from "react";
@@ -12,15 +10,17 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../../features/auth/authActions";
 import ErrorBot from "../../../error";
+import { FaUser } from "react-icons/fa";
+import { truncateText } from "../../../utils/text";
+
 const StaggeredDropDown = () => {
   const { open, setOpen } = useProviderContext();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const { userInfo } = useSelector((state) => state.auth);
-  // const { triggerLogoutModal } = useLogout();
+
   const handleSignOut = async (data) => {
     setOpen(false);
-    // setShowLogoutModal(true);
     try {
       const response = await dispatch(logOut(data)).unwrap();
       console.log(response.data);
@@ -57,6 +57,8 @@ const StaggeredDropDown = () => {
     };
   }, [setOpen]);
 
+  const userName = userInfo?.user?.firstname + " " + userInfo?.user?.lastname;
+
   return (
     <div className=" flex items-center staggered-dropdown justify-center bg-grey-800">
       <motion.div animate={open ? "open" : "closed"} className="relative">
@@ -64,13 +66,24 @@ const StaggeredDropDown = () => {
           onClick={() => setOpen((pv) => !pv)}
           className="flex items-center gap-2 rounded-md  transition-colors"
         >
-          <span className="font-medium text-sm  w-12 h-12 rounded-full">
+          {/* <span className="font-medium text-sm  w-12 h-12 rounded-full">
             <img
-              src={userInfo?.picture}
+              src={userInfo?.user?.picture}
               className="object-cover w-full h-full"
               alt="avatar"
             />
-          </span>
+          </span> */}
+          <div className="w-10 h-10 flex rounded-full border-2 border-gray-300  items-center justify-center overflow-hidden">
+            {userInfo?.user?.picture ? (
+              <img
+                src={userInfo?.user?.picture}
+                alt="avatar"
+                className="w-full h-full object-cover" // Ensure the image covers the div area
+              />
+            ) : (
+              <FaUser className="text-gray-300 w-full h-full" /> // Center icon if no image
+            )}
+          </div>
           <motion.span variants={iconVariants}>
             <FiChevronDown />
           </motion.span>
@@ -80,21 +93,28 @@ const StaggeredDropDown = () => {
           initial={wrapperVariants.closed}
           variants={wrapperVariants}
           style={{ originY: "top", translateX: "-50%" }}
-          className="flex flex-col gap-2 p-2 rounded-lg bg-[#f5f5f5] z-10  shadow-md absolute top-[120%] -left-[25%] md:left-[1%] w-48 overflow-hidden"
+          className="flex flex-col gap-2 p-2 rounded-lg bg-[#f5f5f5] z-10  shadow-md absolute top-[120%] -left-[35%] md:left-[1%] w-48 overflow-hidden"
         >
           <div className="bg-white p-2 w-full  rounded-lg">
-            <div className="flex items-center">
-              <img
-                src={userInfo?.picture}
-                alt="avatar"
-                className="w-12 h-12 rounded-full border-2 border-gray-400 "
-              />
+            <div className="flex items-center ">
+              <div className="w-8 h-8 rounded-full border-2 border-gray-300 flex items-center justify-center overflow-hidden">
+                {userInfo?.user?.picture ? (
+                  <img
+                    src={userInfo?.user?.picture}
+                    alt="avatar"
+                    className="w-full h-full object-cover" // Ensure the image covers the div area
+                  />
+                ) : (
+                  <FaUser className="text-gray-300 w-full h-full" /> // Center icon if no image
+                )}
+              </div>
+
               <div className="ml-1 text-start">
-                <p className="text-[#010E0E] text-[12px]">
-                  {userInfo?.firstname} {userInfo?.lastname}
+                <p className="text-[#010E0E] text-[12px] whitespace-nowrap">
+                  {truncateText(userName || "N/A", 13)}{" "}
                 </p>
-                <p className="text-[9px] text-[#616161] leading-1">
-                  {userInfo?.email.substring(0, 18)}...
+                <p className="text-[9px] text-[#616161] leading-1 whitespace-nowrap">
+                  {truncateText(userInfo?.user?.email || "N/A", 19)}
                 </p>
               </div>
             </div>

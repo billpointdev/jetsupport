@@ -17,27 +17,25 @@ const InputComponent = ({
   disabled,
 }) => {
   return (
-    <>
-      <div>
-        <label
-          className="text-[#616161]/75 dark:text-white text-xs font-semibold"
-          htmlFor={id}
-        >
-          {label}
-        </label>
-        <input
-          type={type}
-          id={id}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          className={`w-full h-16 rounded-xl px-4 py-2 text-[#757575] dark:text-dark bg-[#FAFAFA] dark:bg-[#FFD9C5] ${
-            disabled ? "cursor-not-allowed" : ""
-          }`}
-          disabled={disabled}
-        />
-      </div>
-    </>
+    <div>
+      <label
+        className="text-[#616161]/75 dark:text-white text-xs font-semibold"
+        htmlFor={id}
+      >
+        {label}
+      </label>
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        className={`w-full h-16 rounded-xl px-4 py-2 text-[#757575] dark:text-dark bg-[#FAFAFA] dark:bg-[#FFD9C5] ${
+          disabled ? "cursor-not-allowed" : ""
+        }`}
+        disabled={disabled}
+      />
+    </div>
   );
 };
 
@@ -59,20 +57,18 @@ const INITIAL_DATA = {
 };
 
 const MyAccount = () => {
-  const [ data, setData ] = useState( INITIAL_DATA );
-  const [loading , setLoading] = useState(false)
+  const [data, setData] = useState(INITIAL_DATA);
+  const [loading, setLoading] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const userToken = localStorage.getItem( "access_token" );
- 
 
   useEffect(() => {
     if (userInfo) {
       setData({
-        firstName: userInfo?.firstname,
-        lastName: userInfo?.lastname,
-        email: userInfo?.email,
-        phone: userInfo?.phone,
+        firstName: userInfo?.user?.firstname,
+        lastName: userInfo?.user?.lastname,
+        email: userInfo?.user?.email,
+        phone: userInfo?.user?.phone,
       });
     }
   }, [userInfo]);
@@ -85,36 +81,33 @@ const MyAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try
-    {
-      setLoading(true)
-      console.log("User Token:", userToken);
+    try {
+      setLoading(true);
       const response = await axiosInstance.post(`/auth/update/user`, {
         firstname: data?.firstName,
         lastname: data?.lastName,
       });
 
-      setLoading(false)
+      setLoading(false);
       if (!response.data) {
         throw new Error("Update failed");
       }
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        localStorage.setItem(
-          "userInfo",
-          JSON.stringify({
-            ...userInfo,
-            user: response?.data?.data?.user,
-          })
-        );
-      dispatch( setUserInfo( response?.data?.data?.user ) );
+      localStorage.setItem(
+        "userInfo",
+        JSON.stringify({
+          ...userInfo,
+          user: response?.data?.data?.user,
+        })
+      );
+      dispatch(setUserInfo(response?.data?.data));
     } catch (error) {
       console.error("Error updating user:", error.message);
     }
   };
 
-  const userObject = userInfo;
-  const avatar = userInfo?.picture;
-  console.log("userInfo", userInfo);
+  const userObject = userInfo.user;
+  const avatar = userInfo?.user?.picture;
   return (
     <ProfilePage>
       <div className="font-inter text-start p-5 pt-6 flex flex-col overflow-y-auto">
@@ -187,7 +180,7 @@ const MyAccount = () => {
               type="submit"
               className="block w-full rounded-[16px] bg-primary px-6 py-4 font-medium text-white transform scale-95 hover:scale-100 transition-transform duration-300"
             >
-             {loading ? "Updating ..." :  "Update"}
+              {loading ? "Updating ..." : "Update"}
             </button>
           </div>
         </form>

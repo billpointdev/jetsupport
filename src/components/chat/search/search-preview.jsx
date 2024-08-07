@@ -47,8 +47,8 @@ const UserSearchResultPreview = ({ user }) => {
 
   const handleClick = async () => {
     try {
-      const currentUser = client.userID;
-      const members = [currentUser, user.id];
+      const currentUser = client?.userID;
+      const members = [currentUser, user?.id];
       const channel = client.channel("messaging", {
         name: user?.name,
         image: user?.image,

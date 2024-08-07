@@ -15,7 +15,6 @@ export const userLogin = createAsyncThunk(
       if (!response.data) {
         throw new Error("Failed to login");
       }
-      console.log(response);
       localStorage.setItem("access_token", response.data.data.access_token);
       return response.data;
     } catch (error) {
@@ -64,8 +63,7 @@ export const validatePin = createAsyncThunk(
         return thunkAPI.rejectWithValue(errorData);
       }
       const data = await response.json();
-      console.log("pin", data);
-      localStorage.setItem("access_token", data.data.access_token);
+      localStorage.setItem("access_token", data?.data?.access_token);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ message: error.message });

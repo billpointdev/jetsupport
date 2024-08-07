@@ -10,24 +10,19 @@ import { AnimatePresence } from "framer-motion";
 import Notification from "../reusables/notifications";
 import ErrorBot from "../../error";
 import useMetaTagUpdater, { useTitleUpdater } from "../../utils/meta";
-// import Error from '../reusables/Error'
-// import Spinner from '../reusables/Spinner'
 
 const LoginScreen = () => {
-  // eslint-disable-next-line no-unused-vars
   const { loading, userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
-  // eslint-disable-next-line no-unused-vars
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const {  handleSubmit, setValue, watch } = useForm();
 
   const navigate = useNavigate();
 
   // redirect authenticated user to profile screen
   useEffect(() => {
     if (userInfo) {
-      // navigate("/security-pin", { state: { fromLogin: true } });
       navigate("/chat");
     }
   }, [navigate, userInfo]);

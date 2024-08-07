@@ -1,28 +1,26 @@
 import { useSelector } from "react-redux";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const ProtectedRoute = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-  // const [redirect, setRedirect] = useState(false);
-  // const isPinValidated = localStorage.getItem("isPinValidated")
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const { isPinValidated } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (!userInfo) {
-      // setRedirect( true );
+    if (!userInfo?.user) {
       navigate("/login");
+    } else if (userInfo?.user?.user_type === "staff" && !isPinValidated) {
+      navigate("/2FA");
+    } else if (userInfo?.user?.user_type === "staff" && isPinValidated) {
+      navigate("/chat");
     }
-  }, [userInfo]);
+  }, [userInfo, isPinValidated, navigate]);
 
-  // if (redirect) {
-  //   // return isPinValidated ? (
-  //   //   <Navigate to="/security-pin" state={{ fromLogin: true }} />
-  //   // ) : (
-  //     <Navigate to="/login" />
-  //   // );
-  // }
-
-  if ( !userInfo ) return;
+  if (!userInfo || (userInfo?.user?.user_type === "staff" && !isPinValidated)) {
+    return null;
+  }
 
   return <Outlet />;
 };
