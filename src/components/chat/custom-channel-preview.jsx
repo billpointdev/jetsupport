@@ -1,19 +1,13 @@
 import PropTypes from "prop-types";
-import { getInitials } from "../../utils";
 import { useTranslationContext } from "stream-chat-react";
 import { useEffect, useMemo, useState } from "react";
 import { truncateText } from "../../utils/text";
+import { FaUser } from "react-icons/fa";
 
 export const CustomChannelPreview = (props) => {
-  const {
-    channel,
-    setActiveChannel,
-    activeChannel,
-    latestMessage,
-    unread,
-  } = props;
+  const { channel, setActiveChannel, activeChannel, latestMessage, unread } =
+    props;
 
-  console.log("channel ==>", props);
   const [userInfo, setUserInfo] = useState({});
 
   const isSelected = channel.id === activeChannel?.id;
@@ -23,27 +17,11 @@ export const CustomChannelPreview = (props) => {
   // Memoized timestamp formatting
   const timestamp = useMemo(() => {
     if (!latestMessageAt) return "";
-    const formatter = new Intl.DateTimeFormat(userLanguage, { timeStyle: "short" });
+    const formatter = new Intl.DateTimeFormat(userLanguage, {
+      timeStyle: "short",
+    });
     return formatter.format(latestMessageAt);
   }, [latestMessageAt, userLanguage]);
-
-  // Color management for channels
-  const channelColorsMap = {};
-
-  const getRandomColor = () => {
-    const colors = ["#CCDFF7", "#FCD3B3"];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
-
-  const getChannelColor = (channelName) => {
-    if (!channelColorsMap[channelName]) {
-      channelColorsMap[channelName] = getRandomColor();
-    }
-    return channelColorsMap[channelName];
-  };
-
-  const channelName = channel.data?.name || "Unnamed Channel";
-  const channelColor = getChannelColor(channelName);
 
   const handleClick = () => {
     setActiveChannel?.(channel);
@@ -65,8 +43,8 @@ export const CustomChannelPreview = (props) => {
 
       if (userIDs.includes(currentUserID)) {
         const otherUserInfo = userIDs
-          .filter(userID => userID !== currentUserID)
-          .map(userID => members[userID]);
+          .filter((userID) => userID !== currentUserID)
+          .map((userID) => members[userID]);
 
         if (otherUserInfo.length > 0) {
           setUserInfo(otherUserInfo[0]);
@@ -92,26 +70,20 @@ export const CustomChannelPreview = (props) => {
         isSelected ? "border-2 border-primary" : "hover:bg-primarylight"
       }`}
     >
-      {userInfo?.user?.image ? (
-        <div className="w-10 h-10 rounded-full overflow-hidden border">
+      <div className="w-10 h-10 flex rounded-full border-2 border-gray-300  items-center justify-center overflow-hidden">
+        {userInfo?.user?.image ? (
           <img
-            src={userInfo?.user?.image ?? ""}
-            alt="channel_image"
-            className="w-full h-full object-fit"
+            src={userInfo?.user?.image}
+            alt="avatar"
+            className="w-full h-full object-cover" // Ensure the image covers the div area
           />
-        </div>
-      ) : (
-        <div
-          className={`w-10 h-10 rounded-full overflow-hidden border flex items-center justify-center`}
-          style={{ backgroundColor: channelColor }}
-        >
-          {getInitials(userInfo?.user?.name || "Unnamed Channel")}
-        </div>
-      )}
+        ) : (
+          <FaUser className="text-gray-300  w-full h-full" /> // Center icon if no image
+        )}
+      </div>
       <div style={{ flex: 1 }}>
         <div className="flex justify-between">
-          {truncateText(userInfo?.user?.name ?? "Unnamed Channel" , 20)}
-          {/* { || "Unnamed Channel"} */}
+          {truncateText(userInfo?.user?.name ?? "Unnamed Channel", 20)}
           <time
             dateTime={latestMessageAt?.toISOString()}
             className="text-[#858688] text-xs"

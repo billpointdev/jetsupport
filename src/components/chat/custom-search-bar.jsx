@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import PropTypes from "prop-types";
 import { useChatContext } from "stream-chat-react";
 import {
   AllSearchResultsPreview,
@@ -45,11 +44,11 @@ export const CustomSearch = () => {
     e.preventDefault();
     setPending(true);
     try {
-      const channels = await client.queryChannels(
+      const channels = await client?.queryChannels(
         {
           type: "team",
           name: { $autocomplete: query },
-          members: { $in: [client.user?.id] },
+          members: { $in: [client?.user?.id] },
           //   from the api we will get we will use to filter this later
           //   last_message_at: new Date(), // Assuming we want channels sorted by last message date
           //   updated_at: new Date(), // Assuming we want channels sorted by update date
@@ -77,7 +76,7 @@ export const CustomSearch = () => {
            ],
          },
          { role: "staff" }, 
-         { id: { $ne: client.userID } }, 
+         { id: { $ne: client?.userID } }, 
        ],
      },
      {}, // No sorting options here
@@ -85,7 +84,7 @@ export const CustomSearch = () => {
    );
 
    const filteredUsers = users.filter(
-     (user) => !excludeNames.includes(user.name)
+     (user) => !excludeNames.includes(user?.name)
    );
 
    const sortedUsers = filteredUsers.sort((a, b) =>
@@ -96,7 +95,7 @@ export const CustomSearch = () => {
 
 
       const { results } = await client.search(
-        { type: "messaging", members: { $in: [client.userID] } },
+        { type: "messaging", members: { $in: [client?.userID] } },
         query,
         { limit: 5 }
       );

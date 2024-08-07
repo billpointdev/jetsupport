@@ -11,25 +11,25 @@ import ErrorBot from "../../error";
 
 const ForgotPassword = () => {
   // eslint-disable-next-line no-unused-vars
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { handleSubmit, setValue, watch } = useForm();
   const navigate = useNavigate();
-  const [ notifications, setNotifications ] = useState( [] );
-  const [loading , setLoading] = useState(false)
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const onSubmit = async (data) => {
     try {
-      setLoading(true)
+      setLoading(true);
       // eslint-disable-next-line no-unused-vars
       localStorage.setItem("userEmail", data.email);
       const response = await axiosInstance.post("/auth/forget/password", {
         email: data.email,
       });
-      setLoading(false)
+      setLoading(false);
       setNotifications((prev) => [
         { id: Date.now(), text: response?.message },
         ...prev,
-      ] );
+      ]);
       navigate("/otp", { state: { fromForgotPassword: true } });
     } catch (error) {
       console.error("Error:", error?.response?.data?.message);

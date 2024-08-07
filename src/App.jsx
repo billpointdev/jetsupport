@@ -15,28 +15,11 @@ import ResetPinScreen from "./components/auth/ResetPinScreen";
 import MultiStep from "./components/auth/shared/avatar-multistep/index.jsx";
 import JetChat from "./pages/chat/index.jsx";
 import ProtectedRoute from "./routing/ProtectedRoute.jsx";
-// import { useEffect } from "react";
-// import useProviderContext from "./components/profile-screens/hooks/useProvideContext.jsx";
-
-// DARK MODE NOT NECESSARY FOR NOW [COLOR NOT APPEALING]
+import TwoFactorPage from "./pages/two-factor/page.jsx";
+import useAutoLogout from "./components/profile-screens/hooks/useAutoLogout.jsx";
 
 function App() {
-  // const { setDarkMode } = useProviderContext();
-
-  // useEffect(() => {
-  //   const savedDarkMode = localStorage.getItem("darkMode") === "true";
-  //   setDarkMode(savedDarkMode);
-  //   document.body.classList.toggle("dark", savedDarkMode);
-
-  //   const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-  //   if (
-  //     prefersDarkScheme.matches &&
-  //     localStorage.getItem("darkMode") === null
-  //   ) {
-  //     setDarkMode(true);
-  //     document.body.classList.add("dark");
-  //   }
-  // }, [setDarkMode]);
+  useAutoLogout();
 
   return (
     <BrowserRouter>
@@ -45,6 +28,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/2FA" element={<TwoFactorPage />} />
         <Route exact path="/otp" element={<OtpPage />} />
         <Route exact path="/security-pin" element={<SecurityPin />} />
         <Route exact path="/set-avatar" element={<MultiStep />} />

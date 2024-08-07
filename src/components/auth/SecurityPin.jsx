@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../reusables/customInput";
-// import AuthHeader from "./shared/AuthHeader";
 import DownloadButton from "../../components/reusables/DownloadButton";
 import { logOut, updatePin, validatePin } from "../../features/auth/authActions";
 import ErrorBot from "../../error";
@@ -14,7 +13,6 @@ const SecurityPin = () => {
   const [timer, setTimer] = useState(45);
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
-  // const buttonRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -52,11 +50,6 @@ const SecurityPin = () => {
         prevInput.focus();
       }
     }
-    //   // setTimeout(() => {
-    //   //   navigate('/profile');
-
-    //   // }, 2000);
-    // }
   };
 
   useEffect(() => {

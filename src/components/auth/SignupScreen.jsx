@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import Error from "../reusables/Error"; @~Ellovick(Ezekiel Elom) please dont forget to utilize this
 import { registerUser } from "../../features/auth/authActions";
-// import Spinner from "../reusables/Spinner";
 import DownloadButton from "../reusables/DownloadButton";
 import Input from "../reusables/customInput";
 import AuthLayout from "./shared/AuthLayout";
@@ -17,7 +15,7 @@ const SignupScreen = () => {
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
   // eslint-disable-next-line no-unused-vars
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { handleSubmit, setValue, watch } = useForm();
 
   const navigate = useNavigate();
 
@@ -25,13 +23,7 @@ const SignupScreen = () => {
     if (success && userEmail && userInfo) navigate("/otp");
   }, [navigate, userInfo, success, userEmail]);
 
-  // const submitForm = (data) => {
-  //   if (data.password !== data.password_confirmation) {
-  //     alert("Password mismatch");
-  //     return;
-  //   }
-  //   dispatch(registerUser(data));
-  // };
+
   const submitForm = async (data) => {
     try {
       if (data.password !== data.password_confirmation) {
@@ -75,7 +67,6 @@ const SignupScreen = () => {
             Welcome, put in your account information to continue. Please enter
             your email & password to create an account.
           </p>
-          {/* {error && <p>{error} </p>} */}
         </div>
         <form
           onSubmit={handleSubmit(submitForm)}

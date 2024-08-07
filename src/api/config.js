@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const userToken = localStorage.getItem("access_token");
-    if (userToken)  {
+    if (userToken) {
       config.headers["Authorization"] = `Bearer ${userToken}`;
     }
     return config;
@@ -26,7 +26,8 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       console.log("Session expired. Redirecting to login page...");
-       localStorage.removeItem("userInfo");
+      localStorage.removeItem("userInfo");
+      localStorage.setItem("isPinValidated", false);
       // Handle the session expiry case
       window.location.href = "/login";
     }

@@ -4,6 +4,7 @@ import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { PiDotsThreeOutline } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { FaUser } from "react-icons/fa";
 
 export const CustomChannelHeader = () => {
   const [name, setName] = useState(null);
@@ -74,13 +75,17 @@ export const CustomChannelHeader = () => {
         </button>
         <div className="ml-2">
           <div className="flex items-center ">
-            <div className="w-10 h-10 rounded-full overflow-hidden">
-              <img
-                src={userInfo?.user?.image ?? ""}
-                alt="user_image"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="w-10 h-10 flex rounded-full border-2 border-gray-300  items-center justify-center overflow-hidden">
+                {userInfo?.user?.image ? (
+                  <img
+                    src={userInfo?.user?.image}
+                    alt="avatar"
+                    className="w-full h-full object-cover" // Ensure the image covers the div area
+                  />
+                ) : (
+                  <FaUser className="text-gray-300  w-full h-full" /> // Center icon if no image
+                )}
+              </div>
             <p className="ml-2 capitalize">{userInfo?.user?.name ?? "N/A"}</p>
           </div>
           <TypingIndicator />
@@ -94,8 +99,3 @@ export const CustomChannelHeader = () => {
   );
 };
 
-CustomChannelHeader.propTypes = {
-  title: PropTypes.string,
-  name: PropTypes.string,
-  image: PropTypes.string,
-};
