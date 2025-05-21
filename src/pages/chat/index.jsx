@@ -20,7 +20,7 @@ import { useLocation } from "react-router-dom";
 import { CustomDateSeparator } from "../../components/chat/date-separator";
 import Modal from "../../components/profile-screens/reusables/modal";
 import Button from "../../components/profile-screens/reusables/button";
-import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
+import JetSupportLogo from "../../assets/jet-pay.png";
 import useMetaTagUpdater, { useTitleUpdater } from "../../utils/meta";
 import ChatWithOptions from "../../components/chat/chat-options";
 import { EmojiPicker } from "stream-chat-react/emojis";
@@ -111,7 +111,7 @@ const JetChat = () => {
   useMetaTagUpdater({
     "/chat": [
       { name: "description", content: "This is the JetSupport chats page." },
-      { name: "keywords", content: "Jetsupport chats page" },
+      { name: "keywords", content: "JetSupport chats page" },
     ],
   });
 
@@ -202,7 +202,7 @@ const JetChat = () => {
             <div className="flex flex-col items-center">
               <img src={JetSupportLogo} alt="jet-logo" className="w-20 h-20" />
               <h2 className="font-inter font-semibold text-lg mt-2">
-                Welcome to Jet Support!
+                Welcome to Jet Pay!
               </h2>
               <p className="text-[#828282] text-md font-inter leading-5">
                 Your ultimate hub for seamless connections. With our streamlined

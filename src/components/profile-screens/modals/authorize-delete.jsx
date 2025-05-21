@@ -47,7 +47,7 @@ const AuthorizeDelete = ({ setAuthorizeDelete }) => {
             Authorize account deletion
           </p>
           <p className="text-[#828282] text-md font-inter leading-5">
-            Enter your Jet Support PIN to authorize account deletion{" "}
+            Enter your Jet Pay PIN to authorize account deletion{" "}
           </p>
           <OtpInputWithValidation
             handleOtp={handleChange}
@@ -80,5 +80,3 @@ AuthorizeDelete.propTypes = {
 };
 
 export default AuthorizeDelete;
-
-                  

@@ -10,7 +10,9 @@ import Notification from "../reusables/notifications";
 import ErrorBot from "../../error";
 
 const SignupScreen = () => {
-  const { userInfo, success, userEmail, loading } = useSelector((state) => state.auth);
+  const { userInfo, success, userEmail, loading } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
@@ -22,7 +24,6 @@ const SignupScreen = () => {
   useEffect(() => {
     if (success && userEmail && userInfo) navigate("/otp");
   }, [navigate, userInfo, success, userEmail]);
-
 
   const submitForm = async (data) => {
     try {
@@ -133,7 +134,7 @@ const SignupScreen = () => {
               }
             />
             <small>
-              I agree to Jet Support{" "}
+              I agree to Jet Pay{" "}
               <a href="" className="text-[#1877F2] dark:text-[#ABCFFF] ">
                 Terms of Service{" "}
               </a>
@@ -152,7 +153,7 @@ const SignupScreen = () => {
               textColor={"text-white"}
             />
             <small className="text-center block mt-10">
-              Have a Jet Support account?{" "}
+              Have a Jet Pay account?{" "}
               <span
                 onClick={() => navigate("/login")}
                 className="cursor-pointer"

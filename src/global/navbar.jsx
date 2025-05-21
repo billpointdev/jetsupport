@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import JetSupportLogo from "../assets/jetsupportcropped.jpg";
+import JetSupportLogo from "../assets/jet-pay.png";
 import NewChatIcon from "../utils/NewChatIcon";
 import NotificationIcon from "../utils/NotificationIcon";
 import Proptypes from "prop-types";
@@ -148,7 +148,7 @@ const Navbar = ({ toggleSidebar }) => {
       <div className="mx-auto flex h-16 max-w-screen-xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         <Link className="hidden lg:block text-teal-600" to="/">
           <span className="sr-only">Home</span>
-          <img src={JetSupportLogo} alt="" className="w-[52px] h-[49px]" />
+          <img src={JetSupportLogo} alt="" className="w-8 h-12" />
         </Link>
         <button
           className="block rounded p-2.5 dark:text-white dark:hover:text-white text-gray-600 transition hover:text-gray-600/75 lg:hidden"

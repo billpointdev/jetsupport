@@ -1,13 +1,13 @@
-import  { useState } from "react";
-import Proptypes from "prop-types"
+import { useState } from "react";
+import Proptypes from "prop-types";
 // import { FaPlus, FaTimes } from "react-icons/fa";
 
 const AccordionItem = ({ title, content }) => {
-//   const [isOpen, setIsOpen] = useState(false);
+  //   const [isOpen, setIsOpen] = useState(false);
 
-//   const toggleAccordion = () => {
-//     setIsOpen(!isOpen);
-//   };
+  //   const toggleAccordion = () => {
+  //     setIsOpen(!isOpen);
+  //   };
 
   return (
     // <div>
@@ -53,11 +53,10 @@ const AccordionItem = ({ title, content }) => {
   );
 };
 
-
 AccordionItem.propTypes = {
-    title: Proptypes.string.isRequired,
-    content: Proptypes.string.isRequired,
-}
+  title: Proptypes.string.isRequired,
+  content: Proptypes.string.isRequired,
+};
 
 function FAQSection() {
   const [activeSection, setActiveSection] = useState("General");
@@ -94,27 +93,27 @@ function FAQSection() {
         {activeSection === "General" && (
           <div>
             <AccordionItem
-              title="How do I get started with JetSupport?"
-              content="To get started with JetSupport, simply download the app, create an account, link your bank account, and start trading your favorite cryptocurrencies and gift cards."
+              title="How do I get started with JetPay?"
+              content="To get started with JetPay, simply download the app, create an account, link your bank account, and start trading your favorite cryptocurrencies and gift cards."
             />
             <AccordionItem
-              title="How secure is JetSupport?"
-              content="JetSupport uses industry-standard security measures to ensure the safety of your funds and personal information."
+              title="How secure is JetPay?"
+              content="JetPay uses industry-standard security measures to ensure the safety of your funds and personal information."
             />
             <AccordionItem
-              title="What types of cryptocurrencies can I trade on JetSupport?"
+              title="What types of cryptocurrencies can I trade on JetPay?"
               content="You can trade a variety of cryptocurrencies including Bitcoin, Ethereum, Litecoin, and more."
             />
             <AccordionItem
-              title="What types of gift cards can I trade on JetSupport?"
+              title="What types of gift cards can I trade on JetPay?"
               content="You can trade popular gift cards such as Amazon, iTunes, Google Play, and more."
             />
             <AccordionItem
-              title="How long does it take to process a transaction on JetSupport?"
+              title="How long does it take to process a transaction on JetPay?"
               content="Most transactions are processed within a few minutes. However, it may take longer depending on network congestion."
             />
             <AccordionItem
-              title="What if I have issues with my JetSupport account or transactions?"
+              title="What if I have issues with my JetPay account or transactions?"
               content="If you encounter any issues, please contact our support team for assistance."
             />
           </div>

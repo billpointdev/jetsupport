@@ -1,33 +1,31 @@
 import { useState } from "react";
-import ProfilePage from "../../pages/profile-screens"
-import Header from "./reusables/header"
+import ProfilePage from "../../pages/profile-screens";
+import Header from "./reusables/header";
 import Toggler from "./reusables/toggler";
 import { GoBellFill } from "react-icons/go";
 
-const MyNotificaitions = () =>
-{
-      const [notifications, setNotifications] = useState({
-        push: false,
-        sms: false,
-        email: false,
-      });
+const MyNotificaitions = () => {
+  const [notifications, setNotifications] = useState({
+    push: false,
+    sms: false,
+    email: false,
+  });
 
-      const handleToggle = (notificationType) => {
-        setNotifications((prevNotifications) => {
-          return {
-            ...prevNotifications,
-            [notificationType]: !prevNotifications[notificationType],
-          };
-        });
+  const handleToggle = (notificationType) => {
+    setNotifications((prevNotifications) => {
+      return {
+        ...prevNotifications,
+        [notificationType]: !prevNotifications[notificationType],
       };
+    });
+  };
 
-   
   return (
     <ProfilePage>
       <div className="font-inter text-start p-5 pt-6 flex  flex-col  overflow-y-auto">
         <Header
           title="Notifications"
-          message="Your Jet support profile is your personal gateway to managing your account information."
+          message="Your Jet Pay profile is your personal gateway to managing your account information."
         />
         <div className="max-w-[421px] flex flex-col gap-8 mt-20 ml-2">
           <div className="flex justify-between items-center">
@@ -73,6 +71,6 @@ const MyNotificaitions = () =>
       </div>
     </ProfilePage>
   );
-}
+};
 
-export default MyNotificaitions
+export default MyNotificaitions;

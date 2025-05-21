@@ -1,4 +1,5 @@
 import AuthHeader from "./AuthHeader";
+import PropTypes from "prop-types"
 import AuthLeftBar from "./AuthSideBar";
 // import AuthFooter from "./AuthFooter";
 
@@ -20,6 +21,10 @@ function AuthLayout({children}) {
 
 		</div>
 	);
+}
+
+AuthLayout.propTypes = {
+  children: PropTypes.any
 }
 
 export default AuthLayout;

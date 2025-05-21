@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
   useMetaTagUpdater({
     "/": [
       { name: "description", content: "This is the home page." },
-      { name: "keywords", content: "Jetsupport landing page" },
+      { name: "keywords", content: "JetSupport landing page" },
     ],
   });
   return (

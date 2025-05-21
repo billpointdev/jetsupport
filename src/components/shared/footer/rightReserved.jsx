@@ -9,7 +9,7 @@ const RightReserved = () => {
           {/*</p>*/}
 
           <p className="text-xs text-[#9E9E9E] ml-5">
-              © {currentYear} Jetsupport. All rights reserved
+              © {currentYear} JetPay. All rights reserved
           </p>
 
           <ul className="flex gap-3 my-4 lg:my-1 lg:mt-0">
