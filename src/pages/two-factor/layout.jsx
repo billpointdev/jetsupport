@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
+import JetSupportLogo from "../../assets/jet-pay.png";
 
 const TwoFactorLayout = ({ children }) => {
   return (

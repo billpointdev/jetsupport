@@ -8,19 +8,18 @@ import { TbSettings } from "react-icons/tb";
 
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 
-
 export const socialLinks = [
   {
     icon: <FaInstagram />,
-    link: "https://www.instagram.com/jetpay_official/",
+    link: "https://www.instagram.com/JetSupport _official/",
   },
   {
     icon: <FaDribbble />,
-    link: "https://www.dribbble.com/jetpay",
+    link: "https://www.dribbble.com/JetSupport ",
   },
   {
     icon: <FaTwitter />,
-    link: "https://www.twitter.com/jetpay_official",
+    link: "https://www.twitter.com/JetSupport _official",
   },
   {
     icon: <FaYoutube />,

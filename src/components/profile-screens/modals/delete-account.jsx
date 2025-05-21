@@ -1,16 +1,16 @@
-import CautionIcon from '../../../utils/CautionIcon';
-import Button from '../reusables/button';
-import Modal from '../reusables/modal'
-import Proptypes from "prop-types"
+import CautionIcon from "../../../utils/CautionIcon";
+import Button from "../reusables/button";
+import Modal from "../reusables/modal";
+import Proptypes from "prop-types";
 
 const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
   const closeModal = () => {
     setConfirmDeleteModal(false);
   };
-    const handleAuthorization = () =>
-    {setConfirmDeleteModal(false);
-        setAuthorizeDelete(true)
-    }
+  const handleAuthorization = () => {
+    setConfirmDeleteModal(false);
+    setAuthorizeDelete(true);
+  };
 
   return (
     <Modal handleClick={closeModal}>
@@ -23,7 +23,7 @@ const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
         <div className="mt-7">
           <p>Confirm account deletion</p>
           <p className="text-[#757575]">
-            By deleting your account you loose all your Jet support data and
+            By deleting your account you loose all your Jet Pay data and
             information
           </p>
         </div>
@@ -51,7 +51,7 @@ const DeleteAccountModal = ({ setConfirmDeleteModal, setAuthorizeDelete }) => {
 
 DeleteAccountModal.propTypes = {
   setConfirmDeleteModal: Proptypes.func.isRequired,
-  setAuthorizeDelete: Proptypes.func.isRequired
+  setAuthorizeDelete: Proptypes.func.isRequired,
 };
 
 export default DeleteAccountModal;

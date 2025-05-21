@@ -67,7 +67,7 @@ const GetInTouch = () => {
                   </p>
                   <p className="flex items-center  mt-2">
                     <InboxIcon />{" "}
-                    <span className="text-sm  ml-2">hello@jetsupport.com</span>
+                    <span className="text-sm  ml-2">hello@jetpay.com</span>
                   </p>
                 </div>
                 <div className="h-[100px]  flex flex-col justify-between">

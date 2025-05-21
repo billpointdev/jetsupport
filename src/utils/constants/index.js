@@ -1,3 +1,3 @@
-import JetSupportLogo from "../../assets/jetsupportcropped.jpg";
+import JetSupportLogo from "../../assets/jet-pay.png";
 
 export { JetSupportLogo };

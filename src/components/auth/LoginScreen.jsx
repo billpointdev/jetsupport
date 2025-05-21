@@ -16,7 +16,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
-  const {  handleSubmit, setValue, watch } = useForm();
+  const { handleSubmit, setValue, watch } = useForm();
 
   const navigate = useNavigate();
 
@@ -115,7 +115,7 @@ const LoginScreen = () => {
                 textColor={"text-white"}
               />
               <small className="text-center block mt-10">
-                New to Jet Support?{" "}
+                New to Jet Pay?{" "}
                 <span
                   className="cursor-pointer"
                   onClick={() => navigate("/signup")}

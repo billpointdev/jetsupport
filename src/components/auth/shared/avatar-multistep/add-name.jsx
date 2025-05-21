@@ -6,7 +6,7 @@ const AddName = () => {
         One last thing 👋
       </h4>
       <p className="text-center text-[14px] text-[#828282] dark:text-[#FFD9C5]">
-        What do we call you by on Jet Support ?
+        What do we call you by on Jet Pay ?
       </p>
       <div className="flex flex-col px-3 w-full text-center items-center">
         <label
